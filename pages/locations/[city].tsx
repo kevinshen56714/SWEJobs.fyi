@@ -20,12 +20,62 @@ export default function JobPosts({ jobs }: Jobs) {
 
   return (
     <div>
-      <p>
-        There are {jobs.length} jobs in {city}
-      </p>
-      {jobs.map((job, i) => (
-        <p key={i}>{job.companyName}</p>
-      ))}
+      <h1 className="font-medium text-gray-900">
+        There are {jobs.length} jobs in {city} in the last 24hrs
+      </h1>
+      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="py-3 px-6">
+                Company name
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Title
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Location
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Salary
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Skills
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {jobs.map((job, i) => {
+              const { companyName, companyLocation, jobLink, jobTitle, salary, skills } = job
+              return (
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={i}>
+                  <th
+                    scope="row"
+                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {companyName}
+                  </th>
+                  <td className="py-4 px-6">{jobTitle}</td>
+                  <td className="py-4 px-6">{companyLocation}</td>
+                  <td className="py-4 px-6">{salary}</td>
+                  <td className="py-4 px-6">{skills.join(', ')}</td>
+                  <td className="py-4 px-6">
+                    <a
+                      href={jobLink}
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >
+                      Apply
+                    </a>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
