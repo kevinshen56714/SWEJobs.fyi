@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -19,21 +20,26 @@ export default function Home() {
         <p className={styles.description}>Find recent jobs at one of the locations below</p>
 
         <div className={styles.grid}>
-          <a href="/locations/SJ" className={styles.card}>
-            <h2>San Jose, CA &rarr;</h2>
-          </a>
-
-          <a href="/locations/SF" className={styles.card}>
-            <h2>San Francisco, CA &rarr;</h2>
-          </a>
-
-          <a href="/locations/SEA" className={styles.card}>
-            <h2>Seattle, WA &rarr;</h2>
-          </a>
-
-          <a href="/locations/LA" className={styles.card}>
-            <h2>Los Angeles, CA &rarr;</h2>
-          </a>
+          <Link href="/locations/SJ">
+            <a className={styles.card}>
+              <h2>San Jose, CA &rarr;</h2>
+            </a>
+          </Link>
+          <Link href="/locations/SF">
+            <a className={styles.card}>
+              <h2>San Francisco, CA &rarr;</h2>
+            </a>
+          </Link>
+          <Link href="/locations/SEA">
+            <a className={styles.card}>
+              <h2>Seattle, WA &rarr;</h2>
+            </a>
+          </Link>
+          <Link href="/locations/LA">
+            <a className={styles.card}>
+              <h2>Los Angeles, CA &rarr;</h2>
+            </a>
+          </Link>
         </div>
       </main>
 
