@@ -20,7 +20,7 @@ export default function JobPosts({ jobs }: Jobs) {
 
   return (
     <div>
-      <h1 className="font-medium text-gray-900">
+      <h1 className="text-xl text-gray-900 py-3">
         There are {jobs.length} jobs in {city} in the last 24hrs
       </h1>
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
