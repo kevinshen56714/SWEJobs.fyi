@@ -20,22 +20,22 @@ export default function Home() {
         <p className={styles.description}>Find recent jobs at one of the locations below</p>
 
         <div className={styles.grid}>
-          <Link href="/locations/SJ">
+          <Link href="/location/SJ">
             <a className={styles.card}>
               <h2>San Jose, CA &rarr;</h2>
             </a>
           </Link>
-          <Link href="/locations/SF">
+          <Link href="/location/SF">
             <a className={styles.card}>
               <h2>San Francisco, CA &rarr;</h2>
             </a>
           </Link>
-          <Link href="/locations/SEA">
+          <Link href="/location/SEA">
             <a className={styles.card}>
               <h2>Seattle, WA &rarr;</h2>
             </a>
           </Link>
-          <Link href="/locations/LA">
+          <Link href="/location/LA">
             <a className={styles.card}>
               <h2>Los Angeles, CA &rarr;</h2>
             </a>
