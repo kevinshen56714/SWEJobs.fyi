@@ -26,8 +26,8 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
   const { city } = router.query
   const tabs = [
     { title: 'Within 24 hours', jobs: todayJobs },
-    { title: '24 - 48 hours', jobs: yesterdayJobs },
-    { title: '48 - 72 hours', jobs: twoDaysAgoJobs },
+    { title: '24-48 hours', jobs: yesterdayJobs },
+    { title: '48-72 hours', jobs: twoDaysAgoJobs },
   ]
 
   return (
@@ -40,14 +40,14 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
               <li className="mr-2" key={i}>
                 <a
                   onClick={() => setTime(i)}
-                  className={`inline-block p-4 rounded-t-lg border-b-2 cursor-pointer ${
+                  className={`inline-block p-2.5 rounded-t-lg border-b-2 cursor-pointer ${
                     currentTab
                       ? 'text-blue-600 border-blue-600 active dark:text-blue-500 dark:border-blue-500'
                       : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
                   } `}
                 >
                   {title}
-                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold ml-2 px-1 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold ml-2 px-1 py-0.5 rounded-lg dark:bg-blue-200 dark:text-blue-800">
                     {tabs[i].jobs.length}
                   </span>
                 </a>
@@ -61,54 +61,52 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="py-3 px-6">
-                Company name
+                Company
               </th>
               <th scope="col" className="py-3 px-6">
-                Title
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Location
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Salary
+                Role
               </th>
               <th scope="col" className="py-3 px-6">
                 Skills
               </th>
-              <th scope="col" className="py-3 px-6"></th>
             </tr>
           </thead>
           <tbody>
             {tabs[time].jobs.map((job, i) => {
               const { companyName, companyLocation, jobLink, jobTitle, salary, skills } = job
               return (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={i}>
-                  <th
+                <tr
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  key={i}
+                >
+                  <td
                     scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="py-2 px-6 max-w-[16.5rem] truncate font-medium text-blue-600 active dark:text-blue-500 whitespace-nowrap hover:underline hover:cursor-pointer"
                   >
-                    {companyName}
-                  </th>
-                  <td className="py-4 px-6">{jobTitle}</td>
-                  <td className="py-4 px-6">{companyLocation.split('+')[0]}</td>
-                  <td className="py-4 px-6">{salary}</td>
-                  <td className="py-4 px-6 max-w-lg flex flex-wrap">
+                    <a href={jobLink}>
+                      {companyName}
+                      <p className="font-normal text-sm truncate text-left text-gray-500 dark:text-gray-400">
+                        {companyLocation.split('+')[0]}
+                      </p>
+                    </a>
+                  </td>
+                  <td className="py-2 px-6 max-w-xs truncate font-medium text-gray-900 whitespace-nowrap dark:text-white hover:underline hover:cursor-pointer">
+                    <a href={jobLink}>
+                      {jobTitle}
+                      <p className="font-normal text-sm text-left text-gray-500 dark:text-gray-400">
+                        {salary}
+                      </p>
+                    </a>
+                  </td>
+                  <td className="py-2 px-6 max-w-[25rem] flex flex-wrap">
                     {skills.map((skill, i) => (
                       <span
                         key={i}
-                        className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300"
+                        className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded-lg dark:bg-gray-700 dark:text-gray-300"
                       >
                         {skill}
                       </span>
                     ))}
-                  </td>
-                  <td className="py-4 px-6">
-                    <a
-                      href={jobLink}
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Details
-                    </a>
                   </td>
                 </tr>
               )
