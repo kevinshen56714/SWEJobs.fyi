@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { db } from '../../firebase'
 import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
+import fakeData from '../../data/devData.json'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA']
 
@@ -132,6 +133,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
+  if (process.env.NODE_ENV === 'development') {
+    const fakeJobs = fakeData.fakeJobs
+    fakeJobs.map((job) => {
+      job['jobDescription'] = job.jobDescriptionArr.join()
+    })
+    return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
+  }
+
   const { city } = context.params
   const today = new Date()
   let [todayStr, yesterdayStr, twoDaysAgoStr] = convertDateToPreviousDays(today)
