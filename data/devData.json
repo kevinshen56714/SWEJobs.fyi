@@ -26,13 +26,7 @@
         "and browsers Integrate with RESTful APIs."],
       "jobLink":"#",
       "jobTitle":"Software Engineer",
-      "salary":"$150,000 - $180,000 a year",
-      "skills":[
-        "JavaScript",
-        "PHP",
-        "HTML",
-        "React"
-      ]
+      "salary":"$150,000 - $180,000 a year"
     },
     {
       "companyLocation":"Seattle, WA",
@@ -72,12 +66,7 @@
         "in Computer Science, Electrical Engineering or related field Additional Requirements"],
       "jobLink":"#",
       "jobTitle":"AI/ML Machine Learning Engineer",
-      "salary":"No salary estimation",
-      "skills":[
-        "C",
-        "C++",
-        "Python"
-      ]
+      "salary":"No salary estimation"
     },
     {
       "companyLocation":"Los Angeles, CA",
@@ -132,11 +121,7 @@
         "performed"],
       "jobLink":"#",
       "jobTitle":"Principal DevOps Engineer",
-      "salary":"Estimated $138K-$175K a year",
-      "skills":[
-        "Python",
-        "MySQL"
-      ]
+      "salary":"Estimated $138K-$175K a year"
     }
   ]
 }

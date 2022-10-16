@@ -40,6 +40,16 @@ export default function Home() {
               <h2>Los Angeles, CA &rarr;</h2>
             </a>
           </Link>
+          <Link href="/location/NY">
+            <a className={styles.card}>
+              <h2>New York, NY &rarr;</h2>
+            </a>
+          </Link>
+          <Link href="/location/AU">
+            <a className={styles.card}>
+              <h2>Austin, TX &rarr;</h2>
+            </a>
+          </Link>
         </div>
       </main>
 
