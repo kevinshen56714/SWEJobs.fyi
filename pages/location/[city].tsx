@@ -4,8 +4,9 @@ import { useRouter } from 'next/router'
 import { db } from '../../firebase'
 import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
 import fakeData from '../../data/devData.json'
+import { getSkillsInJobDescription } from '../../analysis'
 
-export const cities = ['SF', 'SJ', 'SEA', 'LA']
+export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
 type Job = {
   companyName: string
@@ -16,9 +17,9 @@ type Job = {
   skills: string[]
 }
 type Jobs = {
-  todayJobs: Array<Job>
-  yesterdayJobs: Array<Job>
-  twoDaysAgoJobs: Array<Job>
+  todayJobs: Job[]
+  yesterdayJobs: Job[]
+  twoDaysAgoJobs: Job[]
 }
 
 export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: Jobs) {
@@ -136,7 +137,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (process.env.NODE_ENV === 'development') {
     const fakeJobs = fakeData.fakeJobs
     fakeJobs.map((job) => {
-      job['jobDescription'] = job.jobDescriptionArr.join()
+      const jobDescription = job.jobDescriptionArr.join()
+      job['skills'] = getSkillsInJobDescription(jobDescription)
     })
     return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
   }
@@ -166,7 +168,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 const assembleJobObject = (snapshot: QuerySnapshot) => {
   return snapshot.docs.map((doc) => {
-    const { companyName, companyLocation, jobLink, jobTitle, salary, skills } = doc.data()
+    const { companyName, companyLocation, jobLink, jobDescription, jobTitle, salary } = doc.data()
+    const skills = getSkillsInJobDescription(jobDescription)
     return { companyName, companyLocation, jobLink, jobTitle, salary, skills }
   })
 }
