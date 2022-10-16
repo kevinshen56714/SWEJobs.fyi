@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { db } from '../../firebase'
 import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
 import fakeData from '../../data/devData.json'
-import { getSkillsInJobDescription } from '../analysis'
+import { getSkillsInJobDescription } from '../../analysis'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
