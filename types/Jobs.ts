@@ -1,4 +1,4 @@
-import { SkillType } from "./skills"
+import { SkillType } from "./Skills"
 
 type Job = {
   companyName: string

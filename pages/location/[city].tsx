@@ -6,7 +6,7 @@ import { db } from '../../data/firebase'
 import { getSkillsInJobDescription } from '../../data/analysis'
 import fakeData from '../../data/devData.json'
 import { Jobs } from '../../types/Jobs'
-import { SkillType } from '../../types/skills'
+import { SkillType } from '../../types/Skills'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 

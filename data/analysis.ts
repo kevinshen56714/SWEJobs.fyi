@@ -1,4 +1,4 @@
-import { SkillType } from "../types/skills"
+import { SkillType } from "../types/Skills"
 
 const languages = [
   'Bash',
