@@ -13,6 +13,7 @@ const languages = [
   'Java',
   'JavaScript',
   'Kotlin',
+  'Lua',
   'MATLAB',
   ['Objective-C', 'Objective C'],
   'OpenCL',
@@ -40,7 +41,7 @@ const frontendStack = [
   ['CSS', 'CSS3'],
   ['ExpressJS', 'Express.js', 'Express'],
   ['HTML', 'HTML5'],
-  ['Next', 'NextJS', 'Next.js'],
+  ['NextJS', 'Next.js'],
   ['React', 'ReactJS', 'React.js'],
   'Redux',
   'Remix',
@@ -50,20 +51,24 @@ const frontendStack = [
 
 const backendStack = [
   'Apache',
+  'Aerospike',
   'Cassandra',
   'CockroachDB',
   'Couchbase',
   'DataStax',
+  'Django',
   'Elasticsearch',
   ['ExpressJS', 'Express.js', 'Express'],
+  'FastAPI',
   'Firebase',
+  'Flask',
   'GraphQL',
   ['IBM Db2', 'Db2'],
   'Kafka',
   'MariaDB',
   'Memcached',
   ['MSSQL', 'Microsoft SQL'],
-  'MongoDB',
+  ['MongoDB', 'Mongo'],
   'MySQL',
   'Neo4j',
   ['NodeJS', 'Node.js', 'Node'],
@@ -74,6 +79,22 @@ const backendStack = [
   'SQL',
   'Vitess',
 ]
+
+const devOpsStack = [
+  'Ansible',
+  'AWS',
+  'Azure',
+  'BigTable',
+  'BigQuery',
+  'DataFlow',
+  'Groovy',
+  'Jenkins',
+  ['K8s', 'Kubernetes'],
+  'RabbitMQ',
+  ['GCP', 'Google Cloud Platform', 'Google Cloud'],
+]
+
+const dataMLStack = ['Dask', 'Presto', 'Hadoop', 'PyTorch', 'Spark', 'TensorFlow']
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
   // recursively check all the aliases if skill is an array of alias names
@@ -86,13 +107,20 @@ const checkIfSkillInDescription = (skill: string | string[], description: string
   }
   // escape + character for regex on C++
   const skillRaw = skill.replaceAll('+', String.raw`\+`)
-  const re = new RegExp(`([ /(]${skillRaw}[ /,)])`, 'gim')
+  const re = new RegExp(`([ /(]${skillRaw}[ /,):])`, 'gim')
   return re.test(description)
 }
 
 export const getSkillsInJobDescription = (description: string) => {
   const skills = []
-  ;[...languages, ...frontendStack, ...backendStack].map((skill) => {
+  const allSkills = [
+    ...languages,
+    ...frontendStack,
+    ...backendStack,
+    ...devOpsStack,
+    ...dataMLStack,
+  ]
+  allSkills.map((skill) => {
     if (checkIfSkillInDescription(skill, description)) {
       if (skill instanceof Array) skill = skill[0]
       skills.push(skill)
