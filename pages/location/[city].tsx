@@ -5,22 +5,35 @@ import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
 import { db } from '../../data/firebase'
 import { getSkillsInJobDescription } from '../../data/analysis'
 import fakeData from '../../data/devData.json'
+import { Jobs } from '../../types/Jobs'
+import { SkillType } from '../../types/skills'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
-type Job = {
-  companyName: string
-  companyLocation: string
-  jobLink: string
-  jobTitle: string
-  salary: string
-  skills: string[]
-}
-
-type Jobs = {
-  todayJobs: Job[]
-  yesterdayJobs: Job[]
-  twoDaysAgoJobs: Job[]
+const SkillBadge = ({ children, type }) => {
+  let colorClasses = ''
+  switch (Number(type)) {
+    case SkillType.LANGUAGE:
+      colorClasses = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+      break
+    case SkillType.FRONTEND:
+      colorClasses = 'bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800'
+      break
+    case SkillType.BACKEND:
+      colorClasses = 'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900'
+      break
+    case SkillType.DEVOPS:
+      colorClasses = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900'
+      break
+    case SkillType.DATAML:
+      colorClasses = 'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900'
+      break
+  }
+  return (
+    <span className={`text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded-lg ${colorClasses}`}>
+      {children}
+    </span>
+  )
 }
 
 export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: Jobs) {
@@ -102,14 +115,13 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                     </a>
                   </td>
                   <td className="py-2 px-6 max-w-[25rem] flex flex-wrap">
-                    {skills.map((skill, i) => (
-                      <span
-                        key={i}
-                        className="bg-gray-100 text-gray-800 text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded-lg dark:bg-gray-700 dark:text-gray-300"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                    {Object.keys(skills).map((type) =>
+                      skills[type].map((skill, i) => (
+                        <SkillBadge key={i} type={type}>
+                          {skill}
+                        </SkillBadge>
+                      ))
+                    )}
                   </td>
                 </tr>
               )

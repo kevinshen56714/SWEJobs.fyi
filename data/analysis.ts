@@ -1,3 +1,5 @@
+import { SkillType } from "../types/skills"
+
 const languages = [
   'Bash',
   ['C/C++', 'C', 'C++'],
@@ -39,6 +41,7 @@ const languages = [
 const frontendStack = [
   ['Angular', 'AngularJS', 'Angular.js'],
   ['ExpressJS', 'Express.js', 'Express'],
+  'Flux',
   ['HTML/CSS', 'HTML', 'HTML5', 'CSS3'],
   ['NextJS', 'Next.js'],
   ['React', 'ReactJS', 'React.js'],
@@ -105,6 +108,14 @@ const dataMLStack = [
   'TerraForm',
 ]
 
+const skillsByType = {
+  [SkillType.LANGUAGE]: languages,
+  [SkillType.FRONTEND]: frontendStack,
+  [SkillType.BACKEND]: backendStack,
+  [SkillType.DEVOPS]: devOpsStack,
+  [SkillType.DATAML]: dataMLStack
+}
+
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
   // recursively check all the aliases if skill is an array of alias names
   if (skill instanceof Array) {
@@ -121,20 +132,16 @@ const checkIfSkillInDescription = (skill: string | string[], description: string
 }
 
 export const getSkillsInJobDescription = (description: string) => {
-  const skills = []
-  const allSkills = [
-    ...languages,
-    ...frontendStack,
-    ...backendStack,
-    ...devOpsStack,
-    ...dataMLStack,
-  ]
-  allSkills.map((skill) => {
-    if (checkIfSkillInDescription(skill, description)) {
-      if (skill instanceof Array) skill = skill[0]
-      skills.push(skill)
-    }
+  const allMatchedSkills = {}
+  Object.keys((skillsByType)).map((type) => {
+    const matchedSkills = []
+    skillsByType[type].map((skill) => {
+      if (checkIfSkillInDescription(skill, description)) {
+        if (skill instanceof Array) skill = skill[0]
+        matchedSkills.push(skill)
+      }
+    })
+    allMatchedSkills[type] = matchedSkills
   })
-
-  return skills
+  return allMatchedSkills
 }
