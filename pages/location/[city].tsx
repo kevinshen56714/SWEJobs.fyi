@@ -7,30 +7,28 @@ import { getSkillsInJobDescription } from '../../data/analysis'
 import fakeData from '../../data/devData.json'
 import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
+import classNames from 'classnames'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
 const SkillBadge = ({ children, type }) => {
-  let colorClasses = ''
-  switch (Number(type)) {
-    case SkillType.LANGUAGE:
-      colorClasses = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-      break
-    case SkillType.FRONTEND:
-      colorClasses = 'bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800'
-      break
-    case SkillType.BACKEND:
-      colorClasses = 'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900'
-      break
-    case SkillType.DEVOPS:
-      colorClasses = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900'
-      break
-    case SkillType.DATAML:
-      colorClasses = 'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900'
-      break
-  }
   return (
-    <span className={`text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded-lg ${colorClasses}`}>
+    <span
+      className={classNames(
+        {
+          'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300':
+            type === SkillType.LANGUAGE,
+          'bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800':
+            type === SkillType.FRONTEND,
+          'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900':
+            type === SkillType.BACKEND,
+          'bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900':
+            type === SkillType.DEVOPS,
+          'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900': type === SkillType.DATAML,
+        },
+        'text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded-lg'
+      )}
+    >
       {children}
     </span>
   )
@@ -56,11 +54,15 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
               <li className="mr-2" key={i}>
                 <a
                   onClick={() => setTime(i)}
-                  className={`inline-block p-2.5 rounded-t-lg border-b-2 cursor-pointer ${
-                    currentTab
-                      ? 'text-blue-600 border-blue-600 active dark:text-blue-500 dark:border-blue-500'
-                      : 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-                  } `}
+                  className={classNames(
+                    {
+                      'text-blue-600 border-blue-600 active dark:text-blue-500 dark:border-blue-500':
+                        currentTab,
+                      'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300':
+                        !currentTab,
+                    },
+                    'inline-block p-2.5 rounded-t-lg border-b-2 cursor-pointer'
+                  )}
                 >
                   {title}
                   <span className="bg-blue-100 text-blue-800 text-xs font-semibold ml-2 px-1 py-0.5 rounded-lg dark:bg-blue-200 dark:text-blue-800">
@@ -117,7 +119,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                   <td className="py-2 px-6 max-w-[25rem] flex flex-wrap">
                     {Object.keys(skills).map((type) =>
                       skills[type].map((skill, i) => (
-                        <SkillBadge key={i} type={type}>
+                        <SkillBadge key={i} type={Number(type)}>
                           {skill}
                         </SkillBadge>
                       ))
