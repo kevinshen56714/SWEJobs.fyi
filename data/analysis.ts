@@ -94,7 +94,16 @@ const devOpsStack = [
   'S3',
 ]
 
-const dataMLStack = ['Dask', 'Presto', 'Hadoop', 'PyTorch', 'Spark', 'TensorFlow', 'TerraForm']
+const dataMLStack = [
+  'Dask',
+  'Hadoop',
+  'Keras',
+  'Presto',
+  'PyTorch',
+  'Spark',
+  'TensorFlow',
+  'TerraForm',
+]
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
   // recursively check all the aliases if skill is an array of alias names
