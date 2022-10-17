@@ -5,6 +5,7 @@ const languages = [
   'C#',
   'Cython',
   'ECMAScript',
+  'Elixir',
   'Erlang',
   'F#',
   'Fortran',
