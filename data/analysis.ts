@@ -1,7 +1,6 @@
 const languages = [
   'Bash',
-  'C',
-  'C++',
+  ['C/C++', 'C', 'C++'],
   'C#',
   'Cython',
   'ECMAScript',
@@ -39,9 +38,8 @@ const languages = [
 
 const frontendStack = [
   ['Angular', 'AngularJS', 'Angular.js'],
-  ['CSS', 'CSS3'],
   ['ExpressJS', 'Express.js', 'Express'],
-  ['HTML', 'HTML5'],
+  ['HTML/CSS', 'HTML', 'HTML5', 'CSS3'],
   ['NextJS', 'Next.js'],
   ['React', 'ReactJS', 'React.js'],
   'Redux',
@@ -88,14 +86,15 @@ const devOpsStack = [
   'BigTable',
   'BigQuery',
   'DataFlow',
+  ['GCP', 'Google Cloud Platform', 'Google Cloud'],
   'Groovy',
   'Jenkins',
   ['K8s', 'Kubernetes'],
   'RabbitMQ',
-  ['GCP', 'Google Cloud Platform', 'Google Cloud'],
+  'S3',
 ]
 
-const dataMLStack = ['Dask', 'Presto', 'Hadoop', 'PyTorch', 'Spark', 'TensorFlow']
+const dataMLStack = ['Dask', 'Presto', 'Hadoop', 'PyTorch', 'Spark', 'TensorFlow', 'TerraForm']
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
   // recursively check all the aliases if skill is an array of alias names
