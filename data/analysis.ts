@@ -40,7 +40,6 @@ const languages = [
 
 const frontendStack = [
   ['Angular', 'AngularJS', 'Angular.js'],
-  ['ExpressJS', 'Express.js', 'Express'],
   'Flux',
   ['HTML/CSS', 'HTML', 'HTML5', 'CSS3'],
   ['NextJS', 'Next.js'],
