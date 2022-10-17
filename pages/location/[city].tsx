@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { db } from '../../firebase'
 import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
+import { db } from '../../data/firebase'
+import { getSkillsInJobDescription } from '../../data/analysis'
 import fakeData from '../../data/devData.json'
-import { getSkillsInJobDescription } from '../../analysis'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
@@ -16,6 +16,7 @@ type Job = {
   salary: string
   skills: string[]
 }
+
 type Jobs = {
   todayJobs: Job[]
   yesterdayJobs: Job[]
