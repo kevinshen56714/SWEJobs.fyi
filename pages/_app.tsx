@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import { logAnalyticsEvent } from '../utils/firebase'
 import '../styles/globals.css'
 
 const NavBar = () => {
@@ -10,6 +11,7 @@ const NavBar = () => {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  logAnalyticsEvent('user app loaded')
   return (
     <>
       <NavBar />

@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
-import { db } from '../../data/firebase'
-import { getSkillsInJobDescription } from '../../data/analysis'
-import fakeData from '../../data/devData.json'
+import { db, logAnalyticsEvent } from '../../utils/firebase'
+import { getSkillsInJobDescription } from '../../utils/analysis'
+import devData from '../../data/dev-data.json'
 import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
 import classNames from 'classnames'
@@ -149,12 +149,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
   if (process.env.NODE_ENV === 'development') {
-    const fakeJobs = fakeData.fakeJobs
-    fakeJobs.map((job) => {
+    const devJobs = devData.devJobs
+    devJobs.map((job) => {
       const jobDescription = job.jobDescriptionArr.join()
       job['skills'] = getSkillsInJobDescription(jobDescription)
     })
-    return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
+    return { props: { todayJobs: devJobs, yesterdayJobs: devJobs, twoDaysAgoJobs: devJobs } }
   }
 
   const { city } = context.params
@@ -176,6 +176,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const yesterdayJobs = assembleJobObject(yesterdayQuerySnapshot)
   const twoDaysAgoJobs = assembleJobObject(twoDaysAgoQuerySnapshot)
   console.log(`There are ${todayQuerySnapshot.size} jobs in ${city} today`)
+  logAnalyticsEvent('page set up by Next')
   // Pass collection data to the page via props
   return { props: { todayJobs, yesterdayJobs, twoDaysAgoJobs } }
 }
