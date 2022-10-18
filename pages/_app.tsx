@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 const NavBar = () => {
   return (
-    <div className="sticky top-0 rounded border-gray-200 bg-white px-2 py-2.5 shadow-md dark:bg-gray-900 sm:px-4">
+    <div className="sticky top-0 z-50 rounded border-gray-200 bg-white px-2 py-2.5 shadow-md dark:bg-gray-900 sm:px-4	">
       <div className="container mx-auto flex flex-wrap items-center justify-between">
         <a href="https://swe-jobs-fyi.vercel.app" className="flex items-center">
           <img src="/global-job.svg" className="mr-3 h-6 sm:h-9" alt="swe-jobs logo" />
