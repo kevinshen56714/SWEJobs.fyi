@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
-import { db, logAnalyticsEvent } from '../../utils/firebase'
+import { db } from '../../utils/firebase'
 import { getSkillsInJobDescription } from '../../utils/analysis'
 import devData from '../../data/dev-data.json'
 import { Jobs } from '../../types/Jobs'
@@ -176,7 +176,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const yesterdayJobs = assembleJobObject(yesterdayQuerySnapshot)
   const twoDaysAgoJobs = assembleJobObject(twoDaysAgoQuerySnapshot)
   console.log(`There are ${todayQuerySnapshot.size} jobs in ${city} today`)
-  logAnalyticsEvent('page set up by Next')
   // Pass collection data to the page via props
   return { props: { todayJobs, yesterdayJobs, twoDaysAgoJobs } }
 }

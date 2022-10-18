@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import { useEffect } from 'react'
 import { logAnalyticsEvent } from '../utils/firebase'
 import '../styles/globals.css'
 
@@ -11,7 +12,13 @@ const NavBar = () => {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  logAnalyticsEvent('user app loaded')
+  useEffect(() => {
+    console.log('user app loaded')
+    if (process.env.NODE_ENV === 'production') {
+      logAnalyticsEvent('user app loaded')
+    }
+  }, [])
+
   return (
     <>
       <NavBar />
