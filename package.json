@@ -1,4 +1,13 @@
 {
+  "name": "swe-jobs.fyi",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "classnames": "^2.3.2",
     "firebase": "^9.12.0",
@@ -17,14 +26,5 @@
     "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwindcss": "^3.1.8",
     "typescript": "4.8.4"
-  },
-  "name": "swe-jobs.fyi",
-  "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start"
-  },
-  "version": "0.1.0"
+  }
 }
