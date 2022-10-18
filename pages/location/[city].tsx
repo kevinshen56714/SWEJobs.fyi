@@ -148,14 +148,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
-  // if (process.env.NODE_ENV === 'development') {
-  //   const fakeJobs = fakeData.fakeJobs
-  //   fakeJobs.map((job) => {
-  //     const jobDescription = job.jobDescriptionArr.join()
-  //     job['skills'] = getSkillsInJobDescription(jobDescription)
-  //   })
-  //   return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
-  // }
+  if (process.env.NODE_ENV === 'development') {
+    const fakeJobs = fakeData.fakeJobs
+    fakeJobs.map((job) => {
+      const jobDescription = job.jobDescriptionArr.join()
+      job['skills'] = getSkillsInJobDescription(jobDescription)
+    })
+    return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
+  }
 
   const { city } = context.params
   const today = new Date()
