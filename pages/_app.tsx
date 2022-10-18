@@ -1,7 +1,8 @@
-import type { AppProps } from 'next/app'
-import { useEffect } from 'react'
-import { logAnalyticsEvent } from '../utils/firebase'
 import '../styles/globals.css'
+
+import type { AppProps } from 'next/app'
+import { logAnalyticsEvent } from '../utils/firebase'
+import { useEffect } from 'react'
 
 const NavBar = () => {
   return (
