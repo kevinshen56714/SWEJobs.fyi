@@ -3,6 +3,6 @@
     "amatiasq.sort-imports",
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
+    "esbenp.prettier-vscode"
   ]
 }
