@@ -26,7 +26,7 @@ const SkillBadge = ({ children, type }) => {
             type === SkillType.DEVOPS,
           'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900': type === SkillType.DATAML,
         },
-        'text-xs font-semibold mr-2 my-0.5 px-1.5 py-0.5 rounded-lg'
+        'my-0.5 mr-2 rounded-lg px-1.5 py-0.5 text-xs font-semibold'
       )}
     >
       {children}
@@ -46,8 +46,8 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
 
   return (
     <div>
-      <div className="text-sm font-medium text-center py-2 text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-        <ul className="flex flex-wrap -mb-px">
+      <div className="border-b border-gray-200 py-2 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
+        <ul className="-mb-px flex flex-wrap">
           {tabs.map(({ title }, i) => {
             const currentTab = i === time
             return (
@@ -56,16 +56,16 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                   onClick={() => setTime(i)}
                   className={classNames(
                     {
-                      'text-blue-600 border-blue-600 active dark:text-blue-500 dark:border-blue-500':
+                      'active border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500':
                         currentTab,
-                      'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300':
+                      'border-transparent hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300':
                         !currentTab,
                     },
-                    'inline-block p-2.5 rounded-t-lg border-b-2 cursor-pointer'
+                    'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
                   )}
                 >
                   {title}
-                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold ml-2 px-1 py-0.5 rounded-lg dark:bg-blue-200 dark:text-blue-800">
+                  <span className="ml-2 rounded-lg bg-blue-100 px-1 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-200 dark:text-blue-800">
                     {tabs[i].jobs.length}
                   </span>
                 </a>
@@ -74,9 +74,9 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
           })}
         </ul>
       </div>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Company
@@ -94,29 +94,29 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
               const { companyName, companyLocation, jobLink, jobTitle, salary, skills } = job
               return (
                 <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                   key={i}
                 >
                   <td
                     scope="row"
-                    className="py-2 px-6 max-w-[16.5rem] truncate font-medium text-blue-600 active dark:text-blue-500 whitespace-nowrap hover:underline hover:cursor-pointer"
+                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-blue-600 hover:cursor-pointer hover:underline dark:text-blue-500"
                   >
                     <a href={jobLink}>
                       {companyName}
-                      <p className="font-normal text-sm truncate text-left text-gray-500 dark:text-gray-400">
+                      <p className="truncate text-left text-sm font-normal text-gray-500 dark:text-gray-400">
                         {companyLocation.split('+')[0]}
                       </p>
                     </a>
                   </td>
-                  <td className="py-2 px-6 max-w-xs truncate font-medium text-gray-900 whitespace-nowrap dark:text-white hover:underline hover:cursor-pointer">
+                  <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline dark:text-white">
                     <a href={jobLink}>
                       {jobTitle}
-                      <p className="font-normal text-sm text-left text-gray-500 dark:text-gray-400">
+                      <p className="text-left text-sm font-normal text-gray-500 dark:text-gray-400">
                         {salary}
                       </p>
                     </a>
                   </td>
-                  <td className="py-2 px-6 max-w-[25rem] flex flex-wrap">
+                  <td className="flex max-w-[25rem] flex-wrap py-2 px-6">
                     {Object.keys(skills).map((type) =>
                       skills[type].map((skill, i) => (
                         <SkillBadge key={i} type={Number(type)}>
