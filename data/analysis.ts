@@ -1,4 +1,4 @@
-import { SkillType } from "../types/Skills"
+import { SkillType } from '../types/Skills'
 
 const languages = [
   'Bash',
@@ -112,7 +112,7 @@ const skillsByType = {
   [SkillType.FRONTEND]: frontendStack,
   [SkillType.BACKEND]: backendStack,
   [SkillType.DEVOPS]: devOpsStack,
-  [SkillType.DATAML]: dataMLStack
+  [SkillType.DATAML]: dataMLStack,
 }
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
@@ -132,7 +132,7 @@ const checkIfSkillInDescription = (skill: string | string[], description: string
 
 export const getSkillsInJobDescription = (description: string) => {
   const allMatchedSkills = {}
-  Object.keys((skillsByType)).map((type) => {
+  Object.keys(skillsByType).map((type) => {
     const matchedSkills = []
     skillsByType[type].map((skill) => {
       if (checkIfSkillInDescription(skill, description)) {

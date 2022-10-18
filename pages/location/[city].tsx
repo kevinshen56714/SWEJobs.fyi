@@ -12,21 +12,18 @@ import classNames from 'classnames'
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
 const SkillBadge = ({ children, type }) => {
+  if (type === SkillType.LANGUAGE) return
   return (
     <span
       className={classNames(
         {
-          'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300':
-            type === SkillType.LANGUAGE,
-          'bg-blue-100 text-blue-800 dark:bg-blue-200 dark:text-blue-800':
-            type === SkillType.FRONTEND,
-          'bg-green-100 text-green-800 dark:bg-green-200 dark:text-green-900':
-            type === SkillType.BACKEND,
-          'bg-yellow-100 text-yellow-800 dark:bg-yellow-200 dark:text-yellow-900':
-            type === SkillType.DEVOPS,
-          'bg-red-100 text-red-800 dark:bg-red-200 dark:text-red-900': type === SkillType.DATAML,
+          'bg-[#ffffff] text-black': type === SkillType.LANGUAGE,
+          'bg-[#cbf3f0] text-black': type === SkillType.FRONTEND,
+          'bg-[#2ec4b5a3] text-black': type === SkillType.BACKEND,
+          'bg-[#ffbf69] text-black': type === SkillType.DEVOPS,
+          'bg-[#ff9f1c] text-black': type === SkillType.DATAML,
         },
-        'my-0.5 mr-2 rounded-lg px-1.5 py-0.5 text-xs font-semibold'
+        'my-0.5 mr-2 rounded-lg px-1.5 py-[1px] text-xs font-medium'
       )}
     >
       {children}
@@ -56,7 +53,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                   onClick={() => setTime(i)}
                   className={classNames(
                     {
-                      'active border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-500':
+                      'active border-cyan-600 text-cyan-600 dark:border-cyan-500 dark:text-cyan-500':
                         currentTab,
                       'border-transparent hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300':
                         !currentTab,
@@ -65,7 +62,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                   )}
                 >
                   {title}
-                  <span className="ml-2 rounded-lg bg-blue-100 px-1 py-0.5 text-xs font-semibold text-blue-800 dark:bg-blue-200 dark:text-blue-800">
+                  <span className="ml-2 rounded-lg bg-[#cbf3f0] px-1 py-0.5 text-xs font-semibold text-black dark:bg-blue-200 dark:text-blue-800">
                     {tabs[i].jobs.length}
                   </span>
                 </a>
@@ -99,7 +96,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                 >
                   <td
                     scope="row"
-                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-blue-600 hover:cursor-pointer hover:underline dark:text-blue-500"
+                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
                   >
                     <a href={jobLink}>
                       {companyName}
@@ -111,19 +108,21 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                   <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline dark:text-white">
                     <a href={jobLink}>
                       {jobTitle}
-                      <p className="text-left text-sm font-normal text-gray-500 dark:text-gray-400">
-                        {salary}
+                      <p className="text-left text-sm font-normal text-gray-700 dark:text-gray-400">
+                        {skills[SkillType.LANGUAGE].join(', ')}
                       </p>
                     </a>
                   </td>
-                  <td className="flex max-w-[25rem] flex-wrap py-2 px-6">
-                    {Object.keys(skills).map((type) =>
-                      skills[type].map((skill, i) => (
-                        <SkillBadge key={i} type={Number(type)}>
-                          {skill}
-                        </SkillBadge>
-                      ))
-                    )}
+                  <td className="max-w-[25rem] py-2 px-6">
+                    <div className="flex flex-wrap">
+                      {Object.keys(skills).map((type) =>
+                        skills[type].map((skill, i) => (
+                          <SkillBadge key={i} type={Number(type)}>
+                            {skill}
+                          </SkillBadge>
+                        ))
+                      )}
+                    </div>
                   </td>
                 </tr>
               )
@@ -149,14 +148,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
-  if (process.env.NODE_ENV === 'development') {
-    const fakeJobs = fakeData.fakeJobs
-    fakeJobs.map((job) => {
-      const jobDescription = job.jobDescriptionArr.join()
-      job['skills'] = getSkillsInJobDescription(jobDescription)
-    })
-    return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   const fakeJobs = fakeData.fakeJobs
+  //   fakeJobs.map((job) => {
+  //     const jobDescription = job.jobDescriptionArr.join()
+  //     job['skills'] = getSkillsInJobDescription(jobDescription)
+  //   })
+  //   return { props: { todayJobs: fakeJobs, yesterdayJobs: fakeJobs, twoDaysAgoJobs: fakeJobs } }
+  // }
 
   const { city } = context.params
   const today = new Date()
