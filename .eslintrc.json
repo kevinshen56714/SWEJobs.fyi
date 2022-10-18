@@ -1,7 +1,6 @@
 {
   "extends": "next/core-web-vitals",
-  "rules":
-    {
-      "sort-imports": "error"
-    }
+  "rules": {
+    "sort-imports": "error"
+  }
 }
