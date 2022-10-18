@@ -1,9 +1,9 @@
 {
-  "devJobs":[
+  "devJobs": [
     {
-      "companyLocation":"Hybrid remote in San Francisco, CA 94118",
-      "companyName":"Example Company",
-      "jobDescriptionArr":[
+      "companyLocation": "Hybrid remote in San Francisco, CA 94118",
+      "companyName": "Example Company",
+      "jobDescriptionArr": [
         "We're building the future of pet care, combining insights, products, and services to help ",
         "people be the best pet parents they can be - and to ultimately create a better world for ",
         "pets. OUR TEAM  Example company is the industry leading SaaS platform for pet boarding ",
@@ -23,15 +23,16 @@
         "new user-facing features using React.js Building reusable components and front-end ",
         "libraries for future use Translating designs and wireframes into high quality code ",
         "Optimizing components for maximum performance across a vast array of web-capable devices ",
-        "and browsers Integrate with RESTful APIs."],
-      "jobLink":"#",
-      "jobTitle":"Software Engineer",
-      "salary":"$150,000 - $180,000 a year"
+        "and browsers Integrate with RESTful APIs."
+      ],
+      "jobLink": "#",
+      "jobTitle": "Software Engineer",
+      "salary": "$150,000 - $180,000 a year"
     },
     {
-      "companyLocation":"Seattle, WA",
-      "companyName":"Example Company 2",
-      "jobDescriptionArr":[
+      "companyLocation": "Seattle, WA",
+      "companyName": "Example Company 2",
+      "jobDescriptionArr": [
         "Role Number: 200405446 Play a part in the next revolution in human-computer interaction. ",
         "Contribute to the product that is redefining mobile computing through voice interaction. ",
         "You will help create groundbreaking technology for large scale systems, spoken language, ",
@@ -63,20 +64,21 @@
         "running experiments as well as work with state-of-the-art speech and audio processing ",
         "algorithms. You should thrive in a fast paced environment with rapidly changing ",
         "priorities, and collaborate well with other engineering teams. Education & Experience MS ",
-        "in Computer Science, Electrical Engineering or related field Additional Requirements"],
-      "jobLink":"#",
-      "jobTitle":"AI/ML Machine Learning Engineer",
-      "salary":"No salary estimation"
+        "in Computer Science, Electrical Engineering or related field Additional Requirements"
+      ],
+      "jobLink": "#",
+      "jobTitle": "AI/ML Machine Learning Engineer",
+      "salary": "No salary estimation"
     },
     {
-      "companyLocation":"Los Angeles, CA",
-      "companyName":"Example Company 3",
-      "jobDescriptionArr":[
+      "companyLocation": "Los Angeles, CA",
+      "companyName": "Example Company 3",
+      "jobDescriptionArr": [
         "About Example Company 3 is helping to drive mainstream adoption of digital assets by ",
         "connecting the consumer, enterprise, and government tax and accounting ecosystems. Our ",
         "Software-as-a-Service (SaaS) platform streamlines our customers' reporting experience ",
         "across traditional and digital asset classes. We are trusted by thousands of consumers, ",
-        "leading exchanges and enterprises, government agencies—including the IRS— respected ",
+        "leading exchanges and enterprises, government agencies\u2014including the IRS\u2014 respected ",
         "accounting firms, and others to solve complex accounting problems at scale and ensure ",
         "compliance with the latest tax laws. Our team is located in Salt Lake City, ",
         "San Francisco, Seattle and Washington, D.C. If you're searching for a company that's ",
@@ -118,10 +120,11 @@
         "401(k) plan that includes access to crypto, financial wellness benefits, low fees, and ",
         "moreUnlimited PTO - take time away to rest, refuel, and rechargePaid parental leave to ",
         "bond with your new childFriday team lunchesAutonomous work and flexibility in how work is ",
-        "performed"],
-      "jobLink":"#",
-      "jobTitle":"Principal DevOps Engineer",
-      "salary":"Estimated $138K-$175K a year"
+        "performed"
+      ],
+      "jobLink": "#",
+      "jobTitle": "Principal DevOps Engineer",
+      "salary": "Estimated $138K-$175K a year"
     }
   ]
 }

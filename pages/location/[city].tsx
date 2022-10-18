@@ -1,13 +1,14 @@
-import { useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { useRouter } from 'next/router'
-import { collection, getDocs, QuerySnapshot } from 'firebase/firestore/lite'
-import { db } from '../../utils/firebase'
-import { getSkillsInJobDescription } from '../../utils/analysis'
-import devData from '../../data/dev-data.json'
+import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
+
 import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
 import classNames from 'classnames'
+import { db } from '../../utils/firebase'
+import devData from '../../data/dev-data.json'
+import { getSkillsInJobDescription } from '../../utils/analysis'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 

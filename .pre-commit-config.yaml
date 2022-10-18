@@ -4,13 +4,12 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: check-added-large-files
-      - id: check-ast
-      - id: check-json
       - id: check-merge-conflict
+      - id: check-json
       - id: check-xml
       - id: check-yaml
-      - id: debug-statements
       - id: end-of-file-fixer
-      - id: requirements-txt-fixer
+      - id: pretty-format-json
+        args: ['--autofix', '--no-sort-keys']
       - id: mixed-line-ending
-        args: ["--fix=auto"] # replace 'auto' with 'lf' to enforce Linux/Mac line endings or 'crlf' for Windows
+        args: ['--fix=auto'] # replace 'auto' with 'lf' to enforce Linux/Mac line endings or 'crlf' for Windows
