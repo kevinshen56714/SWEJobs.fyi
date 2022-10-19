@@ -5,8 +5,8 @@ import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
 import classNames from 'classnames'
 import { db } from '../../utils/firebase'
-import devData from '../../data/dev-data.json'
 import { getSkillsInJobDescription } from '../../utils/analysis'
+import { mockData } from '../../data/mockData'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -149,13 +149,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
+  // load mock data for development
   if (process.env.NODE_ENV === 'development') {
-    const devJobs = devData.devJobs
-    devJobs.map((job) => {
-      const jobDescription = job.jobDescriptionArr.join()
-      job['skills'] = getSkillsInJobDescription(jobDescription)
+    mockData.map((mockJob) => {
+      mockJob['skills'] = getSkillsInJobDescription(mockJob.jobDescription)
     })
-    return { props: { todayJobs: devJobs, yesterdayJobs: devJobs, twoDaysAgoJobs: devJobs } }
+    return { props: { todayJobs: mockData, yesterdayJobs: mockData, twoDaysAgoJobs: mockData } }
   }
 
   const { city } = context.params
