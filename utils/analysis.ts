@@ -50,21 +50,25 @@ const frontendStack = [
 ]
 
 const backendStack = [
+  ['.NET', 'ASP.NET'],
   'Apache',
   'Aerospike',
   'Cassandra',
   'CockroachDB',
   'Couchbase',
   'DataStax',
+  ['DynamoDB', 'Dynamo'],
   'Django',
   'Elasticsearch',
   ['ExpressJS', 'Express.js', 'Express'],
   'FastAPI',
-  'Firebase',
+  ['Firebase', 'Firestore', 'Realtime Database'],
   'Flask',
   'GraphQL',
+  'gRPC',
   ['IBM Db2', 'Db2'],
   'Kafka',
+  'Laravel',
   'MariaDB',
   'Memcached',
   ['MSSQL', 'Microsoft SQL'],
@@ -87,10 +91,12 @@ const devOpsStack = [
   'BigTable',
   'BigQuery',
   'DataFlow',
+  'Docker',
   ['GCP', 'Google Cloud Platform', 'Google Cloud'],
   'Groovy',
   'Jenkins',
   ['K8s', 'Kubernetes'],
+  'Nginx',
   'RabbitMQ',
   'S3',
 ]
@@ -105,6 +111,8 @@ const dataMLStack = [
   'TensorFlow',
   'TerraForm',
 ]
+
+const mobileStack = ['Android', 'Flutter', 'iOS', 'React Native', 'Xamarin']
 
 const skillsByType = {
   [SkillType.LANGUAGE]: languages,
