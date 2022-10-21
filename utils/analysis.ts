@@ -50,7 +50,7 @@ const frontendStack = [
   ['Nuxt', 'NuxtJS', 'Nuxt.js'],
   ['React', 'ReactJS', 'React.js'],
   'Redux',
-  'SASS',
+  ['SASS/SCSS', 'SCSS', 'SASS'],
   ['Svelte', 'SvelteJS', 'Svelte.js'],
   'Tailwind',
   ['Vue', 'VueJS', 'Vue.js'],
