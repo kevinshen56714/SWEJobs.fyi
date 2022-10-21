@@ -1,7 +1,9 @@
 export enum SkillType {
-    LANGUAGE,
-    FRONTEND,
-    BACKEND,
-    DEVOPS,
-    DATAML
+  LANGUAGE,
+  FRONTEND,
+  BACKEND,
+  DATABASE,
+  CLOUD_INFRA,
+  DATA_ML,
+  MOBILE_OTHER,
 }
