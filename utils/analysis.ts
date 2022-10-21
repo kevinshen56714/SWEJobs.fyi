@@ -144,7 +144,7 @@ const mobileAndOthersStack = [
   ['OpenMP/MPI', 'OpenMP', 'MPI'],
   ['OpenGL', 'Open GL'],
   ['React Native', 'ReactNative'],
-  ['three.js', 'threeJS'], 
+  ['three.js', 'threeJS'],
   'Unity',
   'Uno',
   ['Unreal Engine', 'Unreal'],
