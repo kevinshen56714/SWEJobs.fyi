@@ -18,11 +18,11 @@ const SkillBadge = ({ children, type }) => {
     <span
       className={classNames(
         {
-          'bg-[#ffffff] text-black': type === SkillType.LANGUAGE,
           'bg-[#cbf3f0] text-black': type === SkillType.FRONTEND,
           'bg-[#2ec4b5a3] text-black': type === SkillType.BACKEND,
-          'bg-[#ffbf69] text-black': type === SkillType.DEVOPS,
-          'bg-[#ff9f1c] text-black': type === SkillType.DATAML,
+          'bg-[#ffbf69] text-black': type === SkillType.DATABASE,
+          'bg-[#ff9f1c] text-black': type === SkillType.CLOUD_INFRA,
+          'bg-[#bde6ff] text-black': type === SkillType.DATA_ML || type === SkillType.MOBILE_OTHER,
         },
         'my-0.5 mr-2 rounded-lg px-1.5 py-[1px] text-xs font-medium'
       )}
