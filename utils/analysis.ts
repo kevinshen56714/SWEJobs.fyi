@@ -45,14 +45,14 @@ const languages = [
 
 const frontendStack = [
   ['Angular', 'AngularJS', 'Angular.js'],
-  'Flux',
   'jQuery',
   ['NextJS', 'Next.js'],
   ['Nuxt', 'NuxtJS', 'Nuxt.js'],
   ['React', 'ReactJS', 'React.js'],
   'Redux',
-  'Remix',
+  'SASS',
   ['Svelte', 'SvelteJS', 'Svelte.js'],
+  'Tailwind',
   ['Vue', 'VueJS', 'Vue.js'],
   ['WASM', 'Web Assembly', 'WebAssembly'],
 ]
@@ -69,7 +69,7 @@ const backendStack = [
   'GraphQL',
   'gRPC',
   'Laravel',
-  'Memcached',
+  ['Memcached','Memcache'],
   ['NodeJS', 'Node.js', 'Node'],
   'PHP',
   'Ruby on Rails',
@@ -105,9 +105,10 @@ const cloudInfraStack = [
   'DataFlow', // put it under GCP?
   'Docker',
   'EC2', // put it under AWS?
-  ['GCP', 'Google Cloud Platform', 'Google Cloud'],
+  ['GCP', 'Google Cloud'],
+  'Heroku',
   'Jenkins',
-  ['K8s', 'Kubernetes'],
+  ['Kubernetes', 'K8s'],
   'Kafka',
   'Lambda', // put it under AWS?
   'Nginx',
@@ -135,18 +136,21 @@ const mobileAndOthersStack = [
   '.NET',
   'Android',
   'Cordova',
+  'CUDA',
   ['Electron', 'ElectronJS', 'Electron.js'],
   'Flutter',
   'Ionic',
   'iOS',
+  ['OpenMP/MPI', 'OpenMP', 'MPI'],
+  ['OpenGL', 'Open GL'],
   ['React Native', 'ReactNative'],
+  ['three.js', 'threeJS'], 
   'Unity',
   'Uno',
-  'Unreal Engine',
+  ['Unreal Engine', 'Unreal'],
+  ['WebGL', 'Web GL'],
   'Xamarin',
 ]
-
-const computingAndGraphicsStack = ['OpenMP/MPI', 'OpenGL', 'WebGL', 'three.js', 'CUDA']
 
 const skillsByType = {
   [SkillType.LANGUAGE]: languages,
