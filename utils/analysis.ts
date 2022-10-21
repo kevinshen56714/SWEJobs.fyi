@@ -146,6 +146,8 @@ const mobileAndOthersStack = [
   'Xamarin',
 ]
 
+const computingAndGraphicsStack = ['OpenMP/MPI', 'OpenGL', 'WebGL', 'three.js', 'CUDA']
+
 const skillsByType = {
   [SkillType.LANGUAGE]: languages,
   [SkillType.FRONTEND]: frontendStack,
