@@ -1,4 +1,4 @@
-import { SkillType } from "./Skills"
+import { SkillType } from './Skills'
 
 type Job = {
   companyName: string
@@ -10,8 +10,10 @@ type Job = {
     [SkillType.LANGUAGE]: string[]
     [SkillType.FRONTEND]: string[]
     [SkillType.BACKEND]: string[]
-    [SkillType.DEVOPS]: string[]
-    [SkillType.DATAML]: string[]
+    [SkillType.DATABASE]: string[]
+    [SkillType.CLOUD_INFRA]: string[]
+    [SkillType.DATA_ML]: string[]
+    [SkillType.MOBILE_OTHER]: string[]
   }
 }
 
