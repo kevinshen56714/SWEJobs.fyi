@@ -9,11 +9,12 @@ type Job = {
   skills: {
     [SkillType.LANGUAGE]: string[]
     [SkillType.FRONTEND]: string[]
+    [SkillType.NATIVE_OR_CROSS]: string[]
     [SkillType.BACKEND]: string[]
     [SkillType.DATABASE]: string[]
     [SkillType.CLOUD_INFRA]: string[]
     [SkillType.DATA_ML]: string[]
-    [SkillType.MOBILE_OTHER]: string[]
+    [SkillType.COMPUTING_GRAPHICS]: string[]
   }
 }
 

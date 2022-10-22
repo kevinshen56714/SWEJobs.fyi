@@ -45,21 +45,36 @@ const languages = [
 
 const frontendStack = [
   ['Angular', 'AngularJS', 'Angular.js'],
-  'Flux',
   'jQuery',
   ['NextJS', 'Next.js'],
   ['Nuxt', 'NuxtJS', 'Nuxt.js'],
   ['React', 'ReactJS', 'React.js'],
   'Redux',
-  'Remix',
+  ['SASS/SCSS', 'SCSS', 'SASS'],
   ['Svelte', 'SvelteJS', 'Svelte.js'],
+  ['Tailwind', 'TailwindCSS'],
   ['Vue', 'VueJS', 'Vue.js'],
   ['WASM', 'Web Assembly', 'WebAssembly'],
+]
+
+const nativeOrCrossStack = [
+  '.NET',
+  'Android',
+  'Cordova',
+  ['Electron', 'ElectronJS', 'Electron.js'],
+  'Flutter',
+  'Ionic',
+  'iOS',
+  ['React Native', 'ReactNative'],
+  'Uno',
+  'Xamarin',
 ]
 
 const backendStack = [
   'ASP.NET',
   'Apache',
+  'Apollo',
+  ['BackboneJS', 'Backbone.js'],
   'Blazor',
   'Django',
   ['ExpressJS', 'Express.js', 'Express'],
@@ -69,14 +84,17 @@ const backendStack = [
   'GraphQL',
   'gRPC',
   'Laravel',
-  'Memcached',
+  ['Memcached', 'Memcache'],
+  'Nginx',
   ['NodeJS', 'Node.js', 'Node'],
   'PHP',
   'Ruby on Rails',
+  'Spring Boot',
   'Symfony',
 ]
 
 const databaseStack = [
+  'Airflow',
   'Cassandra',
   'CockroachDB',
   'Couchbase',
@@ -105,12 +123,12 @@ const cloudInfraStack = [
   'DataFlow', // put it under GCP?
   'Docker',
   'EC2', // put it under AWS?
-  ['GCP', 'Google Cloud Platform', 'Google Cloud'],
+  ['GCP', 'Google Cloud'],
+  'Heroku',
   'Jenkins',
-  ['K8s', 'Kubernetes'],
+  ['Kubernetes', 'K8s'],
   'Kafka',
   'Lambda', // put it under AWS?
-  'Nginx',
   'RabbitMQ',
   'S3', // put it under AWS?
   'TerraForm',
@@ -131,29 +149,25 @@ const dataMLStack = [
   'TensorFlow',
 ]
 
-const mobileAndOthersStack = [
-  '.NET',
-  'Android',
-  'Cordova',
-  ['Electron', 'ElectronJS', 'Electron.js'],
-  'Flutter',
-  'Ionic',
-  'iOS',
-  ['React Native', 'ReactNative'],
+const computingGraphicsStack = [
+  'CUDA',
+  ['OpenMP/MPI', 'OpenMP', 'MPI'],
+  ['OpenGL', 'Open GL'],
+  ['three.js', 'threeJS'],
   'Unity',
-  'Uno',
-  'Unreal Engine',
-  'Xamarin',
+  ['Unreal Engine', 'Unreal'],
+  ['WebGL', 'Web GL'],
 ]
 
 const skillsByType = {
   [SkillType.LANGUAGE]: languages,
   [SkillType.FRONTEND]: frontendStack,
+  [SkillType.NATIVE_OR_CROSS]: nativeOrCrossStack,
   [SkillType.BACKEND]: backendStack,
   [SkillType.DATABASE]: databaseStack,
   [SkillType.CLOUD_INFRA]: cloudInfraStack,
   [SkillType.DATA_ML]: dataMLStack,
-  [SkillType.MOBILE_OTHER]: mobileAndOthersStack,
+  [SkillType.COMPUTING_GRAPHICS]: computingGraphicsStack,
 }
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
