@@ -20,36 +20,60 @@ export default function Home() {
         <p className={styles.description}>Find recent jobs at one of the locations below</p>
 
         <div className={styles.grid}>
-          <Link href="/location/SJ">
-            <a className={styles.card}>
-              <h2>San Jose, CA &rarr;</h2>
-            </a>
-          </Link>
-          <Link href="/location/SF">
-            <a className={styles.card}>
-              <h2>San Francisco, CA &rarr;</h2>
-            </a>
-          </Link>
-          <Link href="/location/SEA">
-            <a className={styles.card}>
-              <h2>Seattle, WA &rarr;</h2>
-            </a>
-          </Link>
-          <Link href="/location/LA">
-            <a className={styles.card}>
-              <h2>Los Angeles, CA &rarr;</h2>
-            </a>
-          </Link>
-          <Link href="/location/NY">
-            <a className={styles.card}>
-              <h2>New York, NY &rarr;</h2>
-            </a>
-          </Link>
-          <Link href="/location/AU">
-            <a className={styles.card}>
-              <h2>Austin, TX &rarr;</h2>
-            </a>
-          </Link>
+          <div className={styles.card}>
+            <h2>San Jose, CA</h2>
+            <Link href="/jobs/SJ">
+              <a className={styles.link}>Jobs &rarr;</a>
+            </Link>
+            <Link href="/trends/SJ">
+              <a className={styles.link}>Trends &rarr;</a>
+            </Link>
+          </div>
+          <div className={styles.card}>
+            <h2>San Francisco, CA</h2>
+            <Link href="/jobs/SF">
+              <a className={styles.link}>Jobs &rarr;</a>
+            </Link>
+            <Link href="/trends/SF">
+              <a className={styles.link}>Trends &rarr;</a>
+            </Link>
+          </div>
+          <div className={styles.card}>
+            <h2>Seattle, WA</h2>
+            <Link href="/jobs/SEA">
+              <a className={styles.link}>Jobs &rarr;</a>
+            </Link>
+            <Link href="/trends/SEA">
+              <a className={styles.link}>Trends &rarr;</a>
+            </Link>
+          </div>
+          <div className={styles.card}>
+            <h2>Los Angeles, CA</h2>
+            <Link href="/jobs/LA">
+              <a className={styles.link}>Jobs &rarr;</a>
+            </Link>
+            <Link href="/trends/LA">
+              <a className={styles.link}>Trends &rarr;</a>
+            </Link>
+          </div>
+          <div className={styles.card}>
+            <h2>New York, NY</h2>
+            <Link href="/jobs/NY">
+              <a className={styles.link}>Jobs &rarr;</a>
+            </Link>
+            <Link href="/trends/NY">
+              <a className={styles.link}>Trends &rarr;</a>
+            </Link>
+          </div>
+          <div className={styles.card}>
+            <h2>Austin, TX</h2>
+            <Link href="/jobs/AU">
+              <a className={styles.link}>Jobs &rarr;</a>
+            </Link>
+            <Link href="/trends/AU">
+              <a className={styles.link}>Trends &rarr;</a>
+            </Link>
+          </div>
         </div>
       </main>
 

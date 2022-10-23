@@ -159,7 +159,7 @@ const computingGraphicsStack = [
   ['WebGL', 'Web GL'],
 ]
 
-const skillsByType = {
+export const skillsByType = {
   [SkillType.LANGUAGE]: languages,
   [SkillType.FRONTEND]: frontendStack,
   [SkillType.NATIVE_OR_CROSS]: nativeOrCrossStack,

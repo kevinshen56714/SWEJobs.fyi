@@ -4,6 +4,7 @@ import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
 import classNames from 'classnames'
+import { convertDateToString } from '../../utils/util'
 import { db } from '../../utils/firebase'
 import { getSkillsInJobDescription } from '../../utils/analysis'
 import { mockData } from '../../data/mockData'
@@ -120,7 +121,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                     <div className="flex flex-wrap">
                       {Object.keys(skills).map((type) =>
                         skills[type].map((skill, i) => (
-                          <SkillBadge key={i} type={Number(type)}>
+                          <SkillBadge key={i} type={type}>
                             {skill}
                           </SkillBadge>
                         ))
@@ -187,14 +188,6 @@ const assembleJobObject = (snapshot: QuerySnapshot) => {
     const { companyName, companyLocation, jobLink, jobDescription, jobTitle, salary } = doc.data()
     const skills = getSkillsInJobDescription(jobDescription)
     return { companyName, companyLocation, jobLink, jobTitle, salary, skills }
-  })
-}
-
-const convertDateToString = (date: Date) => {
-  return date.toLocaleDateString('en-us', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
   })
 }
 

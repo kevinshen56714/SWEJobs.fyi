@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { cities } from '../location/[city]'
+
+import { cities } from '../jobs/[city]'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Check for secret to confirm this is a valid request
@@ -8,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await Promise.all(cities.map(async (city) => await res.revalidate(`/location/${city}`)))
+    await Promise.all(cities.map(async (city) => await res.revalidate(`/jobs/${city}`)))
     return res.json({ revalidated: true })
   } catch (err) {
     // If there was an error, Next.js will continue
