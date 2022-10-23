@@ -54,10 +54,8 @@ const NavBar = () => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <Link href={item.href}>
+                      <Link href={item.href} key={item.name}>
                         <a
-                          key={item.name}
-                          href={item.href}
                           className={classNames(
                             item.current
                               ? 'bg-gray-900 text-white'
