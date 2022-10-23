@@ -1,8 +1,7 @@
 export const mockData = [
   {
-    companyLocation: 'Hybrid remote in San Francisco, CA 94118',
-    companyName: 'Example Company',
-    jobDescription: `
+    company: 'Example Company',
+    desc: `
       We're building the future of pet care, combining insights, products, and services to help
       people be the best pet parents they can be - and to ultimately create a better world for
       pets. OUR TEAM  Example company is the industry leading SaaS platform for pet boarding
@@ -23,14 +22,15 @@ export const mockData = [
       libraries for future use Translating designs and wireframes into high quality code
       Optimizing components for maximum performance across a vast array of web-capable devices
       and browsers Integrate with RESTful APIs.`,
-    jobLink: '#',
-    jobTitle: 'Software Engineer',
+    link: '#',
+    loc: 'Hybrid remote in San Francisco, CA 94118',
     salary: '$150,000 - $180,000 a year',
+    skills: ['React', 'Redux'],
+    title: 'Software Engineer',
   },
   {
-    companyLocation: 'Seattle, WA',
-    companyName: 'Example Company 2',
-    jobDescription: `
+    company: 'Example Company 2',
+    desc: `
       Role Number: 200405446 Play a part in the next revolution in human-computer interaction.
       Contribute to the product that is redefining mobile computing through voice interaction.
       You will help create groundbreaking technology for large scale systems, spoken language,
@@ -63,14 +63,15 @@ export const mockData = [
       algorithms. You should thrive in a fast paced environment with rapidly changing
       priorities, and collaborate well with other engineering teams. Education & Experience MS
       in Computer Science, Electrical Engineering or related field Additional Requirements`,
-    jobLink: '#',
-    jobTitle: 'AI/ML Machine Learning Engineer',
+    link: '#',
+    loc: 'Seattle, WA',
     salary: 'No salary estimation',
+    skills: ['C/C++', 'Python'],
+    title: 'AI/ML Machine Learning Engineer',
   },
   {
-    companyLocation: 'Los Angeles, CA',
-    companyName: 'Example Company 3',
-    jobDescription: `
+    company: 'Example Company 3',
+    desc: `
       About Example Company 3 is helping to drive mainstream adoption of digital assets by
       connecting the consumer, enterprise, and government tax and accounting ecosystems. Our
       Software-as-a-Service (SaaS) platform streamlines our customers' reporting experience ",
@@ -118,8 +119,10 @@ export const mockData = [
       moreUnlimited PTO - take time away to rest, refuel, and rechargePaid parental leave to
       bond with your new childFriday team lunchesAutonomous work and flexibility in how work is
       performed`,
-    jobLink: '#',
-    jobTitle: 'Principal DevOps Engineer',
+    link: '#',
+    loc: 'Los Angeles, CA',
     salary: 'Estimated $138K-$175K a year',
+    skills: ['Python', 'MySQL'],
+    title: 'Principal DevOps Engineer',
   },
 ]

@@ -189,11 +189,24 @@ export const getSkillsInJobDescription = (description: string) => {
   const allMatchedSkills = {}
   Object.keys(skillsByType).map((type) => {
     const matchedSkills = []
-    skillsByType[type].map((skill) => {
+    skillsByType[type].map((skill: string | string[]) => {
       if (checkIfSkillInDescription(skill, description)) {
         if (skill instanceof Array) skill = skill[0]
         matchedSkills.push(skill)
       }
+    })
+    allMatchedSkills[type] = matchedSkills
+  })
+  return allMatchedSkills
+}
+
+export const categorizeSkills = (skills: string[]) => {
+  const allMatchedSkills = {}
+  Object.keys(skillsByType).map((type) => {
+    const matchedSkills = []
+    skillsByType[type].map((skill: string | string[]) => {
+      if (skill instanceof Array) skill = skill[0]
+      if (skills.includes(skill)) matchedSkills.push(skill)
     })
     allMatchedSkills[type] = matchedSkills
   })

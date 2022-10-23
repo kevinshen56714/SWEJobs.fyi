@@ -3,10 +3,10 @@ import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 
 import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
+import { categorizeSkills } from '../../utils/analysis'
 import classNames from 'classnames'
 import { convertDateToString } from '../../utils/util'
 import { db } from '../../utils/firebase'
-import { getSkillsInJobDescription } from '../../utils/analysis'
 import { mockData } from '../../data/mockData'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -92,7 +92,8 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
           </thead>
           <tbody>
             {tabs[time].jobs.map((job, i) => {
-              const { companyName, companyLocation, jobLink, jobTitle, salary, skills } = job
+              const { company, link, loc, salary, skills, title } = job
+              console.log(skills)
               return (
                 <tr
                   className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
@@ -102,16 +103,16 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                     scope="row"
                     className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
                   >
-                    <a href={jobLink}>
-                      {companyName}
+                    <a href={link}>
+                      {company}
                       <p className="truncate text-left text-sm font-normal text-gray-500 dark:text-gray-400">
-                        {companyLocation.split('+')[0]}
+                        {loc}
                       </p>
                     </a>
                   </td>
                   <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline dark:text-white">
-                    <a href={jobLink}>
-                      {jobTitle}
+                    <a href={link}>
+                      {title}
                       <p className="text-left text-sm font-normal text-gray-700 dark:text-gray-400">
                         {skills[SkillType.LANGUAGE].join(', ')}
                       </p>
@@ -154,10 +155,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
-    mockData.map((mockJob) => {
-      mockJob['skills'] = getSkillsInJobDescription(mockJob.jobDescription)
+    const curatedMockData = mockData.map((mockJob) => {
+      let { company, link, loc, salary, skills, title } = mockJob
+      return { company, link, loc, salary, skills: categorizeSkills(skills), title }
     })
-    return { props: { todayJobs: mockData, yesterdayJobs: mockData, twoDaysAgoJobs: mockData } }
+    return {
+      props: {
+        todayJobs: curatedMockData,
+        yesterdayJobs: curatedMockData,
+        twoDaysAgoJobs: curatedMockData,
+      },
+    }
   }
 
   const { city } = context.params
@@ -185,9 +193,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 const assembleJobObject = (snapshot: QuerySnapshot) => {
   return snapshot.docs.map((doc) => {
-    const { companyName, companyLocation, jobLink, jobDescription, jobTitle, salary } = doc.data()
-    const skills = getSkillsInJobDescription(jobDescription)
-    return { companyName, companyLocation, jobLink, jobTitle, salary, skills }
+    const { company, link, loc, remote, salary, skills, title } = doc.data()
+    return {
+      company,
+      link,
+      loc: loc.split('+')[0],
+      remote,
+      salary,
+      skills: categorizeSkills(skills),
+      title,
+    }
   })
 }
 

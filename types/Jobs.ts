@@ -1,10 +1,10 @@
 import { SkillType } from './Skills'
 
 type Job = {
-  companyName: string
-  companyLocation: string
-  jobLink: string
-  jobTitle: string
+  company: string
+  link: string
+  loc: string
+  remote: boolean
   salary: string
   skills: {
     [SkillType.LANGUAGE]: string[]
@@ -16,6 +16,7 @@ type Job = {
     [SkillType.DATA_ML]: string[]
     [SkillType.COMPUTING_GRAPHICS]: string[]
   }
+  title: string
 }
 
 export type Jobs = {
