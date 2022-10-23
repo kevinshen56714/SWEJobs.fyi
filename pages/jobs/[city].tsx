@@ -163,17 +163,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const { city } = context.params
   const today = new Date()
   let [todayStr, yesterdayStr, twoDaysAgoStr] = convertDateToPreviousDays(today)
-  let todayQuerySnapshot = await getDocs(collection(db, `indeed-${city}-${todayStr}`))
+  let todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${city}/jobs`))
   if (todayQuerySnapshot.size === 0) {
     today.setDate(today.getDate() - 1)
     todayStr = convertDateToPreviousDays(today)[0]
     yesterdayStr = convertDateToPreviousDays(today)[1]
     twoDaysAgoStr = convertDateToPreviousDays(today)[2]
-    todayQuerySnapshot = await getDocs(collection(db, `indeed-${city}-${todayStr}`))
+    todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${city}/jobs`))
   }
 
-  const yesterdayQuerySnapshot = await getDocs(collection(db, `indeed-${city}-${yesterdayStr}`))
-  const twoDaysAgoQuerySnapshot = await getDocs(collection(db, `indeed-${city}-${twoDaysAgoStr}`))
+  const yesterdayQuerySnapshot = await getDocs(collection(db, `${yesterdayStr}/${city}/jobs`))
+  const twoDaysAgoQuerySnapshot = await getDocs(collection(db, `${twoDaysAgoStr}/${city}/jobs`))
 
   const todayJobs = assembleJobObject(todayQuerySnapshot)
   const yesterdayJobs = assembleJobObject(yesterdayQuerySnapshot)
