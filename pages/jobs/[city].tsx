@@ -93,7 +93,6 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
           <tbody>
             {tabs[time].jobs.map((job, i) => {
               const { company, link, loc, salary, skills, title } = job
-              console.log(skills)
               return (
                 <tr
                   className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"

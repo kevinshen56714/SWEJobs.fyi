@@ -7,6 +7,7 @@ import { Fragment, useEffect } from 'react'
 import type { AppProps } from 'next/app'
 import Image from 'next/image'
 import Link from 'next/link'
+import classNames from 'classnames'
 import { logAnalyticsEvent } from '../utils/firebase'
 
 const navigation = [
@@ -15,10 +16,6 @@ const navigation = [
   { name: 'Trends', href: '#', current: false },
   { name: 'About Us', href: '#', current: false },
 ]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 const NavBar = () => {
   return (
@@ -46,28 +43,32 @@ const NavBar = () => {
                   <Image
                     className="block h-8 w-auto lg:hidden"
                     src="/global-job.svg"
-                    alt="Your Company"
+                    alt="SWEJobs.fyi"
                     width={72}
                     height={16}
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link href={item.href} key={item.name}>
-                        <a
-                          className={classNames(
-                            item.current
-                              ? 'bg-gray-900 text-white'
-                              : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                            'rounded-md px-3 py-2 text-sm font-medium'
-                          )}
-                          aria-current={item.current ? 'page' : undefined}
-                        >
-                          {item.name}
-                        </a>
-                      </Link>
-                    ))}
+                    {navigation.map((item) => {
+                      const { href, name, current } = item
+                      return (
+                        <Link href={href} key={name}>
+                          <a
+                            className={classNames(
+                              {
+                                'bg-gray-900 text-white': current,
+                                'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
+                              },
+                              'rounded-md px-3 py-2 text-sm font-medium'
+                            )}
+                            aria-current={current ? 'page' : undefined}
+                          >
+                            {name}
+                          </a>
+                        </Link>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
@@ -116,7 +117,7 @@ const NavBar = () => {
                           <Link href="#">
                             <a
                               className={classNames(
-                                active ? 'bg-gray-100' : '',
+                                { 'bg-gray-100': active },
                                 'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
@@ -130,7 +131,7 @@ const NavBar = () => {
                           <Link href="#">
                             <a
                               className={classNames(
-                                active ? 'bg-gray-100' : '',
+                                { 'bg-gray-100': active },
                                 'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
@@ -144,7 +145,7 @@ const NavBar = () => {
                           <Link href="#">
                             <a
                               className={classNames(
-                                active ? 'bg-gray-100' : '',
+                                { 'bg-gray-100': active },
                                 'block px-4 py-2 text-sm text-gray-700'
                               )}
                             >
@@ -162,22 +163,26 @@ const NavBar = () => {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+              {navigation.map((item) => {
+                const { href, name, current } = item
+                return (
+                  <Disclosure.Button
+                    key={name}
+                    as="a"
+                    href={href}
+                    className={classNames(
+                      {
+                        'bg-gray-900 text-white': current,
+                        'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
+                      },
+                      'block rounded-md px-3 py-2 text-base font-medium'
+                    )}
+                    aria-current={current ? 'page' : undefined}
+                  >
+                    {name}
+                  </Disclosure.Button>
+                )
+              })}
             </div>
           </Disclosure.Panel>
         </>
