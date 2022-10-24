@@ -7,7 +7,7 @@ import { categorizeSkills } from '../../utils/analysis'
 import classNames from 'classnames'
 import { convertDateToString } from '../../utils/util'
 import { db } from '../../utils/firebase'
-import { mockData } from '../../data/mockData'
+import { mockJobs } from '../../data/mockJobs'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -154,7 +154,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
-    const curatedMockData = mockData.map((mockJob) => {
+    const curatedMockData = mockJobs.map((mockJob) => {
       let { company, link, loc, salary, skills, title } = mockJob
       return { company, link, loc, salary, skills: categorizeSkills(skills), title }
     })

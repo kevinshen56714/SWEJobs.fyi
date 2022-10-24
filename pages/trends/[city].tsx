@@ -1,8 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { MyResponsivePie, pieData } from '../../components/PieChart'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 
 import { cities } from '../jobs/[city]'
 import { db } from '../../utils/firebase'
+import { mockStats } from '../../data/mockStats'
 import { skillsByType } from '../../utils/analysis'
 import { useRouter } from 'next/router'
 
@@ -10,8 +12,9 @@ export default function Trends({ stats }) {
   const router = useRouter()
   const { city } = router.query
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex h-full flex-wrap gap-1">
       {Object.keys(stats).map((type, i) => (
+        // <MyResponsivePie data={pieData} key={i}></MyResponsivePie>
         <div key={i}>
           <h1> {type} </h1>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -67,6 +70,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
+  // load mock data for development
+  if (process.env.NODE_ENV === 'development') {
+    return { props: { stats: mockStats } }
+  }
+
   const { city } = context.params
 
   const stats = {}
