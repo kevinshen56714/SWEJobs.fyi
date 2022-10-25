@@ -1,8 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 
+import { CityTabs } from '../../components/CityTabs'
+import { PieChart } from '../../components/PieChart'
 import { cities } from '../jobs/[city]'
 import { db } from '../../utils/firebase'
+import { mockStats } from '../../data/mockStats'
 import { skillsByType } from '../../utils/analysis'
 import { useRouter } from 'next/router'
 
@@ -10,46 +13,59 @@ export default function Trends({ stats }) {
   const router = useRouter()
   const { city } = router.query
   return (
-    <div className="flex flex-wrap gap-1">
-      {Object.keys(stats).map((type, i) => (
-        <div key={i}>
-          <h1> {type} </h1>
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="py-3 px-6">
-                    Skill
-                  </th>
-                  <th scope="col" className="py-3 px-6">
-                    Count
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(stats[type]).map((skill, i) => {
-                  const count = stats[type][skill]
-                  return (
-                    <tr
-                      className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                      key={i}
-                    >
-                      <td
-                        scope="row"
-                        className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
-                      >
-                        {skill}
-                      </td>
-                      <td className="max-w-[25rem] py-2 px-6">{count}</td>
+    <>
+      <CityTabs currentCity={city} />
+      <div className="flex flex-wrap gap-1">
+        {Object.keys(stats).map((type, i) => {
+          // get only the top 10 skills
+          const topTen = Object.fromEntries(Object.entries(stats[type]).slice(0, 10))
+          return (
+            <div className="max-w-full" key={i}>
+              <h1 className="w mt-8 text-center text-lg font-medium"> {type} </h1>
+              <div className="h-[360px] w-[480px] max-w-full sm:hidden">
+                <PieChart data={topTen} smallView={true}></PieChart>
+              </div>
+              <div className="hidden h-[360px] w-[480px] max-w-full sm:block">
+                <PieChart data={topTen} smallView={false}></PieChart>
+              </div>
+              <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                  <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="py-3 px-6">
+                        Skill
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Count
+                      </th>
                     </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ))}
-    </div>
+                  </thead>
+                  <tbody>
+                    {Object.keys(topTen).map((skill, i) => {
+                      const count = topTen[skill] as string
+                      return (
+                        <tr
+                          className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                          key={i}
+                        >
+                          <td
+                            scope="row"
+                            className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
+                          >
+                            {skill}
+                          </td>
+                          <td className="max-w-[25rem] py-2 px-6">{count}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </>
   )
 }
 
@@ -67,6 +83,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
+  // load mock data for development
+  if (process.env.NODE_ENV === 'development') {
+    return { props: { stats: mockStats } }
+  }
+
   const { city } = context.params
 
   const stats = {}

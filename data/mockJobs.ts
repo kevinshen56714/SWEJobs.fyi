@@ -1,4 +1,4 @@
-export const mockData = [
+export const mockJobs = [
   {
     company: 'Example Company',
     desc: `
