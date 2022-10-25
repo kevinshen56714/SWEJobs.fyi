@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 
 import { CityTabs } from '../../components/CityTabs'
-import { MyResponsivePie } from '../../components/PieChart'
+import { PieChart } from '../../components/PieChart'
 import { cities } from '../jobs/[city]'
 import { db } from '../../utils/firebase'
 import { mockStats } from '../../data/mockStats'
@@ -20,10 +20,13 @@ export default function Trends({ stats }) {
           // get only the top 10 skills
           const topTen = Object.fromEntries(Object.entries(stats[type]).slice(0, 10))
           return (
-            <div key={i}>
+            <div className="max-w-full" key={i}>
               <h1 className="w mt-8 text-center text-lg font-medium"> {type} </h1>
-              <div className="h-[360px] w-[480px]">
-                <MyResponsivePie data={topTen}></MyResponsivePie>
+              <div className="h-[360px] w-[480px] max-w-full sm:hidden">
+                <PieChart data={topTen} smallView={true}></PieChart>
+              </div>
+              <div className="hidden h-[360px] w-[480px] max-w-full sm:block">
+                <PieChart data={topTen} smallView={false}></PieChart>
               </div>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">

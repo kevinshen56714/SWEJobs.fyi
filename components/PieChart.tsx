@@ -3,7 +3,7 @@ import { ResponsivePie } from '@nivo/pie'
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
-export const MyResponsivePie = ({ data }) => {
+export const PieChart = ({ data, smallView }) => {
   const chartData = Object.keys(data).map((skill) => ({
     id: skill,
     label: skill,
@@ -12,7 +12,7 @@ export const MyResponsivePie = ({ data }) => {
   return (
     <ResponsivePie
       data={chartData}
-      margin={{ top: 10, right: 120, bottom: 10, left: 120 }}
+      margin={{ top: 10, right: smallView ? 100 : 120, bottom: 10, left: smallView ? 100 : 120 }}
       sortByValue={true}
       innerRadius={0.5}
       padAngle={0.7}
@@ -32,7 +32,7 @@ export const MyResponsivePie = ({ data }) => {
         from: 'color',
         modifiers: [['darker', 2]],
       }}
-      theme={{ fontSize: 15 }}
+      theme={{ fontSize: smallView ? 12 : 14 }}
       defs={[
         {
           id: 'dots',
