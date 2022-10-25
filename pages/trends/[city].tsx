@@ -16,47 +16,51 @@ export default function Trends({ stats }) {
     <>
       <CityTabs currentCity={city} />
       <div className="flex flex-wrap gap-1">
-        {Object.keys(stats).map((type, i) => (
-          <div key={i}>
-            <h1 className="w mt-8 text-center text-lg font-medium"> {type} </h1>
-            <div className="h-[360px] w-[480px]">
-              <MyResponsivePie data={stats[type]}></MyResponsivePie>
-            </div>
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="py-3 px-6">
-                      Skill
-                    </th>
-                    <th scope="col" className="py-3 px-6">
-                      Count
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.keys(stats[type]).map((skill, i) => {
-                    const count = stats[type][skill]
-                    return (
-                      <tr
-                        className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                        key={i}
-                      >
-                        <td
-                          scope="row"
-                          className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
+        {Object.keys(stats).map((type, i) => {
+          // get only the top 10 skills
+          const topTen = Object.fromEntries(Object.entries(stats[type]).slice(0, 10))
+          return (
+            <div key={i}>
+              <h1 className="w mt-8 text-center text-lg font-medium"> {type} </h1>
+              <div className="h-[360px] w-[480px]">
+                <MyResponsivePie data={topTen}></MyResponsivePie>
+              </div>
+              <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                  <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="py-3 px-6">
+                        Skill
+                      </th>
+                      <th scope="col" className="py-3 px-6">
+                        Count
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(topTen).map((skill, i) => {
+                      const count = topTen[skill] as string
+                      return (
+                        <tr
+                          className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                          key={i}
                         >
-                          {skill}
-                        </td>
-                        <td className="max-w-[25rem] py-2 px-6">{count}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+                          <td
+                            scope="row"
+                            className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
+                          >
+                            {skill}
+                          </td>
+                          <td className="max-w-[25rem] py-2 px-6">{count}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </>
   )
