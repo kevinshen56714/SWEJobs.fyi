@@ -4,12 +4,12 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 export const cities = [
-  { name: 'San Jose, CA', abbr: 'SJ' },
-  { name: 'San Francisco, CA', abbr: 'SF' },
-  { name: 'Los Angeles, CA', abbr: 'LA' },
-  { name: 'Seattle, WA', abbr: 'SEA' },
-  { name: 'New York, NY', abbr: 'NY' },
-  { name: 'Texas, TX', abbr: 'AU' },
+  { name: 'San Jose, CA', cityAbbr: 'SJ' },
+  { name: 'San Francisco, CA', cityAbbr: 'SF' },
+  { name: 'Los Angeles, CA', cityAbbr: 'LA' },
+  { name: 'Seattle, WA', cityAbbr: 'SEA' },
+  { name: 'New York, NY', cityAbbr: 'NY' },
+  { name: 'Texas, TX', cityAbbr: 'AU' },
 ]
 
 export default function Home() {
@@ -29,13 +29,13 @@ export default function Home() {
         <p className={styles.description}>Find recent jobs at one of the locations below</p>
 
         <div className={styles.grid}>
-          {cities.map(({ name, abbr }, i) => (
+          {cities.map(({ name, cityAbbr }, i) => (
             <div className={styles.card} key={i}>
               <h2>{name}</h2>
-              <Link href={`/jobs/${abbr}`}>
+              <Link href={`/jobs/${cityAbbr}`}>
                 <a className={styles.link}>Jobs &rarr;</a>
               </Link>
-              <Link href={`/stats/${abbr}`}>
+              <Link href={`/stats/${cityAbbr}`}>
                 <a className={styles.link}>Stats &rarr;</a>
               </Link>
             </div>
