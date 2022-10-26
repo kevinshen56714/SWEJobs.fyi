@@ -13,7 +13,7 @@ export const PieChart = ({ data, smallView }) => {
     let fillPattern = ''
     // determine fill pattern by the sum of the ascii number of the characters in the skill
     const asciiSum = skill.split('').reduce((partialSum, a) => partialSum + a.charCodeAt(0), 0)
-    const remainder = asciiSum % 4
+    const remainder = asciiSum % 3
     if (remainder === 1) fillPattern = 'lines'
     else if (remainder === 2) fillPattern = 'dots'
     return {
