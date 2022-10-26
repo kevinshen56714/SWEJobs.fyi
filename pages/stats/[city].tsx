@@ -3,13 +3,13 @@ import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite
 
 import { CityTabs } from '../../components/CityTabs'
 import { PieChart } from '../../components/PieChart'
-import { cities } from '../jobs/[city]'
+import { cities } from '..'
 import { db } from '../../utils/firebase'
 import { mockStats } from '../../data/mockStats'
 import { skillsByType } from '../../utils/analysis'
 import { useRouter } from 'next/router'
 
-export default function Trends({ stats }) {
+export default function Stats({ stats }) {
   const router = useRouter()
   const { city } = router.query
   return (
@@ -69,7 +69,7 @@ export default function Trends({ stats }) {
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on posts
-  const paths = cities.map((city) => ({
+  const paths = cities.map(({ city }) => ({
     params: { city },
   }))
 

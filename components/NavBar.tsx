@@ -1,7 +1,8 @@
 import {
-  ArrowTrendingUpIcon,
   Bars3Icon,
   BriefcaseIcon,
+  ChartBarIcon,
+  ChartPieIcon,
   UserGroupIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
@@ -20,8 +21,13 @@ const navigation = [
   },
   {
     name: 'Trends',
-    href: '/trends/SJ',
-    icon: <ArrowTrendingUpIcon className="block h-6 w-6" aria-hidden="true" />,
+    href: '#',
+    icon: <ChartBarIcon className="block h-6 w-6" aria-hidden="true" />,
+  },
+  {
+    name: 'Stats',
+    href: '/stats/SJ',
+    icon: <ChartPieIcon className="block h-6 w-6" aria-hidden="true" />,
   },
   {
     name: 'About Us',
