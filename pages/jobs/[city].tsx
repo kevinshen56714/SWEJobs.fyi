@@ -37,7 +37,7 @@ const SkillBadge = ({ children, type }) => {
 export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: Jobs) {
   const router = useRouter()
   const [time, setTime] = useState(0)
-  const { cityAbbr } = router.query
+  const { city } = router.query
   const tabs = [
     { title: 'Within 24 hours', jobs: todayJobs },
     { title: '24-48 hours', jobs: yesterdayJobs },
@@ -133,8 +133,8 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on posts
-  const paths = cities.map(({ cityAbbr }) => ({
-    params: { cityAbbr },
+  const paths = cities.map(({ city }) => ({
+    params: { city },
   }))
 
   // We'll pre-render only these paths at build time.
@@ -159,25 +159,25 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
   }
 
-  const { cityAbbr } = context.params
+  const { city } = context.params
   const today = new Date()
   let [todayStr, yesterdayStr, twoDaysAgoStr] = convertDateToPreviousDays(today)
-  let todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${cityAbbr}/jobs`))
+  let todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${city}/jobs`))
   if (todayQuerySnapshot.size === 0) {
     today.setDate(today.getDate() - 1)
     todayStr = convertDateToPreviousDays(today)[0]
     yesterdayStr = convertDateToPreviousDays(today)[1]
     twoDaysAgoStr = convertDateToPreviousDays(today)[2]
-    todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${cityAbbr}/jobs`))
+    todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${city}/jobs`))
   }
 
-  const yesterdayQuerySnapshot = await getDocs(collection(db, `${yesterdayStr}/${cityAbbr}/jobs`))
-  const twoDaysAgoQuerySnapshot = await getDocs(collection(db, `${twoDaysAgoStr}/${cityAbbr}/jobs`))
+  const yesterdayQuerySnapshot = await getDocs(collection(db, `${yesterdayStr}/${city}/jobs`))
+  const twoDaysAgoQuerySnapshot = await getDocs(collection(db, `${twoDaysAgoStr}/${city}/jobs`))
 
   const todayJobs = assembleJobObject(todayQuerySnapshot)
   const yesterdayJobs = assembleJobObject(yesterdayQuerySnapshot)
   const twoDaysAgoJobs = assembleJobObject(twoDaysAgoQuerySnapshot)
-  console.log(`There are ${todayQuerySnapshot.size} jobs in ${cityAbbr} today`)
+  console.log(`There are ${todayQuerySnapshot.size} jobs in ${city} today`)
   // Pass collection data to the page via props
   return { props: { todayJobs, yesterdayJobs, twoDaysAgoJobs } }
 }

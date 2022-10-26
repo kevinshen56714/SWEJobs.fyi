@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await Promise.all(cities.map(async ({ cityAbbr }) => await res.revalidate(`/jobs/${cityAbbr}`)))
+    await Promise.all(cities.map(async ({ city }) => await res.revalidate(`/jobs/${city}`)))
     return res.json({ revalidated: true })
   } catch (err) {
     // If there was an error, Next.js will continue

@@ -69,8 +69,8 @@ export default function Trends({ stats }) {
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on posts
-  const paths = cities.map(({ cityAbbr }) => ({
-    params: { cityAbbr },
+  const paths = cities.map(({ city }) => ({
+    params: { city },
   }))
 
   // We'll pre-render only these paths at build time.
@@ -85,7 +85,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { stats: mockStats } }
   }
 
-  const { cityAbbr } = context.params
+  const { city } = context.params
 
   const stats = {}
   for (const type in skillsByType) {
@@ -93,7 +93,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     for (let i = 0; i < skillsByType[type].length; i++) {
       let skill = skillsByType[type][i]
       if (skill instanceof Array) skill = skill[0]
-      stats[type][skill] = await getSkillCount(cityAbbr, skill)
+      stats[type][skill] = await getSkillCount(city, skill)
     }
     const soredStats = Object.fromEntries(
       Object.entries(stats[type]).sort((a: [string, number], b: [string, number]) => b[1] - a[1])

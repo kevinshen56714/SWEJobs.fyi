@@ -5,11 +5,11 @@ import classNames from 'classnames'
 export const CityTabs = ({ currentCity }) => {
   return (
     <ul className="-mb-px flex flex-wrap text-sm font-medium text-gray-500">
-      {cities.map(({ name, cityAbbr }, i) => {
-        const currentTab = cityAbbr === currentCity
+      {cities.map(({ city, name }, i) => {
+        const currentTab = city === currentCity
         return (
           <li className="mr-2" key={i}>
-            <Link href={`/trends/${cityAbbr}`}>
+            <Link href={`/trends/${city}`}>
               <a
                 className={classNames(
                   {
