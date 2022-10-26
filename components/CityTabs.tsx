@@ -9,7 +9,7 @@ export const CityTabs = ({ currentCity }) => {
         const currentTab = city === currentCity
         return (
           <li className="mr-2" key={i}>
-            <Link href={`/trends/${city}`}>
+            <Link href={`/stats/${city}`}>
               <a
                 className={classNames(
                   {

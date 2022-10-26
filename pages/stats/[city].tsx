@@ -9,7 +9,7 @@ import { mockStats } from '../../data/mockStats'
 import { skillsByType } from '../../utils/analysis'
 import { useRouter } from 'next/router'
 
-export default function Trends({ stats }) {
+export default function Stats({ stats }) {
   const router = useRouter()
   const { city } = router.query
   return (
