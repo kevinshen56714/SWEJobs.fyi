@@ -3,7 +3,7 @@ import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite
 
 import { CityTabs } from '../../components/CityTabs'
 import { PieChart } from '../../components/PieChart'
-import { cities } from '../jobs/[city]'
+import { cities } from '..'
 import { db } from '../../utils/firebase'
 import { mockStats } from '../../data/mockStats'
 import { skillsByType } from '../../utils/analysis'
@@ -69,8 +69,8 @@ export default function Trends({ stats }) {
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on posts
-  const paths = cities.map((city) => ({
-    params: { city },
+  const paths = cities.map(({ abbr }) => ({
+    params: { city: abbr },
   }))
 
   // We'll pre-render only these paths at build time.

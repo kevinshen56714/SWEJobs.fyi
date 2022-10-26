@@ -3,6 +3,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
+export const cities = [
+  { name: 'San Jose, CA', abbr: 'SJ' },
+  { name: 'San Francisco, CA', abbr: 'SF' },
+  { name: 'Los Angeles, CA', abbr: 'LA' },
+  { name: 'Seattle, WA', abbr: 'SEA' },
+  { name: 'New York, NY', abbr: 'NY' },
+  { name: 'Texas, TX', abbr: 'AU' },
+]
+
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -20,60 +29,17 @@ export default function Home() {
         <p className={styles.description}>Find recent jobs at one of the locations below</p>
 
         <div className={styles.grid}>
-          <div className={styles.card}>
-            <h2>San Jose, CA</h2>
-            <Link href="/jobs/SJ">
-              <a className={styles.link}>Jobs &rarr;</a>
-            </Link>
-            <Link href="/trends/SJ">
-              <a className={styles.link}>Trends &rarr;</a>
-            </Link>
-          </div>
-          <div className={styles.card}>
-            <h2>San Francisco, CA</h2>
-            <Link href="/jobs/SF">
-              <a className={styles.link}>Jobs &rarr;</a>
-            </Link>
-            <Link href="/trends/SF">
-              <a className={styles.link}>Trends &rarr;</a>
-            </Link>
-          </div>
-          <div className={styles.card}>
-            <h2>Seattle, WA</h2>
-            <Link href="/jobs/SEA">
-              <a className={styles.link}>Jobs &rarr;</a>
-            </Link>
-            <Link href="/trends/SEA">
-              <a className={styles.link}>Trends &rarr;</a>
-            </Link>
-          </div>
-          <div className={styles.card}>
-            <h2>Los Angeles, CA</h2>
-            <Link href="/jobs/LA">
-              <a className={styles.link}>Jobs &rarr;</a>
-            </Link>
-            <Link href="/trends/LA">
-              <a className={styles.link}>Trends &rarr;</a>
-            </Link>
-          </div>
-          <div className={styles.card}>
-            <h2>New York, NY</h2>
-            <Link href="/jobs/NY">
-              <a className={styles.link}>Jobs &rarr;</a>
-            </Link>
-            <Link href="/trends/NY">
-              <a className={styles.link}>Trends &rarr;</a>
-            </Link>
-          </div>
-          <div className={styles.card}>
-            <h2>Austin, TX</h2>
-            <Link href="/jobs/AU">
-              <a className={styles.link}>Jobs &rarr;</a>
-            </Link>
-            <Link href="/trends/AU">
-              <a className={styles.link}>Trends &rarr;</a>
-            </Link>
-          </div>
+          {cities.map(({ name, abbr }, i) => (
+            <div className={styles.card} key={i}>
+              <h2>{name}</h2>
+              <Link href={`/jobs/${abbr}`}>
+                <a className={styles.link}>Jobs &rarr;</a>
+              </Link>
+              <Link href={`/stats/${abbr}`}>
+                <a className={styles.link}>Stats &rarr;</a>
+              </Link>
+            </div>
+          ))}
         </div>
       </main>
 

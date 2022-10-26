@@ -4,14 +4,13 @@ import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 import { Jobs } from '../../types/Jobs'
 import { SkillType } from '../../types/Skills'
 import { categorizeSkills } from '../../utils/analysis'
+import { cities } from '..'
 import classNames from 'classnames'
 import { convertDateToString } from '../../utils/util'
 import { db } from '../../utils/firebase'
 import { mockJobs } from '../../data/mockJobs'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-
-export const cities = ['SF', 'SJ', 'SEA', 'LA', 'NY', 'AU']
 
 const SkillBadge = ({ children, type }) => {
   if (type === SkillType.LANGUAGE) return
@@ -134,8 +133,8 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on posts
-  const paths = cities.map((city) => ({
-    params: { city },
+  const paths = cities.map(({ abbr }) => ({
+    params: { city: abbr },
   }))
 
   // We'll pre-render only these paths at build time.

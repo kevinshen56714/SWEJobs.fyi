@@ -1,22 +1,15 @@
 import Link from 'next/link'
+import { cities } from '../pages'
 import classNames from 'classnames'
 
 export const CityTabs = ({ currentCity }) => {
-  const tabs = [
-    { title: 'San Jose, CA', city: 'SJ' },
-    { title: 'San Francisco, CA', city: 'SF' },
-    { title: 'Los Angeles, CA', city: 'LA' },
-    { title: 'Seattle, WA', city: 'SEA' },
-    { title: 'New York, NY', city: 'NY' },
-    { title: 'Texas, TX', city: 'AU' },
-  ]
   return (
     <ul className="-mb-px flex flex-wrap text-sm font-medium text-gray-500">
-      {tabs.map(({ title, city }, i) => {
-        const currentTab = city === currentCity
+      {cities.map(({ name, abbr }, i) => {
+        const currentTab = abbr === currentCity
         return (
           <li className="mr-2" key={i}>
-            <Link href={`/trends/${city}`}>
+            <Link href={`/trends/${abbr}`}>
               <a
                 className={classNames(
                   {
@@ -26,7 +19,7 @@ export const CityTabs = ({ currentCity }) => {
                   'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
                 )}
               >
-                {title}
+                {name}
               </a>
             </Link>
           </li>

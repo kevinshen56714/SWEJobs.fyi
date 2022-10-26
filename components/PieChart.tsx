@@ -9,6 +9,20 @@ export const PieChart = ({ data, smallView }) => {
     label: skill,
     value: data[skill],
   }))
+  const chartFillData = Object.keys(data).map((skill) => {
+    let fillPattern = ''
+    // determine fill pattern by the sum of the ascii number of the characters in the skill
+    const asciiSum = skill.split('').reduce((partialSum, a) => partialSum + a.charCodeAt(0), 0)
+    const remainder = asciiSum % 3
+    if (remainder === 1) fillPattern = 'lines'
+    else if (remainder === 2) fillPattern = 'dots'
+    return {
+      match: {
+        id: skill,
+      },
+      id: fillPattern,
+    }
+  })
   return (
     <ResponsivePie
       data={chartData}
@@ -53,38 +67,7 @@ export const PieChart = ({ data, smallView }) => {
           spacing: 10,
         },
       ]}
-      fill={[
-        {
-          match: {
-            id: Object.keys(data)[0],
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: Object.keys(data)[2],
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: Object.keys(data)[3],
-          },
-          id: 'dots',
-        },
-        {
-          match: {
-            id: Object.keys(data)[5],
-          },
-          id: 'lines',
-        },
-        {
-          match: {
-            id: Object.keys(data)[7],
-          },
-          id: 'lines',
-        },
-      ]}
+      fill={chartFillData}
       // legends={[
       //   {
       //     anchor: 'bottom',
