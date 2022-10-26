@@ -47,7 +47,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
 
   return (
     <div>
-      <div className="border-b border-gray-200 py-2 text-center text-sm font-medium text-gray-500 dark:border-gray-700 dark:text-gray-400">
+      <div className="border-b border-gray-200 py-2 text-center text-sm font-medium text-gray-500">
         <ul className="-mb-px flex flex-wrap">
           {tabs.map(({ title }, i) => {
             const currentTab = i === time
@@ -57,16 +57,14 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                   onClick={() => setTime(i)}
                   className={classNames(
                     {
-                      'active border-cyan-600 text-cyan-600 dark:border-cyan-500 dark:text-cyan-500':
-                        currentTab,
-                      'border-transparent hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-300':
-                        !currentTab,
+                      'active border-cyan-600 text-cyan-600': currentTab,
+                      'border-transparent hover:border-gray-300 hover:text-gray-600': !currentTab,
                     },
                     'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
                   )}
                 >
                   {title}
-                  <span className="ml-2 rounded-lg bg-[#cbf3f0] px-1 py-0.5 text-xs font-semibold text-black dark:bg-blue-200 dark:text-blue-800">
+                  <span className="ml-2 rounded-lg bg-[#cbf3f0] px-1 py-0.5 text-xs font-semibold text-black">
                     {tabs[i].jobs.length}
                   </span>
                 </a>
@@ -76,8 +74,8 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
         </ul>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-left text-sm text-gray-500">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Company
@@ -94,25 +92,20 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
             {tabs[time].jobs.map((job, i) => {
               const { company, link, loc, salary, skills, title } = job
               return (
-                <tr
-                  className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                  key={i}
-                >
+                <tr className="border-b bg-white hover:bg-gray-50" key={i}>
                   <td
                     scope="row"
-                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
+                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
                   >
                     <a href={link}>
                       {company}
-                      <p className="truncate text-left text-sm font-normal text-gray-500 dark:text-gray-400">
-                        {loc}
-                      </p>
+                      <p className="truncate text-left text-sm font-normal text-gray-500">{loc}</p>
                     </a>
                   </td>
-                  <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline dark:text-white">
+                  <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline">
                     <a href={link}>
                       {title}
-                      <p className="text-left text-sm font-normal text-gray-700 dark:text-gray-400">
+                      <p className="text-left text-sm font-normal text-gray-700">
                         {skills[SkillType.LANGUAGE].join(', ')}
                       </p>
                     </a>

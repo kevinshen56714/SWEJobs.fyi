@@ -29,8 +29,8 @@ export default function Trends({ stats }) {
                 <PieChart data={topTen} smallView={false}></PieChart>
               </div>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                  <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                <table className="w-full text-left text-sm text-gray-500">
+                  <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                     <tr>
                       <th scope="col" className="py-3 px-6">
                         Skill
@@ -44,13 +44,10 @@ export default function Trends({ stats }) {
                     {Object.keys(topTen).map((skill, i) => {
                       const count = topTen[skill] as string
                       return (
-                        <tr
-                          className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                          key={i}
-                        >
+                        <tr className="border-b bg-white hover:bg-gray-50" key={i}>
                           <td
                             scope="row"
-                            className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline dark:text-blue-500"
+                            className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
                           >
                             {skill}
                           </td>
