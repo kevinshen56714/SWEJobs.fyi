@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 
-import { CityTabs } from '../../components/CityTabs'
+import { CityTabs } from '../../components/Tabs'
 import { PieChart } from '../../components/PieChart'
 import { cities } from '..'
 import { db } from '../../utils/firebase'
@@ -14,7 +14,7 @@ export default function Stats({ stats }) {
   const { city } = router.query
   return (
     <>
-      <CityTabs currentCity={city} />
+      <CityTabs currentPath={router.asPath} />
       <div className="flex flex-wrap gap-1">
         {Object.keys(stats).map((type, i) => {
           // get only the top 10 skills

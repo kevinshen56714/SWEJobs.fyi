@@ -10,6 +10,7 @@ import {
 import { Disclosure } from '@headlessui/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { SkillType } from '../types/Skills'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
 
@@ -21,7 +22,7 @@ const navigation = [
   },
   {
     name: 'Trends',
-    href: '#',
+    href: `/trends/SJ/${SkillType.LANGUAGE}`,
     icon: <ChartBarIcon className="block h-6 w-6" aria-hidden="true" />,
   },
   {
@@ -69,7 +70,7 @@ export const NavBar = () => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map(({ href, name, icon }) => {
-                      const current = router.asPath.startsWith(href)
+                      const current = router.asPath.startsWith(href.split('/', 2).join('/'))
                       return (
                         <Link href={href} key={name}>
                           <a
