@@ -73,7 +73,7 @@ export const mockStats = {
     Ansible: 45,
     S3: 30,
   },
-  [SkillType.DATA_ML]: {
+  [SkillType.AI_ML]: {
     Spark: 88,
     Hadoop: 47,
     TensorFlow: 38,
@@ -85,7 +85,7 @@ export const mockStats = {
     Presto: 7,
     Keras: 4,
   },
-  [SkillType.COMPUTING_GRAPHICS]: {
+  [SkillType.GRAPHICS]: {
     CUDA: 22,
     OpenGL: 12,
     'OpenMP/MPI': 8,

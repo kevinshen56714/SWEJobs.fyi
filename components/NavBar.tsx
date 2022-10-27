@@ -3,6 +3,7 @@ import {
   BriefcaseIcon,
   ChartBarIcon,
   ChartPieIcon,
+  InformationCircleIcon,
   UserGroupIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
@@ -27,8 +28,13 @@ const navigation = [
   },
   {
     name: 'Stats',
-    href: '/stats/SJ',
+    href: `/stats/SJ/${SkillType.LANGUAGE}`,
     icon: <ChartPieIcon className="block h-6 w-6" aria-hidden="true" />,
+  },
+  {
+    name: 'About Data',
+    href: '#',
+    icon: <InformationCircleIcon className="block h-6 w-6" aria-hidden="true" />,
   },
   {
     name: 'About Us',

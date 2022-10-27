@@ -3,8 +3,8 @@ import { SkillType } from '../types/Skills'
 import { cities } from '../pages'
 import classNames from 'classnames'
 
-export const CityTabs = ({ currentPath }) => {
-  const [_, parentPath, currentCity, currentType] = currentPath.split('/')
+export const CityTabs = (props: { currentPath: string }) => {
+  const [_, parentPath, currentCity, currentType] = props.currentPath.split('/')
   return (
     <ul className="-mb-px flex flex-wrap text-sm font-medium text-gray-500">
       {cities.map(({ city, name }, i) => {
@@ -31,8 +31,8 @@ export const CityTabs = ({ currentPath }) => {
   )
 }
 
-export const SkillTypeTabs = ({ currentPath }) => {
-  const [_, parentPath, currentCity, currentType] = currentPath.split('/')
+export const SkillTypeTabs = (props: { currentPath: string }) => {
+  const [_, parentPath, currentCity, currentType] = props.currentPath.split('/')
   return (
     <ul className="-mb-px flex flex-wrap text-sm font-medium text-gray-500">
       {Object.values(SkillType).map((type, i) => {
