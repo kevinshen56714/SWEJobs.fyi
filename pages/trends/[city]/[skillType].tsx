@@ -23,7 +23,6 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
   const { city, skillType } = router.query
   return (
     <>
-      <CityTabs currentPath={router.asPath} />
       <SkillTypeTabs currentPath={router.asPath} />
       <div>
         <h1 className="mt-8 text-center text-lg font-medium"> {skillType} </h1>
@@ -42,8 +41,8 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on cities and skillTypes
   const paths = cities.flatMap(({ city }) =>
-    Object.values(SkillType).map((skillType_) => ({
-      params: { city, skillType_ },
+    Object.values(SkillType).map((skillType) => ({
+      params: { city, skillType },
     }))
   )
 
@@ -59,8 +58,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   //   return { props: { stats: mockStats } }
   // }
 
-  const { city, skillType_ } = context.params
-  console.log(`fetching trends for ${city}, ${skillType_}`)
+  const { city, skillType } = context.params
+  console.log(`fetching trends for ${city}, ${skillType}`)
   let todayStr = convertDateToString(new Date())
   const todayDataAvailable = await checkTodayData(city, todayStr)
   if (!todayDataAvailable) {
@@ -80,7 +79,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     })
     trendsData[dateStr] = {}
 
-    const allSkills = skillsByType[skillType_ as string]
+    const allSkills = skillsByType[skillType as string]
     for (let i = 0; i < allSkills.length; i++) {
       let skill = allSkills[i]
       if (skill instanceof Array) skill = skill[0]

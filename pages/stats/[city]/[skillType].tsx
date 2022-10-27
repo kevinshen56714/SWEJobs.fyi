@@ -17,15 +17,14 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   const { skillType } = router.query
   return (
     <>
-      <CityTabs currentPath={router.asPath} />
       <SkillTypeTabs currentPath={router.asPath} />
-      <div className="flex flex-wrap gap-1">
-        <div className="max-w-full">
-          <h1 className="w mt-8 text-center text-lg font-medium"> {skillType} </h1>
+      <div>
+        <h1 className="my-8 text-center text-lg font-medium"> {skillType} </h1>
+        <div className="flex flex-wrap items-center justify-center gap-1">
           <div className="h-[360px] w-[480px] max-w-full sm:hidden">
             <PieChart data={stats} smallView={true}></PieChart>
           </div>
-          <div className="hidden h-[360px] w-[480px] max-w-full sm:block">
+          <div className="hidden h-[450px] w-[600px] max-w-full sm:block">
             <PieChart data={stats} smallView={false}></PieChart>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
