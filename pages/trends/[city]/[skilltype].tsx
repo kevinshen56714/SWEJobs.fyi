@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // }
 
   const { city, skilltype } = context.params
-  console.log(city, skilltype)
+  console.log(`fetching trends for ${city}, ${skilltype}`)
   let todayStr = convertDateToString(new Date())
   const todayDataAvailable = await checkTodayData(city, todayStr)
   if (!todayDataAvailable) {
