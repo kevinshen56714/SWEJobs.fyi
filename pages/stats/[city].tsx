@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 
-import { CityTabs } from '../../components/CityTabs'
+import { CityTabs } from '../../components/Tabs'
 import { PieChart } from '../../components/PieChart'
 import { cities } from '..'
 import { db } from '../../utils/firebase'

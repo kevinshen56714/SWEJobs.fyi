@@ -1,3 +1,4 @@
+import { CityTabs, SkillTypeTabs } from '../../../components/Tabs'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import {
   Timestamp,
@@ -8,31 +9,26 @@ import {
   where,
 } from 'firebase/firestore/lite'
 
-import { BarChart } from '../../components/BarChart'
-import { CityTabs } from '../../components/CityTabs'
-import { cities } from '..'
-import { convertDateToString } from '../../utils/util'
-import { db } from '../../utils/firebase'
-import { skillsByType } from '../../utils/analysis'
+import { BarChart } from '../../../components/BarChart'
+import { SkillType } from '../../../types/Skills'
+import { cities } from '../..'
+import { convertDateToString } from '../../../utils/util'
+import { db } from '../../../utils/firebase'
+import { skillsByType } from '../../../utils/analysis'
 import { useRouter } from 'next/router'
 
 export default function Trends({ stats }) {
   const router = useRouter()
-  const { city } = router.query
+  const { city, skilltype } = router.query
   return (
     <>
       <CityTabs currentPath={router.asPath} />
-      <div className="flex flex-wrap gap-1">
-        {Object.keys(stats).map((type, i) => {
-          return (
-            <div className="max-w-full" key={i}>
-              <h1 className="w mt-8 text-center text-lg font-medium"> {type} </h1>
-              <div className="h-[360px] w-[480px] max-w-full">
-                <BarChart data={stats[type]}></BarChart>
-              </div>
-            </div>
-          )
-        })}
+      <SkillTypeTabs currentPath={router.asPath} />
+      <div>
+        <h1 className="mt-8 text-center text-lg font-medium"> {skilltype} </h1>
+        <div className="h-[560px] w-full max-w-full">
+          <BarChart data={stats}></BarChart>
+        </div>
       </div>
     </>
   )
@@ -41,9 +37,11 @@ export default function Trends({ stats }) {
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on posts
-  const paths = cities.map(({ city }) => ({
-    params: { city },
-  }))
+  const paths = cities.flatMap(({ city }) =>
+    Object.values(SkillType).map((skilltype) => ({
+      params: { city, skilltype },
+    }))
+  )
 
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
@@ -57,7 +55,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   //   return { props: { stats: mockStats } }
   // }
 
-  const { city } = context.params
+  const { city, skilltype } = context.params
+  console.log(city, skilltype)
   let todayStr = convertDateToString(new Date())
   const todayDataAvailable = await checkTodayData(city, todayStr)
   if (!todayDataAvailable) {
@@ -66,28 +65,29 @@ export const getStaticProps: GetStaticProps = async (context) => {
     todayStr = convertDateToString(today)
   }
   const stats = {}
-  for (const type in skillsByType) {
-    stats[type] = {}
 
-    // get last 7 days of data
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(todayStr)
-      date.setDate(date.getDate() - i)
-      stats[type][date] = {}
+  // get last 7 days of data
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(todayStr)
+    date.setDate(date.getDate() - i)
+    const dateStr = new Date(date).toLocaleDateString('en-us', {
+      month: 'short',
+      day: 'numeric',
+    })
+    stats[dateStr] = {}
 
-      for (let i = 0; i < skillsByType[type].length; i++) {
-        let skill = skillsByType[type][i]
-        if (skill instanceof Array) skill = skill[0]
-        stats[type][date][skill] = await getDailySkillCount(city, skill, date)
-      }
-      const soredStats = Object.fromEntries(
-        Object.entries(stats[type][date]).sort(
-          (a: [string, number], b: [string, number]) => b[1] - a[1]
-        )
-        // .slice(0, 10) // get only top ten
-      )
-      stats[type][date] = soredStats
+    const allSkills = skillsByType[skilltype as string]
+    for (let i = 0; i < allSkills.length; i++) {
+      let skill = allSkills[i]
+      if (skill instanceof Array) skill = skill[0]
+      stats[dateStr][skill] = await getDailySkillCount(city, skill, date)
     }
+    const soredStats = Object.fromEntries(
+      Object.entries(stats[dateStr])
+        .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
+        .slice(0, 10) // get only top ten
+    )
+    stats[dateStr] = soredStats
   }
 
   // Pass collection data to the page via props

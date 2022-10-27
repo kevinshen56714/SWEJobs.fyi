@@ -12,13 +12,7 @@ export const BarChart = ({ data }) => {
     Object.keys(data[date]).forEach((skill) => {
       if (data[date][skill] !== 0) allKeys.add(skill)
     })
-    return {
-      date: new Date(date).toLocaleDateString('en-us', {
-        month: 'short',
-        day: 'numeric',
-      }),
-      ...data[date],
-    }
+    return { date, ...data[date] }
   })
   return (
     <ResponsiveBar
@@ -29,7 +23,7 @@ export const BarChart = ({ data }) => {
       padding={0.3}
       valueScale={{ type: 'linear' }}
       indexScale={{ type: 'band', round: true }}
-      colors={{ scheme: 'nivo' }}
+      colors={{ scheme: 'paired' }}
       borderColor={{
         from: 'color',
         modifiers: [['darker', 1.6]],
