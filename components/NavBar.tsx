@@ -21,7 +21,7 @@ const navigation = [
   },
   {
     name: 'Trends',
-    href: '#',
+    href: '/trends/SJ',
     icon: <ChartBarIcon className="block h-6 w-6" aria-hidden="true" />,
   },
   {

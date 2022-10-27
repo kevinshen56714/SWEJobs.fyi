@@ -2,14 +2,15 @@ import Link from 'next/link'
 import { cities } from '../pages'
 import classNames from 'classnames'
 
-export const CityTabs = ({ currentCity }) => {
+export const CityTabs = ({ currentPath }) => {
+  const [_, currentCity, parentPath] = currentPath.split('/')
   return (
     <ul className="-mb-px flex flex-wrap text-sm font-medium text-gray-500">
       {cities.map(({ city, name }, i) => {
         const currentTab = city === currentCity
         return (
           <li className="mr-2" key={i}>
-            <Link href={`/stats/${city}`}>
+            <Link href={`/${parentPath}/${city}`}>
               <a
                 className={classNames(
                   {

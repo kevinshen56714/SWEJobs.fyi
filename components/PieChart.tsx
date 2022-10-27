@@ -26,7 +26,12 @@ export const PieChart = ({ data, smallView }) => {
   return (
     <ResponsivePie
       data={chartData}
-      margin={{ top: 10, right: smallView ? 100 : 120, bottom: 10, left: smallView ? 100 : 120 }}
+      margin={{
+        top: smallView ? 0 : 10,
+        right: smallView ? 100 : 120,
+        bottom: smallView ? 0 : 10,
+        left: smallView ? 100 : 120,
+      }}
       sortByValue={true}
       innerRadius={0.5}
       padAngle={0.7}
