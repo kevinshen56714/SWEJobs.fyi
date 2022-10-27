@@ -60,7 +60,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const { city } = context.params
   let todayStr = convertDateToString(new Date())
   const todayDataAvailable = await checkTodayData(city, todayStr)
-  console.log(todayDataAvailable)
   if (!todayDataAvailable) {
     const today = new Date(todayStr)
     today.setDate(today.getDate() - 1)
