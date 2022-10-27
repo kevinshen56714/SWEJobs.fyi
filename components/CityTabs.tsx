@@ -3,7 +3,7 @@ import { cities } from '../pages'
 import classNames from 'classnames'
 
 export const CityTabs = ({ currentPath }) => {
-  const [_, currentCity, parentPath] = currentPath.split('/')
+  const [_, parentPath, currentCity] = currentPath.split('/')
   return (
     <ul className="-mb-px flex flex-wrap text-sm font-medium text-gray-500">
       {cities.map(({ city, name }, i) => {

@@ -111,6 +111,7 @@ const getDailySkillCount = async (city: string | string[], skill: string, date: 
 
 const checkTodayData = async (city: string | string[], todayStr: string) => {
   const coll = collection(db, `${todayStr}/${city}/jobs`)
-  const snapshot = await getCount(coll)
+  const q = query(coll, where('city', '==', city))
+  const snapshot = await getCount(q)
   return snapshot.data().count > 0
 }
