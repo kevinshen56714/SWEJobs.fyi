@@ -28,3 +28,31 @@ a {
     background: black;
   }
 } */
+
+* {
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(#333, 0.5);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(#eee, 0.8);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: rgba(#eee, 0.8);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    transition: background 0.1s;
+    background: rgba(#333, 0.3);
+    border-radius: 3px;
+  }
+}

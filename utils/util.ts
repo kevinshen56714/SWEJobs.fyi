@@ -6,10 +6,14 @@ export const convertDateToString = (date: Date) => {
   })
 }
 
-export const getTopSortedSkills = (skillObj: { [skill: string]: number }) => {
-  return Object.fromEntries(
-    Object.entries(skillObj)
-      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
-      .slice(0, 15) // get only top 15
-  )
+// get top 12 skills sorted by count
+export const getTopSortedSkills = (data: { [skill: string]: number }) => {
+  const sortedSkills = Object.keys(data)
+    .sort((a, b) => data[b] - data[a])
+    .slice(0, 12)
+  const sortedData = {}
+  sortedSkills.forEach((skill) => {
+    sortedData[skill] = data[skill]
+  })
+  return sortedData
 }

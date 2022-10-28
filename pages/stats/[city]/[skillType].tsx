@@ -1,9 +1,9 @@
-import { CityTabs, SkillTypeTabs } from '../../../components/Tabs'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 
 import { PieChart } from '../../../components/PieChart'
 import { SkillType } from '../../../types/Skills'
+import { SkillTypeTabs } from '../../../components/Tabs'
 import { cities } from '../..'
 import { db } from '../../../utils/firebase'
 import { getTopSortedSkills } from '../../../utils/util'

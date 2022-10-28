@@ -6,8 +6,8 @@ import classNames from 'classnames'
 export const CityTabs = (props: { currentPath: string }) => {
   const [_, parentPath, currentCity, currentType] = props.currentPath.split('/')
   return (
-    <div className="bg-gray-600 shadow-lg">
-      <div className="mx-auto max-w-5xl border-t-[1px] border-gray-400 px-4 sm:px-12 lg:px-5">
+    <div className="border-t-[1px] border-gray-400 bg-gray-600 shadow-lg">
+      <div className="mx-auto max-w-5xl px-4 sm:px-12 lg:px-5">
         <ul className="flex flex-wrap text-sm font-medium text-gray-300">
           {cities.map(({ city, name }, i) => {
             const currentTab = city === currentCity
