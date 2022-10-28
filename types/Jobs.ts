@@ -1,7 +1,8 @@
 import { SkillType } from './Skills'
 
-type Job = {
+export type Job = {
   company: string
+  createdAt: string
   link: string
   loc: string
   remote: boolean
@@ -10,10 +11,4 @@ type Job = {
     [type in SkillType]: string[]
   }
   title: string
-}
-
-export type Jobs = {
-  todayJobs: Job[]
-  yesterdayJobs: Job[]
-  twoDaysAgoJobs: Job[]
 }

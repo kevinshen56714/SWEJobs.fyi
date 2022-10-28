@@ -181,7 +181,7 @@ const checkIfSkillInDescription = (skill: string | string[], description: string
   }
   // escape + character for regex on C++
   const skillRaw = skill.replaceAll('+', String.raw`\+`)
-  const re = new RegExp(`([ /(]${skillRaw}[ /,):])`, 'gim')
+  const re = new RegExp(`([ /(]${skillRaw}[ /,.):])`, 'gim')
   return re.test(description)
 }
 

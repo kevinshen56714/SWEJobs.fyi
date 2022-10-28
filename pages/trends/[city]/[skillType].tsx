@@ -1,21 +1,14 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import {
-  Timestamp,
-  collection,
-  collectionGroup,
-  getCount,
-  query,
-  where,
-} from 'firebase/firestore/lite'
-import { convertDateToString, getTopSortedSkills } from '../../../utils/util'
+import { Timestamp, collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
+import { checkTodayData, db } from '../../../utils/firebase'
+import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../../utils/util'
 import { useEffect, useState } from 'react'
 
 import { BarChart } from '../../../components/BarChart'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { SkillType } from '../../../types/Skills'
-import { SkillTypeTabs } from '../../../components/Tabs'
+import { SkillTypeTabGroup } from '../../../components/Tabs'
 import { cities } from '../..'
-import { db } from '../../../utils/firebase'
 import { mockStats } from '../../../data/mockStats'
 import { skillsByType } from '../../../utils/analysis'
 import { useRouter } from 'next/router'
@@ -41,7 +34,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
 
   return (
     <>
-      <SkillTypeTabs currentPath={router.asPath} />
+      <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="flex flex-col items-center">
         <h1 className="mt-8 text-center text-lg font-medium"> {skillType} </h1>
         <DropdownMenu
@@ -104,12 +97,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 
   console.log(`fetching trends for ${city}, ${skillType}`)
+
+  // if jobs haven't been updated today, shift back by 1 day
   const todayDataAvailable = await checkTodayData(city, todayStr)
-  if (!todayDataAvailable) {
-    const today = new Date(todayStr)
-    today.setDate(today.getDate() - 1)
-    todayStr = convertDateToString(today)
-  }
+  if (!todayDataAvailable) todayStr = getPreviousDateString(todayStr, 1)
   const trendsData = getLast7Days(todayStr)
 
   // get last 7 days of data
@@ -155,11 +146,4 @@ const getDailySkillCount = async (city: string | string[], skill: string, dateSt
   )
   const snapshot = await getCount(skillQuery)
   return snapshot.data().count
-}
-
-const checkTodayData = async (city: string | string[], todayStr: string) => {
-  const coll = collection(db, `${todayStr}/${city}/jobs`)
-  const q = query(coll, where('city', '==', city))
-  const snapshot = await getCount(q)
-  return snapshot.data().count > 0
 }

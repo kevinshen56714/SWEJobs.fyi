@@ -1,6 +1,6 @@
+import { collection, getCount, getFirestore, limit, query, where } from 'firebase/firestore/lite'
 import { getAnalytics, logEvent } from 'firebase/analytics'
 
-import { getFirestore } from 'firebase/firestore/lite'
 import { initializeApp } from 'firebase/app'
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -24,4 +24,11 @@ export const db = getFirestore(app)
 export const logAnalyticsEvent = (event: string) => {
   const analytics = getAnalytics(app)
   logEvent(analytics, event)
+}
+
+export const checkTodayData = async (city: string | string[], todayStr: string) => {
+  const coll = collection(db, `${todayStr}/${city}/jobs`)
+  const q = query(coll, where('city', '==', city), limit(1))
+  const snapshot = await getCount(q)
+  return snapshot.data().count > 0
 }

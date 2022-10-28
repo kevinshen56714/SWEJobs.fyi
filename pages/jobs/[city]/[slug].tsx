@@ -1,16 +1,18 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
+import { checkTodayData, db } from '../../../utils/firebase'
+import { convertDateToString, getPreviousDateString } from '../../../utils/util'
+import { useEffect, useState } from 'react'
 
-import { Jobs } from '../../types/Jobs'
-import { SkillType } from '../../types/Skills'
-import { categorizeSkills } from '../../utils/analysis'
-import { cities } from '..'
+import { DropdownMenu } from '../../../components/DropdownMenu'
+import { Job } from '../../../types/Jobs'
+import Link from 'next/link'
+import { SkillType } from '../../../types/Skills'
+import { categorizeSkills } from '../../../utils/analysis'
+import { cities } from '../..'
 import classNames from 'classnames'
-import { convertDateToString } from '../../utils/util'
-import { db } from '../../utils/firebase'
-import { mockJobs } from '../../data/mockJobs'
+import { mockJobs } from '../../../data/mockJobs'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 const SkillBadge = ({ children, type }) => {
   if (type === SkillType.LANGUAGE) return
@@ -33,26 +35,43 @@ const SkillBadge = ({ children, type }) => {
   )
 }
 
-export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: Jobs) {
+const slugs = { 24: 'Within 24 hours', 48: '24-48 hours', 72: '48-72 hours' }
+const sortByDropdownOptions = ['Sort By', 'Company name (A-Z)', 'Company name (Z-A)']
+
+const getTimeElapsed = (createdAt: string) => {
+  const createdAtDate = new Date(createdAt)
+  const now = new Date()
+  const elapsed = Math.floor((now.getTime() - createdAtDate.getTime()) / (1000 * 60 * 60))
+  return elapsed < 1 ? 'within an hour ago' : `${elapsed} hours ago`
+}
+
+export default function JobPosts(props: { jobs: Job[] }) {
+  const [jobs, setJobs] = useState(props.jobs)
+  const [sortBy, setSortBy] = useState<string>('Sort By')
   const router = useRouter()
-  const [time, setTime] = useState(0)
-  const { city } = router.query
-  const tabs = [
-    { title: 'Within 24 hours', jobs: todayJobs },
-    { title: '24-48 hours', jobs: yesterdayJobs },
-    { title: '48-72 hours', jobs: twoDaysAgoJobs },
-  ]
+  const { city, slug } = router.query
+
+  const sortJobs = (sortBy: string) => {
+    if (sortBy === 'Sort By') return
+    const sortedJobs = [...jobs]
+    const isAscending = sortBy === 'Company name (A-Z)'
+    sortedJobs.sort((a, b) => {
+      if (a.company < b.company) return isAscending ? -1 : 1
+      if (a.company > b.company) return isAscending ? 1 : -1
+      return 0
+    })
+    setJobs(sortedJobs)
+  }
 
   return (
     <div>
-      <div className="border-b border-gray-200 py-2 text-center text-sm font-medium text-gray-500">
-        <ul className="-mb-px flex flex-wrap">
-          {tabs.map(({ title }, i) => {
-            const currentTab = i === time
-            return (
-              <li className="mr-2" key={i}>
+      <ul className="flex flex-wrap gap-2 text-sm font-medium">
+        {Object.keys(slugs).map((slugOption, i) => {
+          const currentTab = slugOption === slug
+          return (
+            <li key={i}>
+              <Link href={`/jobs/${city}/${slugOption}`}>
                 <a
-                  onClick={() => setTime(i)}
                   className={classNames(
                     {
                       'active border-cyan-600 text-cyan-600': currentTab,
@@ -61,15 +80,25 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
                     'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
                   )}
                 >
-                  {title}
-                  <span className="ml-2 rounded-lg bg-[#cbf3f0] px-1 py-0.5 text-xs font-semibold text-black">
-                    {tabs[i].jobs.length}
-                  </span>
+                  {slugs[slugOption]}
                 </a>
-              </li>
-            )
-          })}
-        </ul>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+      <div className="my-2 flex w-full items-end justify-between">
+        <div className="text-sm text-gray-500">{`Showing ${
+          jobs.length
+        } jobs (updated: ${getTimeElapsed(jobs[0].createdAt)})`}</div>
+        <DropdownMenu
+          options={sortByDropdownOptions}
+          selected={sortBy}
+          onChangeCallback={(selected) => {
+            setSortBy(selected)
+            sortJobs(selected as string)
+          }}
+        ></DropdownMenu>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-left text-sm text-gray-500">
@@ -87,7 +116,7 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
             </tr>
           </thead>
           <tbody>
-            {tabs[time].jobs.map((job, i) => {
+            {jobs.map((job, i) => {
               const { company, link, loc, salary, skills, title } = job
               return (
                 <tr className="border-b bg-white hover:bg-gray-50" key={i}>
@@ -131,10 +160,12 @@ export default function JobPosts({ todayJobs, yesterdayJobs, twoDaysAgoJobs }: J
 
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
-  // Get the paths we want to pre-render based on posts
-  const paths = cities.map(({ city }) => ({
-    params: { city },
-  }))
+  // Get the paths we want to pre-render based on cities and times
+  const paths = cities.flatMap(({ city }) =>
+    Object.keys(slugs).map((slug) => ({
+      params: { city, slug },
+    }))
+  )
 
   // We'll pre-render only these paths at build time.
   // { fallback: false } means other routes should 404.
@@ -147,45 +178,42 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (process.env.NODE_ENV === 'development') {
     const curatedMockData = mockJobs.map((mockJob) => {
       let { company, link, loc, salary, skills, title } = mockJob
-      return { company, link, loc, salary, skills: categorizeSkills(skills), title }
+      return {
+        company,
+        createdAt: convertDateToString(new Date()),
+        link,
+        loc,
+        salary,
+        skills: categorizeSkills(skills),
+        title,
+      }
     })
-    return {
-      props: {
-        todayJobs: curatedMockData,
-        yesterdayJobs: curatedMockData,
-        twoDaysAgoJobs: curatedMockData,
-      },
-    }
+    return { props: { jobs: curatedMockData } }
   }
 
-  const { city } = context.params
-  const today = new Date()
-  let [todayStr, yesterdayStr, twoDaysAgoStr] = convertDateToPreviousDays(today)
-  let todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${city}/jobs`))
-  if (todayQuerySnapshot.size === 0) {
-    today.setDate(today.getDate() - 1)
-    todayStr = convertDateToPreviousDays(today)[0]
-    yesterdayStr = convertDateToPreviousDays(today)[1]
-    twoDaysAgoStr = convertDateToPreviousDays(today)[2]
-    todayQuerySnapshot = await getDocs(collection(db, `${todayStr}/${city}/jobs`))
-  }
+  const { city, slug } = context.params
+  let shiftDateBy = Number(slug) / 24 - 1
 
-  const yesterdayQuerySnapshot = await getDocs(collection(db, `${yesterdayStr}/${city}/jobs`))
-  const twoDaysAgoQuerySnapshot = await getDocs(collection(db, `${twoDaysAgoStr}/${city}/jobs`))
+  // if jobs haven't been updated today, shift back by 1 day
+  let dateStr = convertDateToString(new Date())
+  const todayDataAvailable = await checkTodayData(city, dateStr)
+  if (!todayDataAvailable) shiftDateBy += 1
 
-  const todayJobs = assembleJobObject(todayQuerySnapshot)
-  const yesterdayJobs = assembleJobObject(yesterdayQuerySnapshot)
-  const twoDaysAgoJobs = assembleJobObject(twoDaysAgoQuerySnapshot)
-  console.log(`There are ${todayQuerySnapshot.size} jobs in ${city} today`)
+  dateStr = getPreviousDateString(dateStr, shiftDateBy)
+
+  const querySnapshot = await getDocs(collection(db, `${dateStr}/${city}/jobs`))
+  const jobs = assembleJobObject(querySnapshot)
+  console.log(`There are ${jobs.length} jobs in ${city} today`)
   // Pass collection data to the page via props
-  return { props: { todayJobs, yesterdayJobs, twoDaysAgoJobs } }
+  return { props: { jobs } }
 }
 
 const assembleJobObject = (snapshot: QuerySnapshot) => {
   return snapshot.docs.map((doc) => {
-    const { company, link, loc, remote, salary, skills, title } = doc.data()
+    const { company, createdAt, link, loc, remote, salary, skills, title } = doc.data()
     return {
       company,
+      createdAt: convertDateToString(createdAt.toDate()),
       link,
       loc: loc.split('+')[0],
       remote,
@@ -194,17 +222,4 @@ const assembleJobObject = (snapshot: QuerySnapshot) => {
       title,
     }
   })
-}
-
-const convertDateToPreviousDays = (today: Date) => {
-  const todayStr = convertDateToString(today)
-
-  const yesterday = new Date(today)
-  yesterday.setDate(yesterday.getDate() - 1)
-  const yesterdayStr = convertDateToString(yesterday)
-
-  const twoDaysAgo = new Date(today)
-  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-  const twoDaysAgoStr = convertDateToString(twoDaysAgo)
-  return [todayStr, yesterdayStr, twoDaysAgoStr]
 }
