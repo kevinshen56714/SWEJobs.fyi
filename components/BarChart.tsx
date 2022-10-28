@@ -9,21 +9,15 @@ import { ResponsiveBar } from '@nivo/bar'
 export const BarChart = (props: {
   data: { [date: string]: { [skill: string]: number } }
   smallView: boolean
+  allKeys: string[]
 }) => {
-  const { data, smallView } = props
-
-  const allKeys = new Set()
-  const chartData = Object.keys(data).map((date) => {
-    Object.keys(data[date]).forEach((skill) => {
-      if (data[date][skill] !== 0) allKeys.add(skill)
-    })
-    return { date, ...data[date] }
-  })
+  const { data, smallView, allKeys } = props
+  const chartData = Object.keys(data).map((date) => ({ date, ...data[date] }))
 
   return (
     <ResponsiveBar
       data={chartData}
-      keys={Array.from(allKeys) as string[]}
+      keys={allKeys}
       indexBy="date"
       margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
       padding={0.3}
@@ -59,6 +53,7 @@ export const BarChart = (props: {
         from: 'color',
         modifiers: [['darker', 1.6]],
       }}
+      // initialHiddenIds={[]}
       legends={[
         {
           dataFrom: 'keys',
@@ -73,6 +68,7 @@ export const BarChart = (props: {
           itemDirection: 'left-to-right',
           itemOpacity: 0.85,
           symbolSize: 20,
+          toggleSerie: true,
           effects: [
             {
               on: 'hover',
