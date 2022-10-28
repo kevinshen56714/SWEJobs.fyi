@@ -3,7 +3,9 @@ import { ResponsivePie } from '@nivo/pie'
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
-export const PieChart = ({ data, smallView }) => {
+export const PieChart = (props: { data: { [skill: string]: number }; smallView: boolean }) => {
+  const { data, smallView } = props
+
   const chartData = Object.keys(data).map((skill) => ({
     id: skill,
     label: skill,
@@ -23,6 +25,7 @@ export const PieChart = ({ data, smallView }) => {
       id: fillPattern,
     }
   })
+
   return (
     <ResponsivePie
       data={chartData}

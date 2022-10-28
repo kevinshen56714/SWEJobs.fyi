@@ -166,8 +166,8 @@ export const skillsByType = {
   [SkillType.BACKEND]: backendStack,
   [SkillType.DATABASE]: databaseStack,
   [SkillType.CLOUD_INFRA]: cloudInfraStack,
-  [SkillType.DATA_ML]: dataMLStack,
-  [SkillType.COMPUTING_GRAPHICS]: computingGraphicsStack,
+  [SkillType.AI_ML]: dataMLStack,
+  [SkillType.GRAPHICS]: computingGraphicsStack,
 }
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {

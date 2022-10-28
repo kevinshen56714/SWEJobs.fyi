@@ -6,7 +6,12 @@ import { ResponsiveBar } from '@nivo/bar'
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
 // no chart will be rendered.
-export const BarChart = ({ data }) => {
+export const BarChart = (props: {
+  data: { [date: string]: { [skill: string]: number } }
+  smallView: boolean
+}) => {
+  const { data, smallView } = props
+
   const allKeys = new Set()
   const chartData = Object.keys(data).map((date) => {
     Object.keys(data[date]).forEach((skill) => {
@@ -14,12 +19,13 @@ export const BarChart = ({ data }) => {
     })
     return { date, ...data[date] }
   })
+
   return (
     <ResponsiveBar
       data={chartData}
       keys={Array.from(allKeys) as string[]}
       indexBy="date"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
       padding={0.3}
       valueScale={{ type: 'linear' }}
       indexScale={{ type: 'band', round: true }}
@@ -33,18 +39,18 @@ export const BarChart = ({ data }) => {
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
-        legend: 'date',
+        tickRotation: smallView ? -45 : 0,
+        legend: 'Date',
         legendPosition: 'middle',
-        legendOffset: 32,
+        legendOffset: 55,
       }}
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'count',
+        legend: 'Job Count',
         legendPosition: 'middle',
-        legendOffset: -40,
+        legendOffset: -50,
       }}
       // layout="horizontal"
       labelSkipWidth={12}
@@ -56,7 +62,7 @@ export const BarChart = ({ data }) => {
       legends={[
         {
           dataFrom: 'keys',
-          anchor: 'bottom-right',
+          anchor: 'right',
           direction: 'column',
           justify: false,
           translateX: 120,
@@ -81,6 +87,20 @@ export const BarChart = ({ data }) => {
       ariaLabel="skill count vs date bar chart"
       barAriaLabel={function (e) {
         return e.id + ': ' + e.formattedValue + ' in date: ' + e.indexValue
+      }}
+      theme={{
+        axis: {
+          ticks: {
+            text: {
+              fontSize: 14,
+            },
+          },
+          legend: {
+            text: {
+              fontSize: 14,
+            },
+          },
+        },
       }}
     />
   )

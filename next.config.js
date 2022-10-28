@@ -2,9 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // time in seconds of no pages generating during static
-  // generation before timing out
-  staticPageGenerationTimeout: 180,
+  // sometime some pages take longer than 60s to generate
+  // staticPageGenerationTimeout: 180,
 }
 
 module.exports = nextConfig
