@@ -16,13 +16,15 @@ export const BarChart = (props: {
     date: date.split(',')[0], // don't show the year
     ...data[date],
   }))
+  // don't render legends when small view and only 1 skill is displayed
+  const renderLegend = !smallView || allKeys.length !== 1
 
   return (
     <ResponsiveBar
       data={chartData}
       keys={allKeys}
       indexBy="date"
-      margin={{ top: 50, right: 130, bottom: 70, left: 60 }}
+      margin={{ top: 50, right: renderLegend ? 130 : 60, bottom: 70, left: 60 }}
       padding={0.3}
       valueScale={{ type: 'linear' }}
       indexScale={{ type: 'band', round: true }}
@@ -57,31 +59,35 @@ export const BarChart = (props: {
         modifiers: [['darker', 1.6]],
       }}
       // initialHiddenIds={[]}
-      legends={[
-        {
-          dataFrom: 'keys',
-          anchor: 'right',
-          direction: 'column',
-          justify: false,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
-          itemWidth: 100,
-          itemHeight: 20,
-          itemDirection: 'left-to-right',
-          itemOpacity: 0.85,
-          symbolSize: 20,
-          toggleSerie: true,
-          effects: [
-            {
-              on: 'hover',
-              style: {
-                itemOpacity: 1,
+      legends={
+        renderLegend
+          ? [
+              {
+                dataFrom: 'keys',
+                anchor: 'right',
+                direction: 'column',
+                justify: false,
+                translateX: 120,
+                translateY: 0,
+                itemsSpacing: 2,
+                itemWidth: 100,
+                itemHeight: 20,
+                itemDirection: 'left-to-right',
+                itemOpacity: 0.85,
+                symbolSize: 20,
+                toggleSerie: true,
+                effects: [
+                  {
+                    on: 'hover',
+                    style: {
+                      itemOpacity: 1,
+                    },
+                  },
+                ],
               },
-            },
-          ],
-        },
-      ]}
+            ]
+          : []
+      }
       role="application"
       ariaLabel="skill count vs date bar chart"
       barAriaLabel={function (e) {
