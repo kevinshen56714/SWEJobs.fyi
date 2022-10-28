@@ -113,16 +113,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const trendsData = getLast7Days(todayStr)
 
   // get last 7 days of data
-  Object.keys(trendsData).map(async (dateStr) => {
-    const allSkills = skillsByType[skillType as string]
-    for (let i = 0; i < allSkills.length; i++) {
-      let skill = allSkills[i]
-      if (skill instanceof Array) skill = skill[0]
-      trendsData[dateStr][skill] = await getDailySkillCount(city, skill, dateStr)
-    }
-    const sortedData = getTopSortedSkills(trendsData[dateStr])
-    trendsData[dateStr] = sortedData
-  })
+  await Promise.all(
+    Object.keys(trendsData).map(async (dateStr) => {
+      const allSkills = skillsByType[skillType as string]
+      for (let i = 0; i < allSkills.length; i++) {
+        let skill = allSkills[i]
+        if (skill instanceof Array) skill = skill[0]
+        trendsData[dateStr][skill] = await getDailySkillCount(city, skill, dateStr)
+      }
+      const sortedData = getTopSortedSkills(trendsData[dateStr])
+      trendsData[dateStr] = sortedData
+    })
+  )
   // Pass collection data to the page via props
   return { props: { trendsData } }
 }
@@ -133,10 +135,7 @@ const getLast7Days = (todayStr: string) => {
   for (let i = 6; i >= 0; i--) {
     const date = new Date(todayStr)
     date.setDate(date.getDate() - i)
-    const dateStr = new Date(date).toLocaleDateString('en-us', {
-      month: 'short',
-      day: 'numeric',
-    })
+    const dateStr = convertDateToString(new Date(date))
     last7Days[dateStr] = {}
   }
   return last7Days

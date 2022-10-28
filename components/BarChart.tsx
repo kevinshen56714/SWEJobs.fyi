@@ -12,7 +12,10 @@ export const BarChart = (props: {
   allKeys: string[]
 }) => {
   const { data, smallView, allKeys } = props
-  const chartData = Object.keys(data).map((date) => ({ date, ...data[date] }))
+  const chartData = Object.keys(data).map((date) => ({
+    date: date.split(',')[0], // don't show the year
+    ...data[date],
+  }))
 
   return (
     <ResponsiveBar
