@@ -36,32 +36,47 @@ const SkillBadge = ({ children, type }) => {
 }
 
 const slugs = { 24: 'Within 24 hours', 48: '24-48 hours', 72: '48-72 hours' }
-const sortByDropdownOptions = ['Sort By', 'Company name (A-Z)', 'Company name (Z-A)']
+const sortByDropdownOptions = [
+  'Sort By',
+  'Company name (A-Z)',
+  'Company name (Z-A)',
+  '# of skills (High to Low)',
+  '# of skills (Low to High)',
+]
 
 const getTimeElapsed = (createdAt: string) => {
   const createdAtDate = new Date(createdAt)
   const now = new Date()
   const elapsed = Math.floor((now.getTime() - createdAtDate.getTime()) / (1000 * 60 * 60))
-  return elapsed < 1 ? 'within an hour ago' : `${elapsed} hours ago`
+  return elapsed < 1 ? 'within an hour' : `${elapsed} hours ago`
+}
+
+const getSkillCount = (job: Job) => {
+  return Object.keys(job.skills)
+    .filter((skill) => skill !== SkillType.LANGUAGE)
+    .reduce((acc, cur) => acc + job.skills[cur].length, 0)
+}
+
+const sortJobs = (jobs: Job[], sortBy: string) => {
+  if (sortBy === 'Company name (A-Z)') {
+    return jobs.sort((a, b) => (a.company.toLowerCase() > b.company.toLowerCase() ? 1 : -1))
+  } else if (sortBy === 'Company name (Z-A)') {
+    return jobs.sort((a, b) => (a.company.toLowerCase() < b.company.toLowerCase() ? 1 : -1))
+  } else if (sortBy === '# of skills (High to Low)') {
+    return jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? 1 : -1))
+  } else if (sortBy === '# of skills (Low to High)') {
+    return jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? -1 : 1))
+  } else {
+    return jobs
+  }
 }
 
 export default function JobPosts(props: { jobs: Job[] }) {
-  const [sortBy, setSortBy] = useState<string>('Sort By')
   const router = useRouter()
   const { city, slug } = router.query
 
-  const jobs = useMemo(() => {
-    if (sortBy === 'Sort By') {
-      return [...props.jobs]
-    } else {
-      const isAscending = sortBy === 'Company name (A-Z)'
-      return props.jobs.sort((a, b) => {
-        if (a.company < b.company) return isAscending ? -1 : 1
-        if (a.company > b.company) return isAscending ? 1 : -1
-        return 0
-      })
-    }
-  }, [props.jobs, sortBy])
+  const [sortBy, setSortBy] = useState<string>('Sort By')
+  const jobs = useMemo(() => sortJobs([...props.jobs], sortBy), [props.jobs, sortBy])
 
   return (
     <div>
@@ -180,7 +195,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       let { company, link, loc, salary, skills, title } = mockJob
       return {
         company,
-        createdAt: convertDateToString(new Date()),
+        createdAt: new Date().toLocaleDateString('en-us'),
         link,
         loc,
         salary,
@@ -213,7 +228,7 @@ const assembleJobObject = (snapshot: QuerySnapshot) => {
     const { company, createdAt, link, loc, remote, salary, skills, title } = doc.data()
     return {
       company,
-      createdAt: convertDateToString(createdAt.toDate()),
+      createdAt: createdAt.toDate().toLocaleDateString('en-us'),
       link,
       loc: loc.split('+')[0],
       remote,
