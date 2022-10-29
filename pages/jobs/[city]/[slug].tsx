@@ -79,7 +79,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
 
   return (
     <div>
-      <ul className="flex flex-wrap gap-2 text-sm font-medium">
+      <ul className="flex flex-wrap gap-2 text-xs font-medium sm:text-sm">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
           return (

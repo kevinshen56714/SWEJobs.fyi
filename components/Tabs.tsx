@@ -40,12 +40,12 @@ export const CityTabGroup = (props: { currentPath: string }) => {
 
   return (
     <div className="border-t-[1px] border-gray-400 bg-gray-600 font-medium text-gray-300 shadow-lg">
-      <div className="mx-auto max-w-5xl px-4 sm:px-12 lg:px-5">
+      <div className="mx-auto max-w-5xl px-2 sm:px-12 lg:px-5">
         <ul className="hidden flex-wrap gap-2 text-sm sm:flex">
           <CityTabs smallView={false} />
         </ul>
         <div className="flex items-center justify-center">
-          <ul className="grid w-96 grid-flow-row grid-cols-3 self-center text-xs sm:hidden">
+          <ul className="grid w-96 grid-flow-col grid-cols-3 grid-rows-2 self-center text-xs sm:hidden">
             <CityTabs smallView={true} />
           </ul>
         </div>

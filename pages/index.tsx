@@ -6,10 +6,10 @@ import styles from '../styles/Home.module.css'
 export const cities = [
   { city: 'SJ', name: 'San Jose, CA' },
   { city: 'SF', name: 'San Francisco, CA' },
-  { city: 'SEA', name: 'Seattle, WA' },
   { city: 'LA', name: 'Los Angeles, CA' },
+  { city: 'SEA', name: 'Seattle, WA' },
   { city: 'NY', name: 'New York, NY' },
-  { city: 'AU', name: 'Texas, TX' },
+  { city: 'AU', name: 'Austin, TX' },
 ]
 
 export default function Home() {
