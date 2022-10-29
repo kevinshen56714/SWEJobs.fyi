@@ -6,6 +6,12 @@ export const convertDateToString = (date: Date) => {
   })
 }
 
+export const getPreviousDateString = (dateStr: string, daysAgo: number) => {
+  const date = new Date(dateStr)
+  date.setDate(date.getDate() - daysAgo)
+  return convertDateToString(date)
+}
+
 // get top 12 skills sorted by count
 export const getTopSortedSkills = (data: { [skill: string]: number }) => {
   const sortedSkills = Object.keys(data)

@@ -3,7 +3,7 @@ import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite
 
 import { PieChart } from '../../../components/PieChart'
 import { SkillType } from '../../../types/Skills'
-import { SkillTypeTabs } from '../../../components/Tabs'
+import { SkillTypeTabGroup } from '../../../components/Tabs'
 import { cities } from '../..'
 import { db } from '../../../utils/firebase'
 import { getTopSortedSkills } from '../../../utils/util'
@@ -17,11 +17,11 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   const { skillType } = router.query
   return (
     <>
-      <SkillTypeTabs currentPath={router.asPath} />
+      <SkillTypeTabGroup currentPath={router.asPath} />
       <div>
-        <h1 className="my-8 text-center text-lg font-medium"> {skillType} </h1>
+        <h1 className="mt-8 text-center text-lg font-medium sm:my-8"> {skillType} </h1>
         <div className="flex flex-wrap items-center justify-center gap-1">
-          <div className="h-[360px] w-[480px] max-w-full sm:hidden">
+          <div className="h-[340px] w-[480px] max-w-full sm:hidden">
             <PieChart data={stats} smallView={true}></PieChart>
           </div>
           <div className="hidden h-[450px] w-[600px] max-w-full sm:block">

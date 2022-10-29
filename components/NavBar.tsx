@@ -19,7 +19,7 @@ import { useRouter } from 'next/router'
 const navigation = [
   {
     name: 'Jobs',
-    href: '/jobs/SJ',
+    href: '/jobs/SJ/24',
     icon: <BriefcaseIcon className="block h-6 w-6" aria-hidden="true" />,
   },
   {
