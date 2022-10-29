@@ -44,10 +44,9 @@ const sortByDropdownOptions = [
   '# of skills (Low to High)',
 ]
 
-const getTimeElapsed = (createdAt: string) => {
-  const createdAtDate = new Date(createdAt)
+const getTimeElapsed = (createdAt: number) => {
   const now = new Date()
-  const elapsed = Math.floor((now.getTime() - createdAtDate.getTime()) / (1000 * 60 * 60))
+  const elapsed = Math.floor((now.getTime() - createdAt) / (1000 * 60 * 60))
   return elapsed < 1 ? 'within an hour' : `${elapsed} hours ago`
 }
 
@@ -195,7 +194,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       let { company, link, loc, salary, skills, title } = mockJob
       return {
         company,
-        createdAt: new Date().toLocaleDateString('en-us'),
+        createdAt: new Date().getTime(),
         link,
         loc,
         salary,
@@ -228,7 +227,7 @@ const assembleJobObject = (snapshot: QuerySnapshot) => {
     const { company, createdAt, link, loc, remote, salary, skills, title } = doc.data()
     return {
       company,
-      createdAt: createdAt.toDate().toLocaleDateString('en-us'),
+      createdAt: createdAt.toDate().getTime(),
       link,
       loc: loc.split('+')[0],
       remote,

@@ -2,7 +2,7 @@ import { SkillType } from './Skills'
 
 export type Job = {
   company: string
-  createdAt: string
+  createdAt: number
   link: string
   loc: string
   remote: boolean
