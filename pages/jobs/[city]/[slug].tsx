@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 import { checkTodayData, db } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { Job } from '../../../types/Jobs'
@@ -46,22 +46,22 @@ const getTimeElapsed = (createdAt: string) => {
 }
 
 export default function JobPosts(props: { jobs: Job[] }) {
-  const [jobs, setJobs] = useState(props.jobs)
   const [sortBy, setSortBy] = useState<string>('Sort By')
   const router = useRouter()
   const { city, slug } = router.query
 
-  const sortJobs = (sortBy: string) => {
-    if (sortBy === 'Sort By') return
-    const sortedJobs = [...jobs]
-    const isAscending = sortBy === 'Company name (A-Z)'
-    sortedJobs.sort((a, b) => {
-      if (a.company < b.company) return isAscending ? -1 : 1
-      if (a.company > b.company) return isAscending ? 1 : -1
-      return 0
-    })
-    setJobs(sortedJobs)
-  }
+  const jobs = useMemo(() => {
+    if (sortBy === 'Sort By') {
+      return [...props.jobs]
+    } else {
+      const isAscending = sortBy === 'Company name (A-Z)'
+      return props.jobs.sort((a, b) => {
+        if (a.company < b.company) return isAscending ? -1 : 1
+        if (a.company > b.company) return isAscending ? 1 : -1
+        return 0
+      })
+    }
+  }, [props.jobs, sortBy])
 
   return (
     <div>
@@ -94,10 +94,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
         <DropdownMenu
           options={sortByDropdownOptions}
           selected={sortBy}
-          onChangeCallback={(selected) => {
-            setSortBy(selected)
-            sortJobs(selected as string)
-          }}
+          onChangeCallback={(selected) => setSortBy(selected)}
         ></DropdownMenu>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -174,6 +171,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
+  const { city, slug } = context.params
+  let shiftDateBy = Number(slug) / 24 - 1
+
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
     const curatedMockData = mockJobs.map((mockJob) => {
@@ -188,11 +188,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
         title,
       }
     })
-    return { props: { jobs: curatedMockData } }
-  }
+    // make curatedMockData x times longer based on shiftDateBy to test pagination
+    const mockData = Array.from({ length: shiftDateBy + 1 }, () => curatedMockData).flat()
 
-  const { city, slug } = context.params
-  let shiftDateBy = Number(slug) / 24 - 1
+    return { props: { jobs: mockData } }
+  }
 
   // if jobs haven't been updated today, shift back by 1 day
   let dateStr = convertDateToString(new Date())
