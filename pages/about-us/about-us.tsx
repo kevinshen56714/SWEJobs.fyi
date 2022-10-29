@@ -90,7 +90,7 @@ function AboutUs() {
       <div>
         <div className="w-full rounded-lg border bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
           <div className="sm:hidden">
-            <label htmlFor="tabs" class="sr-only">
+            <label htmlFor="tabs" className="sr-only">
               Select tab
             </label>
             <select
