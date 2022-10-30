@@ -75,8 +75,8 @@ export const NavBar = () => {
                     src="/global-job.svg"
                     alt="SWEJobs.fyi"
                   />
-                  <Link href="/">
-                    <a className="rounded-md px-3 text-lg font-semibold text-white">SWEJobs.fyi</a>
+                  <Link href="/" className="rounded-md px-3 text-lg font-semibold text-white">
+                    SWEJobs.fyi
                   </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -84,22 +84,23 @@ export const NavBar = () => {
                     {navigation.map(({ href, name, icon }) => {
                       const current = router.asPath.startsWith(href.split('/', 2).join('/'))
                       return (
-                        <Link href={href} key={name}>
-                          <a
-                            className={classNames(
-                              {
-                                'bg-gray-900 text-white': current,
-                                'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
-                              },
-                              'flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium'
-                            )}
-                            aria-current={current ? 'page' : undefined}
-                          >
-                            {icon}
-                            {name}
-                          </a>
-                        </Link>
-                      )
+                        (<Link
+                          href={href}
+                          key={name}
+                          className={classNames(
+                            {
+                              'bg-gray-900 text-white': current,
+                              'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
+                            },
+                            'flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium'
+                          )}
+                          aria-current={current ? 'page' : undefined}>
+
+                          {icon}
+                          {name}
+
+                        </Link>)
+                      );
                     })}
                     {/* About dropdown */}
                     <Menu as="div" className="relative ml-3">
@@ -196,5 +197,5 @@ export const NavBar = () => {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

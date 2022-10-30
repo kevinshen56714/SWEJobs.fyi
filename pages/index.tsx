@@ -31,16 +31,16 @@ export default function Home() {
           {cities.map(({ name, city }, i) => (
             <div className={styles.card} key={i}>
               <h2>{name}</h2>
-              <Link href={`/jobs/${city}`}>
-                <a className={styles.link}>Jobs &rarr;</a>
+              <Link href={`/jobs/${city}`} className={styles.link}>
+                Jobs &rarr;
               </Link>
-              <Link href={`/stats/${city}`}>
-                <a className={styles.link}>Stats &rarr;</a>
+              <Link href={`/stats/${city}`} className={styles.link}>
+                Stats &rarr;
               </Link>
             </div>
           ))}
         </div>
       </main>
     </div>
-  )
+  );
 }
