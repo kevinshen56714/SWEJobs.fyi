@@ -81,7 +81,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
 
   return (
     <div>
-      <ul className="flex flex-wrap gap-2 text-xs font-medium sm:text-sm">
+      <ul className="flex flex-wrap text-sm font-medium sm:gap-2">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
           return (
@@ -104,19 +104,19 @@ export default function JobPosts(props: { jobs: Job[] }) {
         })}
       </ul>
       <div className="my-2 flex w-full items-end justify-between">
-        <div className="flex items-center gap-2">
-          <FilterPopover skillBadgeCallBack={handleSkillBadgeClick}></FilterPopover>
-          {filter.map((skill, i) => (
-            <SkillBadge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
-              <XCircleIcon className="h-5 w-5"></XCircleIcon>
-            </SkillBadge>
-          ))}
-        </div>
+        <FilterPopover skillBadgeCallBack={handleSkillBadgeClick}></FilterPopover>
         <DropdownMenu
           options={sortByDropdownOptions}
           selected={sortBy}
           onChangeCallback={setSortBy}
         ></DropdownMenu>
+      </div>
+      <div className="flex flex-wrap">
+        {filter.map((skill, i) => (
+          <SkillBadge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
+            <XCircleIcon className="h-5 w-5"></XCircleIcon>
+          </SkillBadge>
+        ))}
       </div>
       <div className="mt-3 mb-1 text-sm text-gray-500">{`Showing ${jobs.length} jobs${
         jobs.length ? ` (updated: ${getTimeElapsed(jobs[0].createdAt)})` : ''
@@ -126,10 +126,10 @@ export default function JobPosts(props: { jobs: Job[] }) {
           <thead className="border-b bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="py-3 px-6">
-                Company
+                Company & Role
               </th>
               <th scope="col" className="py-3 px-6">
-                Role
+                Languages
               </th>
               <th scope="col" className="py-3 px-6">
                 Skills
@@ -154,20 +154,34 @@ export default function JobPosts(props: { jobs: Job[] }) {
                 >
                   <td
                     scope="row"
-                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
+                    className="max-w-[10rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline sm:max-w-sm"
                   >
                     <a href={link}>
                       {company}
-                      <p className="truncate text-left text-sm font-normal text-gray-500">{loc}</p>
+                      <p className="whitespace-nowrap font-normal text-gray-900">{title}</p>
                     </a>
                   </td>
-                  <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline">
+                  {/* <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline">
                     <a href={link}>
                       {title}
-                      <p className="text-left text-sm font-normal text-gray-700">
-                        {skills[SkillType.LANGUAGE].join(', ')}
-                      </p>
+                      <p className="text-left text-sm font-normal text-gray-700">{salary}</p>
                     </a>
+                  </td> */}
+                  <td className="max-w-[18rem] py-2 px-6">
+                    <div className="flex flex-wrap">
+                      {Object.keys(skills).map((type) =>
+                        skills[type].map(
+                          (skill, i) =>
+                            type === SkillType.LANGUAGE && (
+                              <SkillBadge
+                                key={i}
+                                skill={skill}
+                                onClickCallBack={handleSkillBadgeClick}
+                              />
+                            )
+                        )
+                      )}
+                    </div>
                   </td>
                   <td className="max-w-[25rem] py-2 px-6">
                     <div className="flex flex-wrap">
@@ -243,7 +257,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const querySnapshot = await getDocs(collection(db, `${dateStr}/${city}/jobs`))
   const jobs = assembleJobObject(querySnapshot)
-  console.log(`There are ${jobs.length} jobs in ${city} today`)
+  console.log(`There are ${jobs.length} jobs in ${city} ${slugs[slug as string]}`)
   // Pass collection data to the page via props
   return { props: { jobs } }
 }

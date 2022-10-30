@@ -29,7 +29,7 @@ export const mockJobs = [
     title: 'Software Engineer',
   },
   {
-    company: 'Example Company 2',
+    company: 'Example Company 2 - some very long company name',
     desc: `
       Role Number: 200405446 Play a part in the next revolution in human-computer interaction.
       Contribute to the product that is redefining mobile computing through voice interaction.
@@ -65,7 +65,7 @@ export const mockJobs = [
       in Computer Science, Electrical Engineering or related field Additional Requirements`,
     link: '#',
     loc: 'Seattle, WA',
-    salary: 'No salary estimation',
+    salary: '',
     skills: ['C/C++', 'Python'],
     title: 'AI/ML Machine Learning Engineer',
   },
@@ -122,7 +122,25 @@ export const mockJobs = [
     link: '#',
     loc: 'Los Angeles, CA',
     salary: 'Estimated $138K-$175K a year',
-    skills: ['Python', 'MySQL'],
-    title: 'Principal DevOps Engineer',
+    skills: [
+      'Groovy',
+      'Bash/Shell',
+      'Python',
+      'MySQL',
+      'Go',
+      'PowerShell',
+      'Elixir',
+      'JavaScript',
+      'React',
+      'NodeJS',
+      'AWS',
+      'GCP',
+      'Azure',
+      'Docker',
+      'Terrafom',
+      'Kubernetes',
+      'Jenkins',
+    ],
+    title: 'Principal DevOps Engineer - Some very long job title',
   },
 ]

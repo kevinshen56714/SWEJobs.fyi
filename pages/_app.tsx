@@ -2,6 +2,7 @@ import '../styles/globals.scss'
 
 import type { AppProps } from 'next/app'
 import { CityTabGroup } from '../components/Tabs'
+import { Footer } from '../components/Footer'
 import { NavBar } from '../components/NavBar'
 import { logAnalyticsEvent } from '../utils/firebase'
 import { useEffect } from 'react'
@@ -22,9 +23,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       {['trends', 'stats', 'jobs'].includes(currentPath.split('/')[1]) && (
         <CityTabGroup currentPath={currentPath} />
       )}
-      <div className="mx-auto max-w-5xl px-4 py-4 sm:px-12 lg:px-5">
+      <div className="mx-auto min-h-[calc(100vh-300px)] max-w-5xl px-4 py-4 sm:min-h-[calc(100vh-400px)] sm:px-12 lg:px-5">
         <Component {...pageProps} />
       </div>
+      <Footer />
     </>
   )
 }
