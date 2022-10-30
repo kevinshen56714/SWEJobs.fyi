@@ -1,16 +1,17 @@
+import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 import { checkTodayData, db } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useMemo, useState } from 'react'
 
+import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { FilterPopover } from '../../../components/FilterPopover'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
 import { SkillBadge } from '../../../components/SkillBadge'
 import { SkillType } from '../../../types/Skills'
-import { XCircleIcon } from '@heroicons/react/24/outline'
 import { categorizeSkills } from '../../../utils/analysis'
 import { cities } from '../..'
 import classNames from 'classnames'
@@ -81,7 +82,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
 
   return (
     <div>
-      <ul className="flex flex-wrap gap-2 text-xs font-medium sm:text-sm">
+      <ul className="flex flex-wrap text-sm font-medium sm:gap-2">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
           return (
@@ -104,19 +105,19 @@ export default function JobPosts(props: { jobs: Job[] }) {
         })}
       </ul>
       <div className="my-2 flex w-full items-end justify-between">
-        <div className="flex items-center gap-2">
-          <FilterPopover skillBadgeCallBack={handleSkillBadgeClick}></FilterPopover>
-          {filter.map((skill, i) => (
-            <SkillBadge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
-              <XCircleIcon className="h-5 w-5"></XCircleIcon>
-            </SkillBadge>
-          ))}
-        </div>
+        <FilterPopover skillBadgeCallBack={handleSkillBadgeClick}></FilterPopover>
         <DropdownMenu
           options={sortByDropdownOptions}
           selected={sortBy}
           onChangeCallback={setSortBy}
         ></DropdownMenu>
+      </div>
+      <div className="flex flex-wrap">
+        {filter.map((skill, i) => (
+          <SkillBadge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
+            <XCircleIcon className="h-5 w-5"></XCircleIcon>
+          </SkillBadge>
+        ))}
       </div>
       <div className="mt-3 mb-1 text-sm text-gray-500">{`Showing ${jobs.length} jobs${
         jobs.length ? ` (updated: ${getTimeElapsed(jobs[0].createdAt)})` : ''
@@ -125,11 +126,11 @@ export default function JobPosts(props: { jobs: Job[] }) {
         <table className="w-full text-left text-sm text-gray-500">
           <thead className="border-b bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
-              <th scope="col" className="py-3 px-6">
-                Company
+              <th scope="col" className="py-3 px-10">
+                Company & Role
               </th>
               <th scope="col" className="py-3 px-6">
-                Role
+                Languages
               </th>
               <th scope="col" className="py-3 px-6">
                 Skills
@@ -145,47 +146,129 @@ export default function JobPosts(props: { jobs: Job[] }) {
               </tr>
             )}
             {jobs.map((job, i) => {
-              const { company, link, loc, salary, skills, title } = job
+              const { company, link, loc, remote, salary, skills, title } = job
               const evenRow = i % 2 === 0
               return (
-                <tr
-                  className={evenRow ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}
-                  key={i}
-                >
-                  <td
-                    scope="row"
-                    className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
-                  >
-                    <a href={link}>
-                      {company}
-                      <p className="truncate text-left text-sm font-normal text-gray-500">{loc}</p>
-                    </a>
-                  </td>
-                  <td className="max-w-xs truncate whitespace-nowrap py-2 px-6 font-medium text-gray-900 hover:cursor-pointer hover:underline">
-                    <a href={link}>
-                      {title}
-                      <p className="text-left text-sm font-normal text-gray-700">
-                        {skills[SkillType.LANGUAGE].join(', ')}
-                      </p>
-                    </a>
-                  </td>
-                  <td className="max-w-[25rem] py-2 px-6">
-                    <div className="flex flex-wrap">
-                      {Object.keys(skills).map((type) =>
-                        skills[type].map(
-                          (skill, i) =>
-                            type !== SkillType.LANGUAGE && (
-                              <SkillBadge
-                                key={i}
-                                skill={skill}
-                                onClickCallBack={handleSkillBadgeClick}
-                              />
-                            )
-                        )
-                      )}
-                    </div>
-                  </td>
-                </tr>
+                <Disclosure key={i}>
+                  {({ open }) => (
+                    <>
+                      <tr
+                        className={classNames({
+                          'bg-white': evenRow,
+                          'bg-gray-50': !evenRow,
+                          'border-b shadow-sm': open,
+                        })}
+                      >
+                        <td className="max-w-[10rem] py-2 px-3 sm:max-w-xs">
+                          <Disclosure.Button className="flex w-full items-center gap-3">
+                            <ChevronDownIcon
+                              className={classNames(
+                                { 'rotate-180 transform': open },
+                                'h-4 w-4 text-gray-700'
+                              )}
+                            />
+                            <div className="truncate whitespace-nowrap text-left font-medium text-cyan-600 hover:underline">
+                              {company}
+                              <p className="flex items-center truncate whitespace-nowrap font-normal text-gray-900">
+                                {remote && <SkillBadge>Remote</SkillBadge>}
+                                {title}
+                              </p>
+                            </div>
+                          </Disclosure.Button>
+                        </td>
+                        <td className="max-w-[18rem] py-2 px-6">
+                          <div className="flex flex-wrap">
+                            {Object.keys(skills).map((type) =>
+                              skills[type].map(
+                                (skill, i) =>
+                                  type === SkillType.LANGUAGE && (
+                                    <SkillBadge
+                                      key={i}
+                                      skill={skill}
+                                      onClickCallBack={handleSkillBadgeClick}
+                                    />
+                                  )
+                              )
+                            )}
+                          </div>
+                        </td>
+                        <td className="max-w-[25rem] py-2 px-6">
+                          <div className="flex flex-wrap">
+                            {Object.keys(skills).map((type) =>
+                              skills[type].map(
+                                (skill, i) =>
+                                  type !== SkillType.LANGUAGE && (
+                                    <SkillBadge
+                                      key={i}
+                                      skill={skill}
+                                      onClickCallBack={handleSkillBadgeClick}
+                                    />
+                                  )
+                              )
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={3}>
+                          <Disclosure.Panel
+                            className={classNames(
+                              {
+                                'bg-white': evenRow,
+                                'bg-gray-50': !evenRow,
+                              },
+                              'grid grid-cols-[9rem_minmax(0,_1fr)] border-b px-10 py-4 text-sm text-gray-500 shadow-sm sm:grid-cols-[19rem_minmax(0,_1fr)]'
+                            )}
+                          >
+                            <div className="flex flex-col gap-1 text-base font-medium text-cyan-600">
+                              {company}
+                              <p className="text-gray-900">{title}</p>
+                              <p className="text-sm font-normal text-gray-700">{loc}</p>
+                              <p className="text-sm font-normal text-gray-700">
+                                {salary || 'No salary estimation'}
+                              </p>
+                              <button
+                                type="button"
+                                className={classNames(
+                                  {
+                                    'bg-gray-50 hover:bg-gray-100': evenRow,
+                                    'bg-gray-100 hover:bg-gray-200': !evenRow,
+                                  },
+                                  'w-24 rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700'
+                                )}
+                              >
+                                <a href={link} target="_blank" rel="noreferrer">
+                                  Job Post
+                                </a>
+                              </button>
+                            </div>
+                            <div className="flex flex-col gap-1 text-base font-medium text-gray-900">
+                              Skill Requirements
+                              <div
+                                className={classNames(
+                                  {
+                                    'bg-gray-100': evenRow,
+                                    'bg-gray-200': !evenRow,
+                                  },
+                                  'flex h-full flex-col gap-2 rounded-md px-4 py-2 text-sm'
+                                )}
+                              >
+                                {Object.keys(skills).map((type, i) =>
+                                  skills[type].length ? (
+                                    <p key={i}>
+                                      {`${type}: `}
+                                      <span className="font-normal">{skills[type].join(', ')}</span>
+                                    </p>
+                                  ) : null
+                                )}
+                              </div>
+                            </div>
+                          </Disclosure.Panel>
+                        </td>
+                      </tr>
+                    </>
+                  )}
+                </Disclosure>
               )
             })}
           </tbody>
@@ -217,12 +300,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
     const curatedMockData = mockJobs.map((mockJob) => {
-      let { company, link, loc, salary, skills, title } = mockJob
+      let { company, link, loc, remote, salary, skills, title } = mockJob
       return {
         company,
         createdAt: new Date().getTime(),
         link,
         loc,
+        remote,
         salary,
         skills: categorizeSkills(skills),
         title,
@@ -243,7 +327,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const querySnapshot = await getDocs(collection(db, `${dateStr}/${city}/jobs`))
   const jobs = assembleJobObject(querySnapshot)
-  console.log(`There are ${jobs.length} jobs in ${city} today`)
+  console.log(`There are ${jobs.length} jobs in ${city} ${slugs[slug as string]}`)
   // Pass collection data to the page via props
   return { props: { jobs } }
 }

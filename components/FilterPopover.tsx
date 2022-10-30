@@ -11,7 +11,7 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
   return (
     <div>
       <Popover className="relative">
-        {({ open }) => (
+        {({ open, close }) => (
           <>
             <Popover.Button
               type="button"
@@ -58,7 +58,10 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
                               <SkillBadge
                                 key={i}
                                 skill={skill}
-                                onClickCallBack={skillBadgeCallBack}
+                                onClickCallBack={(e) => {
+                                  skillBadgeCallBack(e)
+                                  close()
+                                }}
                               />
                             )
                           })}
