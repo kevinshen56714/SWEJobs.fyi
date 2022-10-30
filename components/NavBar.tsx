@@ -20,17 +20,17 @@ const navigation = [
   {
     name: 'Jobs',
     href: '/jobs/SJ/24',
-    icon: <BriefcaseIcon className="block h-6 w-6" aria-hidden="true" />,
+    icon: <BriefcaseIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
   {
     name: 'Trends',
     href: `/trends/SJ/${SkillType.LANGUAGE}`,
-    icon: <ChartBarIcon className="block h-6 w-6" aria-hidden="true" />,
+    icon: <ChartBarIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
   {
     name: 'Stats',
     href: `/stats/SJ/${SkillType.LANGUAGE}`,
-    icon: <ChartPieIcon className="block h-6 w-6" aria-hidden="true" />,
+    icon: <ChartPieIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
 ]
 
@@ -38,12 +38,12 @@ const smallViewExtraNavigation = [
   {
     name: 'About Data',
     href: '#',
-    icon: <InformationCircleIcon className="block h-6 w-6" aria-hidden="true" />,
+    icon: <InformationCircleIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
   {
     name: 'About Us',
     href: '#',
-    icon: <UserGroupIcon className="block h-6 w-6" aria-hidden="true" />,
+    icon: <UserGroupIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
 ]
 
@@ -182,7 +182,7 @@ export const NavBar = () => {
                         'bg-gray-900 text-white': current,
                         'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
                       },
-                      'flex gap-2 rounded-md px-3 py-2 text-base font-medium'
+                      'flex gap-2 rounded-md px-3 py-1.5 text-sm font-medium'
                     )}
                     aria-current={current ? 'page' : undefined}
                   >

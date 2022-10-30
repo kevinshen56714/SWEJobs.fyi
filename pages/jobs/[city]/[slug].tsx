@@ -5,37 +5,19 @@ import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useMemo, useState } from 'react'
 
 import { DropdownMenu } from '../../../components/DropdownMenu'
+import { FilterPopover } from '../../../components/FilterPopover'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
+import { SkillBadge } from '../../../components/SkillBadge'
 import { SkillType } from '../../../types/Skills'
+import { XCircleIcon } from '@heroicons/react/24/outline'
 import { categorizeSkills } from '../../../utils/analysis'
 import { cities } from '../..'
 import classNames from 'classnames'
 import { mockJobs } from '../../../data/mockJobs'
 import { useRouter } from 'next/router'
 
-const SkillBadge = ({ children, type }) => {
-  if (type === SkillType.LANGUAGE) return
-  return (
-    <span
-      className={classNames(
-        {
-          'bg-[#cbf3f0] text-black':
-            type === SkillType.FRONTEND || type === SkillType.NATIVE_OR_CROSS,
-          'bg-[#2ec4b5a3] text-black': type === SkillType.BACKEND,
-          'bg-[#ffbf69] text-black': type === SkillType.DATABASE,
-          'bg-[#ff9f1c] text-black': type === SkillType.CLOUD_INFRA,
-          'bg-[#bde6ff] text-black': type === SkillType.AI_ML || type === SkillType.GRAPHICS,
-        },
-        'my-0.5 mr-2 rounded-lg px-1.5 py-[1px] text-xs font-medium'
-      )}
-    >
-      {children}
-    </span>
-  )
-}
-
-const slugs = { 24: 'Within 24 hours', 48: '24-48 hours', 72: '48-72 hours' }
+export const slugs = { 24: 'Within 24 hours', 48: '24-48 hours', 72: '48-72 hours' }
 const sortByDropdownOptions = [
   'Sort By',
   'Company name (A-Z)',
@@ -56,18 +38,24 @@ const getSkillCount = (job: Job) => {
     .reduce((acc, cur) => acc + job.skills[cur].length, 0)
 }
 
-const sortJobs = (jobs: Job[], sortBy: string) => {
+const sortJobs = (jobs: Job[], sortBy: string, filter: string[]) => {
   if (sortBy === 'Company name (A-Z)') {
-    return jobs.sort((a, b) => (a.company.toLowerCase() > b.company.toLowerCase() ? 1 : -1))
+    jobs = jobs.sort((a, b) => (a.company.toLowerCase() > b.company.toLowerCase() ? 1 : -1))
   } else if (sortBy === 'Company name (Z-A)') {
-    return jobs.sort((a, b) => (a.company.toLowerCase() < b.company.toLowerCase() ? 1 : -1))
+    jobs = jobs.sort((a, b) => (a.company.toLowerCase() < b.company.toLowerCase() ? 1 : -1))
   } else if (sortBy === '# of skills (High to Low)') {
-    return jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? 1 : -1))
+    jobs = jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? 1 : -1))
   } else if (sortBy === '# of skills (Low to High)') {
-    return jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? -1 : 1))
-  } else {
-    return jobs
+    jobs = jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? -1 : 1))
   }
+  // filter jobs by skills contained in filter
+  if (filter.length > 0) {
+    jobs = jobs.filter((job) => {
+      const skills = Object.values(job.skills).flat()
+      return filter.some((skill) => skills.includes(skill))
+    })
+  }
+  return jobs
 }
 
 export default function JobPosts(props: { jobs: Job[] }) {
@@ -75,11 +63,25 @@ export default function JobPosts(props: { jobs: Job[] }) {
   const { city, slug } = router.query
 
   const [sortBy, setSortBy] = useState<string>('Sort By')
-  const jobs = useMemo(() => sortJobs([...props.jobs], sortBy), [props.jobs, sortBy])
+  const [filter, setFilter] = useState<string[]>([])
+  const jobs = useMemo(
+    () => sortJobs([...props.jobs], sortBy, filter),
+    [props.jobs, sortBy, filter]
+  )
+
+  console.log('job post rerendered')
+
+  const handleSkillBadgeClick = (skill: string) => {
+    if (!filter.includes(skill)) setFilter([...filter, skill])
+  }
+
+  const handleCancelFilter = (skill: string) => {
+    if (filter.includes(skill)) setFilter(filter.filter((s) => s !== skill))
+  }
 
   return (
     <div>
-      <ul className="flex flex-wrap gap-2 text-sm font-medium">
+      <ul className="flex flex-wrap gap-2 text-xs font-medium sm:text-sm">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
           return (
@@ -102,18 +104,26 @@ export default function JobPosts(props: { jobs: Job[] }) {
         })}
       </ul>
       <div className="my-2 flex w-full items-end justify-between">
-        <div className="text-sm text-gray-500">{`Showing ${
-          jobs.length
-        } jobs (updated: ${getTimeElapsed(jobs[0].createdAt)})`}</div>
+        <div className="flex items-center gap-2">
+          <FilterPopover skillBadgeCallBack={handleSkillBadgeClick}></FilterPopover>
+          {filter.map((skill, i) => (
+            <SkillBadge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
+              <XCircleIcon className="h-5 w-5"></XCircleIcon>
+            </SkillBadge>
+          ))}
+        </div>
         <DropdownMenu
           options={sortByDropdownOptions}
           selected={sortBy}
-          onChangeCallback={(selected) => setSortBy(selected)}
+          onChangeCallback={setSortBy}
         ></DropdownMenu>
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="mt-3 mb-1 text-sm text-gray-500">{`Showing ${jobs.length} jobs${
+        jobs.length ? ` (updated: ${getTimeElapsed(jobs[0].createdAt)})` : ''
+      }`}</div>
+      <div className="relative overflow-x-auto border border-gray-300 bg-gray-50 shadow-sm sm:rounded-lg">
         <table className="w-full text-left text-sm text-gray-500">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+          <thead className="border-b bg-gray-50 text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="py-3 px-6">
                 Company
@@ -127,10 +137,21 @@ export default function JobPosts(props: { jobs: Job[] }) {
             </tr>
           </thead>
           <tbody>
+            {!jobs.length && (
+              <tr>
+                <td colSpan={3} className="bg-white py-5 text-center">
+                  No matching jobs found
+                </td>
+              </tr>
+            )}
             {jobs.map((job, i) => {
               const { company, link, loc, salary, skills, title } = job
+              const evenRow = i % 2 === 0
               return (
-                <tr className="border-b bg-white hover:bg-gray-50" key={i}>
+                <tr
+                  className={evenRow ? 'bg-white hover:bg-gray-50' : 'bg-gray-50 hover:bg-gray-100'}
+                  key={i}
+                >
                   <td
                     scope="row"
                     className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
@@ -151,11 +172,16 @@ export default function JobPosts(props: { jobs: Job[] }) {
                   <td className="max-w-[25rem] py-2 px-6">
                     <div className="flex flex-wrap">
                       {Object.keys(skills).map((type) =>
-                        skills[type].map((skill, i) => (
-                          <SkillBadge key={i} type={type}>
-                            {skill}
-                          </SkillBadge>
-                        ))
+                        skills[type].map(
+                          (skill, i) =>
+                            type !== SkillType.LANGUAGE && (
+                              <SkillBadge
+                                key={i}
+                                skill={skill}
+                                onClickCallBack={handleSkillBadgeClick}
+                              />
+                            )
+                        )
                       )}
                     </div>
                   </td>

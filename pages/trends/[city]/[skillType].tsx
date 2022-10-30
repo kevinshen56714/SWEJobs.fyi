@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { Timestamp, collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 import { checkTodayData, db } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../../utils/util'
+import { doc, getDoc } from 'firebase/firestore/lite'
 import { useEffect, useState } from 'react'
 
 import { BarChart } from '../../../components/BarChart'
@@ -35,8 +35,8 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
   return (
     <>
       <SkillTypeTabGroup currentPath={router.asPath} />
-      <div className="flex flex-col items-center">
-        <h1 className="mt-8 text-center text-lg font-medium"> {skillType} </h1>
+      <div className="mt-8 flex flex-col items-center">
+        <h1 className="text-lg font-medium"> {skillType} </h1>
         <DropdownMenu
           options={['All', ...allKeys]}
           selected={skillToShow}
@@ -106,12 +106,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // get last 7 days of data
   await Promise.all(
     Object.keys(trendsData).map(async (dateStr) => {
-      const allSkills = skillsByType[skillType as string]
-      for (let i = 0; i < allSkills.length; i++) {
-        let skill = allSkills[i]
+      const skillCounts = await getDailySkillCounts(city, dateStr)
+      skillsByType[skillType as string].forEach((skill) => {
         if (skill instanceof Array) skill = skill[0]
-        trendsData[dateStr][skill] = await getDailySkillCount(city, skill, dateStr)
-      }
+        trendsData[dateStr][skill] = skillCounts[skill] || 0
+      })
       const sortedData = getTopSortedSkills(trendsData[dateStr])
       trendsData[dateStr] = sortedData
     })
@@ -132,18 +131,8 @@ const getLast7Days = (todayStr: string) => {
   return last7Days
 }
 
-const getDailySkillCount = async (city: string | string[], skill: string, dateStr: string) => {
-  const collGroup = collectionGroup(db, 'jobs')
-  const date = new Date(dateStr)
-  const nextDate = new Date()
-  nextDate.setDate(date.getDate() + 1)
-  const skillQuery = query(
-    collGroup,
-    where('skills', 'array-contains', skill),
-    where('city', '==', city),
-    where('createdAt', '>=', Timestamp.fromDate(date)),
-    where('createdAt', '<', Timestamp.fromDate(nextDate))
-  )
-  const snapshot = await getCount(skillQuery)
-  return snapshot.data().count
+const getDailySkillCounts = async (city: string | string[], dateStr: string) => {
+  const docRef = doc(db, dateStr, city as string)
+  const docSnap = await getDoc(docRef)
+  return docSnap.data()['stats']
 }

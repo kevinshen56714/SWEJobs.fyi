@@ -25,7 +25,7 @@ const languages = [
   'LISP',
   'Lua',
   'MATLAB',
-  ['Objective-C', 'Objective C'],
+  ['Objective-C', 'Objective C', 'Obj-C'],
   'Perl',
   'PowerShell',
   'Python',
