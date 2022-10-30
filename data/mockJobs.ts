@@ -24,6 +24,7 @@ export const mockJobs = [
       and browsers Integrate with RESTful APIs.`,
     link: '#',
     loc: 'Hybrid remote in San Francisco, CA 94118',
+    remote: true,
     salary: '$150,000 - $180,000 a year',
     skills: ['React', 'Redux'],
     title: 'Software Engineer',
@@ -65,6 +66,7 @@ export const mockJobs = [
       in Computer Science, Electrical Engineering or related field Additional Requirements`,
     link: '#',
     loc: 'Seattle, WA',
+    remote: false,
     salary: '',
     skills: ['C/C++', 'Python'],
     title: 'AI/ML Machine Learning Engineer',
@@ -121,6 +123,7 @@ export const mockJobs = [
       performed`,
     link: '#',
     loc: 'Los Angeles, CA',
+    remote: false,
     salary: 'Estimated $138K-$175K a year',
     skills: [
       'Groovy',
