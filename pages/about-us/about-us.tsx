@@ -23,7 +23,6 @@ function AboutUs() {
       <br />
       <div className="flex items-center justify-center">
         <div className="max-w-sm overflow-hidden rounded-lg shadow-lg hover:shadow-xl">
-          <Image className="w-full" src="" alt="image" />
           <div className="px-6 py-4">
             <div className="mb-2 text-xl font-bold">Our Vision</div>
             <p className="text-base text-gray-700">
@@ -44,7 +43,6 @@ function AboutUs() {
           </div>
         </div>
         <div className="max-w-sm overflow-hidden rounded-lg shadow-lg hover:shadow-xl">
-          <Image className="w-full" src="" alt="image" />
           <div className="px-6 py-4">
             <div className="mb-2 text-xl font-bold">Our Vision</div>
             <p className="text-base text-gray-700">
@@ -65,7 +63,6 @@ function AboutUs() {
           </div>
         </div>
         <div className="max-w-sm overflow-hidden rounded-lg shadow-lg hover:shadow-xl">
-          <Image className="w-full" src="" alt="image" />
           <div className="px-6 py-4">
             <div className="mb-2 text-xl font-bold">Our Vision</div>
             <p className="text-base text-gray-700">
