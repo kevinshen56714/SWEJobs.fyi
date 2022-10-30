@@ -4,7 +4,7 @@ import { SkillType } from '../types/Skills'
 import classNames from 'classnames'
 import { skillsByType } from '../utils/analysis'
 
-export const SkillBadge = (props: {
+export const Badge = (props: {
   skill?: string
   onClickCallBack?: Dispatch<SetStateAction<string>>
   children?: React.ReactNode
