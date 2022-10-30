@@ -35,8 +35,8 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
   return (
     <>
       <SkillTypeTabGroup currentPath={router.asPath} />
-      <div className="flex flex-col items-center">
-        <h1 className="mt-8 text-center text-lg font-medium"> {skillType} </h1>
+      <div className="mt-8 flex flex-col items-center">
+        <h1 className="text-lg font-medium"> {skillType} </h1>
         <DropdownMenu
           options={['All', ...allKeys]}
           selected={skillToShow}

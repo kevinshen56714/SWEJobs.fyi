@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { cities } from '..'
+import { slugs } from '../jobs/[city]/[slug]'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Check for secret to confirm this is a valid request
@@ -9,7 +10,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await Promise.all(cities.map(async ({ city }) => await res.revalidate(`/jobs/${city}`)))
+    await Promise.all(
+      Object.keys(slugs).flatMap((slug) =>
+        cities.map(async ({ city }) => await res.revalidate(`/jobs/${city}/${slug}`))
+      )
+    )
     return res.json({ revalidated: true })
   } catch (err) {
     // If there was an error, Next.js will continue
