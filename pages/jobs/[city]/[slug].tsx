@@ -5,12 +5,12 @@ import { checkTodayData, db } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useMemo, useState } from 'react'
 
+import { Badge } from '../../../components/Badge'
 import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { FilterPopover } from '../../../components/FilterPopover'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
-import { SkillBadge } from '../../../components/SkillBadge'
 import { SkillType } from '../../../types/Skills'
 import { categorizeSkills } from '../../../utils/analysis'
 import { cities } from '../..'
@@ -114,9 +114,9 @@ export default function JobPosts(props: { jobs: Job[] }) {
       </div>
       <div className="flex flex-wrap">
         {filter.map((skill, i) => (
-          <SkillBadge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
+          <Badge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
             <XCircleIcon className="h-5 w-5"></XCircleIcon>
-          </SkillBadge>
+          </Badge>
         ))}
       </div>
       <div className="mt-3 mb-1 text-sm text-gray-500">{`Showing ${jobs.length} jobs${
@@ -160,19 +160,23 @@ export default function JobPosts(props: { jobs: Job[] }) {
                         })}
                       >
                         <td className="max-w-[10rem] py-2 px-3 sm:max-w-xs">
-                          <Disclosure.Button className="flex w-full items-center gap-3">
-                            <ChevronDownIcon
-                              className={classNames(
-                                { 'rotate-180 transform': open },
-                                'h-4 w-4 text-gray-700'
-                              )}
-                            />
+                          <Disclosure.Button className="flex max-w-full items-center gap-3">
+                            <div>
+                              <ChevronDownIcon
+                                className={classNames(
+                                  { 'rotate-180 transform': open },
+                                  'h-4 w-4 text-gray-700'
+                                )}
+                              />
+                            </div>
                             <div className="truncate whitespace-nowrap text-left font-medium text-cyan-600 hover:underline">
                               {company}
-                              <p className="flex items-center truncate whitespace-nowrap font-normal text-gray-900">
-                                {remote && <SkillBadge>Remote</SkillBadge>}
-                                {title}
-                              </p>
+                              <div className="flex items-center">
+                                {remote && <Badge>Remote</Badge>}
+                                <p className="truncate whitespace-nowrap font-normal text-gray-900">
+                                  {title}
+                                </p>
+                              </div>
                             </div>
                           </Disclosure.Button>
                         </td>
@@ -182,7 +186,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               skills[type].map(
                                 (skill, i) =>
                                   type === SkillType.LANGUAGE && (
-                                    <SkillBadge
+                                    <Badge
                                       key={i}
                                       skill={skill}
                                       onClickCallBack={handleSkillBadgeClick}
@@ -198,7 +202,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               skills[type].map(
                                 (skill, i) =>
                                   type !== SkillType.LANGUAGE && (
-                                    <SkillBadge
+                                    <Badge
                                       key={i}
                                       skill={skill}
                                       onClickCallBack={handleSkillBadgeClick}
@@ -247,8 +251,8 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               <div
                                 className={classNames(
                                   {
-                                    'bg-gray-100': evenRow,
-                                    'bg-gray-200': !evenRow,
+                                    'bg-gray-50': evenRow,
+                                    'bg-gray-100': !evenRow,
                                   },
                                   'flex h-full flex-col gap-2 rounded-md px-4 py-2 text-sm'
                                 )}
