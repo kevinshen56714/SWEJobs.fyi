@@ -1,8 +1,8 @@
 import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 
+import { Badge } from './Badge'
 import { FunnelIcon } from '@heroicons/react/24/outline'
-import { SkillBadge } from './SkillBadge'
 import { SkillType } from '../types/Skills'
 import { skillsByType } from '../utils/analysis'
 
@@ -55,7 +55,7 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
                           {skillsByType[type].map((skill, i) => {
                             if (skill instanceof Array) skill = skill[0]
                             return (
-                              <SkillBadge
+                              <Badge
                                 key={i}
                                 skill={skill}
                                 onClickCallBack={(e) => {

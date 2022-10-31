@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
 
 export const cities = [
   { city: 'SJ', name: 'San Jose, CA' },
@@ -13,34 +12,19 @@ export const cities = [
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>SWEJobs.fyi</title>
         <meta name="description" content="View latest software engineer jobs and trends" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">swe-jobs.fyi!</a>
-        </h1>
+      <main className="mt-20 flex flex-col items-center justify-center">
+        <div className="text-2xl font-medium">Welcome to SWEJobs.fyi!</div>
 
-        <p className={styles.description}>Find recent jobs at one of the locations below</p>
-
-        <div className={styles.grid}>
-          {cities.map(({ name, city }, i) => (
-            <div className={styles.card} key={i}>
-              <h2>{name}</h2>
-              <Link href={`/jobs/${city}`} className={styles.link}>
-                Jobs &rarr;
-              </Link>
-              <Link href={`/stats/${city}`} className={styles.link}>
-                Stats &rarr;
-              </Link>
-            </div>
-          ))}
-        </div>
+        <p>Landing page is a work-in-progress</p>
+        <p>Please use the nav bar for navigation</p>
       </main>
     </div>
-  );
+  )
 }

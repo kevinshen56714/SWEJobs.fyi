@@ -7,33 +7,34 @@ export const CityTabGroup = (props: { currentPath: string }) => {
   const [_, parentPath, currentCity, currentType] = props.currentPath.split('/')
 
   const CityTabs = (props: { smallView: boolean }) => {
-    return <>
-      {cities.map(({ city, name }, i) => {
-        const currentTab = city === currentCity
-        const href = currentType
-          ? `/${parentPath}/${city}/${currentType}`
-          : `/${parentPath}/${city}`
-        return (
-          <li className="place-self-center" key={i}>
-            <Link
-              href={href}
-              className={classNames(
-                {
-                  'bg-gray-800 text-white': currentTab,
-                  'border-transparent hover:border-gray-300 hover:text-gray-100': !currentTab,
-                  'my-1.5 p-2': !props.smallView,
-                  'my-1 p-1.5': props.smallView,
-                },
-                'inline-block rounded-md'
-              )}>
-
-              {name}
-
-            </Link>
-          </li>
-        );
-      })}
-    </>;
+    return (
+      <>
+        {cities.map(({ city, name }, i) => {
+          const currentTab = city === currentCity
+          const href = currentType
+            ? `/${parentPath}/${city}/${currentType}`
+            : `/${parentPath}/${city}`
+          return (
+            <li className="place-self-center" key={i}>
+              <Link
+                href={href}
+                className={classNames(
+                  {
+                    'bg-gray-800 text-white': currentTab,
+                    'border-transparent hover:border-gray-300 hover:text-gray-100': !currentTab,
+                    'my-1.5 p-2': !props.smallView,
+                    'my-1 p-1.5': props.smallView,
+                  },
+                  'inline-block rounded-md'
+                )}
+              >
+                {name}
+              </Link>
+            </li>
+          )
+        })}
+      </>
+    )
   }
 
   return (
@@ -68,14 +69,13 @@ export const SkillTypeTabGroup = (props: { currentPath: string }) => {
                   'border-transparent hover:border-gray-300 hover:text-gray-600': !currentTab,
                 },
                 'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
-              )}>
-
+              )}
+            >
               {type}
-
             </Link>
           </li>
-        );
+        )
       })}
     </ul>
-  );
+  )
 }
