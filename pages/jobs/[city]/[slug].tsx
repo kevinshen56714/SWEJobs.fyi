@@ -87,18 +87,17 @@ export default function JobPosts(props: { jobs: Job[] }) {
           const currentTab = slugOption === slug
           return (
             <li key={i}>
-              <Link href={`/jobs/${city}/${slugOption}`}>
-                <a
-                  className={classNames(
-                    {
-                      'active border-cyan-600 text-cyan-600': currentTab,
-                      'border-transparent hover:border-gray-300 hover:text-gray-600': !currentTab,
-                    },
-                    'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
-                  )}
-                >
-                  {slugs[slugOption]}
-                </a>
+              <Link
+                href={`/jobs/${city}/${slugOption}`}
+                className={classNames(
+                  {
+                    'active border-cyan-600 text-cyan-600': currentTab,
+                    'border-transparent hover:border-gray-300 hover:text-gray-600': !currentTab,
+                  },
+                  'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
+                )}
+              >
+                {slugs[slugOption]}
               </Link>
             </li>
           )

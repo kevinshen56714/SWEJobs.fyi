@@ -14,6 +14,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { SkillType } from '../types/Skills'
 import classNames from 'classnames'
+import logo from '../public/global-job.svg'
 import { useRouter } from 'next/router'
 
 const navigation = [
@@ -68,15 +69,9 @@ export const NavBar = () => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image
-                    className="block h-8 w-auto lg:hidden"
-                    width={32}
-                    height={32}
-                    src="/global-job.svg"
-                    alt="SWEJobs.fyi"
-                  />
-                  <Link href="/">
-                    <a className="rounded-md px-3 text-lg font-semibold text-white">SWEJobs.fyi</a>
+                  <Image className="block h-8 w-8" src={logo} alt="SWEJobs.fyi" />
+                  <Link href="/" className="rounded-md px-3 text-lg font-semibold text-white">
+                    SWEJobs.fyi
                   </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -84,20 +79,20 @@ export const NavBar = () => {
                     {navigation.map(({ href, name, icon }) => {
                       const current = router.asPath.startsWith(href.split('/', 2).join('/'))
                       return (
-                        <Link href={href} key={name}>
-                          <a
-                            className={classNames(
-                              {
-                                'bg-gray-900 text-white': current,
-                                'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
-                              },
-                              'flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium'
-                            )}
-                            aria-current={current ? 'page' : undefined}
-                          >
-                            {icon}
-                            {name}
-                          </a>
+                        <Link
+                          href={href}
+                          key={name}
+                          className={classNames(
+                            {
+                              'bg-gray-900 text-white': current,
+                              'text-gray-300 hover:bg-gray-700 hover:text-white': !current,
+                            },
+                            'flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium'
+                          )}
+                          aria-current={current ? 'page' : undefined}
+                        >
+                          {icon}
+                          {name}
                         </Link>
                       )
                     })}

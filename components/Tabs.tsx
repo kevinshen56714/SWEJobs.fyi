@@ -16,20 +16,19 @@ export const CityTabGroup = (props: { currentPath: string }) => {
             : `/${parentPath}/${city}`
           return (
             <li className="place-self-center" key={i}>
-              <Link href={href}>
-                <a
-                  className={classNames(
-                    {
-                      'bg-gray-800 text-white': currentTab,
-                      'border-transparent hover:border-gray-300 hover:text-gray-100': !currentTab,
-                      'my-1.5 p-2': !props.smallView,
-                      'my-1 p-1.5': props.smallView,
-                    },
-                    'inline-block rounded-md'
-                  )}
-                >
-                  {name}
-                </a>
+              <Link
+                href={href}
+                className={classNames(
+                  {
+                    'bg-gray-800 text-white': currentTab,
+                    'border-transparent hover:border-gray-300 hover:text-gray-100': !currentTab,
+                    'my-1.5 p-2': !props.smallView,
+                    'my-1 p-1.5': props.smallView,
+                  },
+                  'inline-block rounded-md'
+                )}
+              >
+                {name}
               </Link>
             </li>
           )
@@ -62,18 +61,17 @@ export const SkillTypeTabGroup = (props: { currentPath: string }) => {
         const currentTab = type === currentType.replaceAll('%20', ' ')
         return (
           <li className="mr-2" key={i}>
-            <Link href={`/${parentPath}/${currentCity}/${type}`}>
-              <a
-                className={classNames(
-                  {
-                    'active border-cyan-600 text-cyan-600': currentTab,
-                    'border-transparent hover:border-gray-300 hover:text-gray-600': !currentTab,
-                  },
-                  'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
-                )}
-              >
-                {type}
-              </a>
+            <Link
+              href={`/${parentPath}/${currentCity}/${type}`}
+              className={classNames(
+                {
+                  'active border-cyan-600 text-cyan-600': currentTab,
+                  'border-transparent hover:border-gray-300 hover:text-gray-600': !currentTab,
+                },
+                'inline-block cursor-pointer rounded-t-lg border-b-2 p-2.5'
+              )}
+            >
+              {type}
             </Link>
           </li>
         )
