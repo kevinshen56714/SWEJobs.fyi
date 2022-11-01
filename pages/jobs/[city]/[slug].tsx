@@ -128,7 +128,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
       </div>
       <div className="flex flex-wrap">
         {filter.map((skill, i) => (
-          <Badge key={i} skill={skill} onClickCallBack={handleCancelFilter}>
+          <Badge key={i} value={skill} onClickCallBack={handleCancelFilter}>
             <XCircleIcon className="h-5 w-5"></XCircleIcon>
           </Badge>
         ))}
@@ -189,9 +189,9 @@ export default function JobPosts(props: { jobs: Job[] }) {
                             <div className="truncate whitespace-nowrap text-left font-medium text-cyan-600 hover:underline">
                               {company}
                               <div className="flex items-center">
-                                {bigTech && <Badge>Big Tech</Badge>}
-                                {startup && <Badge>Startup</Badge>}
-                                {remote && <Badge>Remote</Badge>}
+                                {bigTech && <Badge value="Big Tech" />}
+                                {startup && <Badge value="Startup" />}
+                                {remote && <Badge value="Remote" />}
                                 <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                   {title}
                                 </p>
@@ -204,7 +204,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                             {skills[SkillType.LANGUAGE].map((skill, i) => (
                               <Badge
                                 key={i}
-                                skill={skill}
+                                value={skill}
                                 onClickCallBack={handleSkillBadgeClick}
                               />
                             ))}
@@ -215,7 +215,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                             {nonLangSkills.map((skill, i) => (
                               <Badge
                                 key={i}
-                                skill={skill}
+                                value={skill}
                                 onClickCallBack={handleSkillBadgeClick}
                               />
                             ))}
@@ -230,7 +230,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                                 'bg-white': evenRow,
                                 'bg-gray-50': !evenRow,
                               },
-                              'grid grid-cols-[9rem_minmax(0,_1fr)] border-b px-10 py-4 text-sm text-gray-500 shadow-sm'
+                              'grid grid-cols-[19rem_minmax(0,_1fr)] border-b px-10 py-4 text-sm text-gray-500 shadow-sm'
                             )}
                           >
                             <div className="flex flex-col gap-1 text-base font-medium text-cyan-600">
@@ -334,9 +334,9 @@ export default function JobPosts(props: { jobs: Job[] }) {
                             <div className="truncate whitespace-nowrap text-left font-medium text-cyan-600 hover:underline">
                               {company}
                               <div className="flex items-center">
-                                {bigTech && <Badge>Big Tech</Badge>}
-                                {startup && <Badge>Startup</Badge>}
-                                {remote && <Badge>Remote</Badge>}
+                                {bigTech && <Badge value="Big Tech" />}
+                                {startup && <Badge value="Startup" />}
+                                {remote && <Badge value="Remote" />}
                                 <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                   {title}
                                 </p>
@@ -349,7 +349,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               {skills[SkillType.LANGUAGE].map((skill, i) => (
                                 <Badge
                                   key={i}
-                                  skill={skill}
+                                  value={skill}
                                   onClickCallBack={handleSkillBadgeClick}
                                 />
                               ))}
@@ -361,7 +361,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               {nonLangSkills.map((skill, i) => (
                                 <Badge
                                   key={i}
-                                  skill={skill}
+                                  value={skill}
                                   onClickCallBack={handleSkillBadgeClick}
                                 />
                               ))}

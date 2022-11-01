@@ -57,7 +57,7 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
                             return (
                               <Badge
                                 key={i}
-                                skill={skill}
+                                value={skill}
                                 onClickCallBack={(e) => {
                                   skillBadgeCallBack(e)
                                   close()
