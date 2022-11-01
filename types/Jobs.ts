@@ -1,6 +1,7 @@
 import { SkillType } from './Skills'
 
 export type Job = {
+  bigTech: boolean
   company: string
   createdAt: number
   link: string
@@ -10,5 +11,6 @@ export type Job = {
   skills: {
     [type in SkillType]: string[]
   }
+  startup: boolean
   title: string
 }

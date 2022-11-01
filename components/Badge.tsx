@@ -10,9 +10,7 @@ export const Badge = (props: {
   children?: React.ReactNode
 }) => {
   const { skill, onClickCallBack, children } = props
-  const type = skill
-    ? Object.keys(skillsByType).find((type) => skillsByType[type].flat().includes(skill))
-    : 'Remote'
+  const type = Object.keys(skillsByType).find((type) => skillsByType[type].flat().includes(skill))
   return (
     <span
       onClick={() => onClickCallBack && onClickCallBack(skill)}
@@ -25,7 +23,7 @@ export const Badge = (props: {
           'bg-[#ffbf69] text-black': type === SkillType.DATABASE,
           'bg-[#ff9f1c] text-black': type === SkillType.CLOUD_INFRA,
           'bg-[#bde6ff] text-black': type === SkillType.AI_ML || type === SkillType.GRAPHICS,
-          'bg-[#a571ff7b] text-black': type === 'Remote',
+          'bg-[#a571ff7b] text-black': !type,
           'cursor-pointer': onClickCallBack,
         },
         'my-0.5 mr-2 flex items-center gap-1 rounded-lg px-1.5 py-[1px] text-xs font-medium'

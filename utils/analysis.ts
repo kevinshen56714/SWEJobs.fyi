@@ -170,6 +170,28 @@ export const skillsByType = {
   [SkillType.GRAPHICS]: computingGraphicsStack,
 }
 
+const bigTechs = [
+  'Amazon',
+  'Apple',
+  'Google',
+  'Roblox',
+  'LinkedIn',
+  'Lyft',
+  'Meta',
+  'Microsoft',
+  'Netflix',
+  'Pinterest',
+  'Robinhood',
+  'Stripe',
+  'Snap',
+  'Twitter',
+  'Uber',
+]
+
+export const checkIfBigTech = (company: string) => {
+  return bigTechs.some((bigTech) => company.toLowerCase().includes(bigTech.toLowerCase()))
+}
+
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
   // recursively check all the aliases if skill is an array of alias names
   if (skill instanceof Array) {

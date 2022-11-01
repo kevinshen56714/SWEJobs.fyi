@@ -47,7 +47,7 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
           ></DropdownMenu>
           <p> skills in the chart</p>
         </div>
-        <div className="flex flex-wrap items-start justify-center gap-1">
+        <div className="flex w-full flex-wrap items-start justify-center gap-1">
           <div className="h-[340px] w-[480px] max-w-full sm:hidden">
             <PieChart data={topSkills} smallView={true}></PieChart>
           </div>
