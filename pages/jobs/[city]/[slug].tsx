@@ -190,7 +190,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               {company}
                               <div className="flex items-center">
                                 {bigTech && <Badge value="Big Tech" />}
-                                {startup && <Badge value="Startup" />}
+                                {!bigTech && startup && <Badge value="Startup" />}
                                 {remote && <Badge value="Remote" />}
                                 <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                   {title}
@@ -335,7 +335,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                               {company}
                               <div className="flex items-center">
                                 {bigTech && <Badge value="Big Tech" />}
-                                {startup && <Badge value="Startup" />}
+                                {!bigTech && startup && <Badge value="Startup" />}
                                 {remote && <Badge value="Remote" />}
                                 <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                   {title}
