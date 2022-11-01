@@ -3,9 +3,9 @@ import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 
 export const DropdownMenu = (props: {
-  options: string[]
-  selected: string
-  onChangeCallback: Dispatch<SetStateAction<string>>
+  options: string[] | number[]
+  selected: string | number
+  onChangeCallback: Dispatch<SetStateAction<string | number>>
 }) => {
   const { options, selected, onChangeCallback } = props
 

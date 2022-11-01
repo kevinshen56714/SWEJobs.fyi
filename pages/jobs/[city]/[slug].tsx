@@ -81,19 +81,17 @@ export default function JobPosts(props: { jobs: Job[] }) {
   console.log('job post rerendered')
 
   const handleSkillBadgeClick = (skill: string) => {
-    // if (!filter.includes(skill)) setFilter([...filter, skill])
     const skillsStr = [...filter, skill].reduce(
-      (acc, cur, i) => acc + `${i === 0 ? '?' : '&'}skills=${cur}`,
+      (acc, cur, i) => acc + `${i === 0 ? '?' : '&'}skills=${encodeURIComponent(cur)}`,
       ''
     )
     router.push(`/jobs/${city}/${slug}${skillsStr}`)
   }
 
   const handleCancelFilter = (skill: string) => {
-    // if (filter.includes(skill)) setFilter(filter.filter((s) => s !== skill))
     const skillsStr = filter
       .filter((s) => s !== skill)
-      .reduce((acc, cur, i) => acc + `${i === 0 ? '?' : '&'}skills=${cur}`, '')
+      .reduce((acc, cur, i) => acc + `${i === 0 ? '?' : '&'}skills=${encodeURIComponent(cur)}`, '')
     router.push(`/jobs/${city}/${slug}${skillsStr}`)
   }
 

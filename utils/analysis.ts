@@ -3,7 +3,7 @@ import { SkillType } from '../types/Skills'
 const languages = [
   'APL',
   'Assembly',
-  ['Bash/Shell', 'Bash'],
+  ['Bash/Shell', 'Bash', 'Shell'],
   ['C/C++', 'C', 'C++'],
   'C#',
   'Clojure',

@@ -1,6 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
+import { useEffect, useMemo, useState } from 'react'
 
+import { DropdownMenu } from '../../../components/DropdownMenu'
 import { PieChart } from '../../../components/PieChart'
 import { SkillType } from '../../../types/Skills'
 import { SkillTypeTabGroup } from '../../../components/Tabs'
@@ -15,17 +17,42 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   const { stats } = props
   const router = useRouter()
   const { skillType } = router.query
+
+  const [numSkillsInChart, setNumSkillsInChart] = useState(10)
+
+  useEffect(() => {
+    const numSkills = Object.keys(stats).length
+    setNumSkillsInChart(numSkills > 10 ? 10 : numSkills)
+  }, [stats])
+
+  const topSkills = useMemo(
+    () => getTopSortedSkills(stats, numSkillsInChart),
+    [stats, numSkillsInChart]
+  )
+  console.log('Stats rerendered')
+
   return (
     <>
       <SkillTypeTabGroup currentPath={router.asPath} />
-      <div>
-        <h1 className="mt-8 text-center text-lg font-medium sm:my-8"> {skillType} </h1>
-        <div className="flex flex-wrap items-center justify-center gap-1">
+      <div className="mt-8 flex flex-col items-center sm:my-8">
+        <h1 className="text-lg font-medium"> {skillType} </h1>
+        <div className="flex items-center gap-2">
+          <p>Show top</p>
+          <DropdownMenu
+            options={Array.from(Array(Object.keys(stats).length).keys())
+              .map((x) => x + 1)
+              .filter((x) => x > 1)} // meanless to show only 1 skill
+            selected={numSkillsInChart}
+            onChangeCallback={setNumSkillsInChart}
+          ></DropdownMenu>
+          <p> skills in the chart</p>
+        </div>
+        <div className="flex flex-wrap items-start justify-center gap-1">
           <div className="h-[340px] w-[480px] max-w-full sm:hidden">
-            <PieChart data={stats} smallView={true}></PieChart>
+            <PieChart data={topSkills} smallView={true}></PieChart>
           </div>
           <div className="hidden h-[450px] w-[600px] max-w-full sm:block">
-            <PieChart data={stats} smallView={false}></PieChart>
+            <PieChart data={topSkills} smallView={false}></PieChart>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-left text-sm text-gray-500">

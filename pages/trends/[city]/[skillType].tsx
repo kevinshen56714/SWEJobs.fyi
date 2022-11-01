@@ -40,7 +40,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
         <DropdownMenu
           options={['All', ...allKeys]}
           selected={skillToShow}
-          onChangeCallback={(selected) => setSkillToShow(selected)}
+          onChangeCallback={setSkillToShow}
         ></DropdownMenu>
         <div className="hidden h-[560px] w-full max-w-full sm:block">
           <BarChart
