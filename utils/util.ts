@@ -18,7 +18,8 @@ export const getTopSortedSkills = (data: { [skill: string]: number }, top?: numb
   if (top) sortedSkills = sortedSkills.slice(0, top)
   const sortedData = {}
   sortedSkills.forEach((skill) => {
-    sortedData[skill] = data[skill]
+    // don't list the skill if it has a count number of 0
+    if (data[skill] > 0) sortedData[skill] = data[skill]
   })
   return sortedData
 }

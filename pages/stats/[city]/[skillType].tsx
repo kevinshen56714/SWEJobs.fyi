@@ -67,19 +67,17 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(stats).map((skill, i) => {
-                  return stats[skill] ? (
-                    <tr className="border-b bg-white hover:bg-gray-50" key={i}>
-                      <td
-                        scope="row"
-                        className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
-                      >
-                        {skill}
-                      </td>
-                      <td className="max-w-[25rem] py-2 px-6">{stats[skill]}</td>
-                    </tr>
-                  ) : null // don't list the skill if it has a count number of 0
-                })}
+                {Object.keys(stats).map((skill, i) => (
+                  <tr className="border-b bg-white hover:bg-gray-50" key={i}>
+                    <td
+                      scope="row"
+                      className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
+                    >
+                      {skill}
+                    </td>
+                    <td className="max-w-[25rem] py-2 px-6">{stats[skill]}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
