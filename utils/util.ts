@@ -12,14 +12,14 @@ export const getPreviousDateString = (dateStr: string, daysAgo: number) => {
   return convertDateToString(date)
 }
 
-// get top 12 skills sorted by count
-export const getTopSortedSkills = (data: { [skill: string]: number }) => {
-  const sortedSkills = Object.keys(data)
-    .sort((a, b) => data[b] - data[a])
-    .slice(0, 12)
+// get top skills sorted by count
+export const getTopSortedSkills = (data: { [skill: string]: number }, top?: number) => {
+  let sortedSkills = Object.keys(data).sort((a, b) => data[b] - data[a])
+  if (top) sortedSkills = sortedSkills.slice(0, top)
   const sortedData = {}
   sortedSkills.forEach((skill) => {
-    sortedData[skill] = data[skill]
+    // don't list the skill if it has a count number of 0
+    if (data[skill] > 0) sortedData[skill] = data[skill]
   })
   return sortedData
 }

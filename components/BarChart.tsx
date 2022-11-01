@@ -93,7 +93,7 @@ export const BarChart = (props: {
       }
       onClick={(data) => {
         const time = (7 - data.index) * 24 // today:24, yesterday: 48, 2 days ago: 72
-        const id = (data.id as string).replaceAll('+', '%2B') // for C++
+        const id = encodeURIComponent(data.id as string)
         router.push(`/jobs/${city}/${time <= 72 ? time : 24}?skills=${id}`)
       }}
       role="application"

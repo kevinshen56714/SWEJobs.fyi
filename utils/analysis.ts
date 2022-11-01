@@ -3,7 +3,7 @@ import { SkillType } from '../types/Skills'
 const languages = [
   'APL',
   'Assembly',
-  ['Bash/Shell', 'Bash'],
+  ['Bash/Shell', 'Bash', 'Shell'],
   ['C/C++', 'C', 'C++'],
   'C#',
   'Clojure',
@@ -168,6 +168,28 @@ export const skillsByType = {
   [SkillType.CLOUD_INFRA]: cloudInfraStack,
   [SkillType.AI_ML]: dataMLStack,
   [SkillType.GRAPHICS]: computingGraphicsStack,
+}
+
+const bigTechs = [
+  'Amazon',
+  'Apple',
+  'Google',
+  'Roblox',
+  'LinkedIn',
+  'Lyft',
+  'Meta',
+  'Microsoft',
+  'Netflix',
+  'Pinterest',
+  'Robinhood',
+  'Stripe',
+  'Snap',
+  'Twitter',
+  'Uber',
+]
+
+export const checkIfBigTech = (company: string) => {
+  return bigTechs.some((bigTech) => company.toLowerCase().includes(bigTech.toLowerCase()))
 }
 
 const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {

@@ -14,7 +14,11 @@ export const CityTabGroup = (props: { currentPath: string }) => {
           return (
             <li className="place-self-center" key={i}>
               <Link
-                href={`/${parentPath}/${city}/${currentType}`}
+                href={
+                  parentPath === 'jobs'
+                    ? `/${parentPath}/${city}/24` // always go to the page with latest jobs
+                    : `/${parentPath}/${city}/${currentType}`
+                }
                 className={classNames(
                   {
                     'bg-gray-800 text-white': currentTab,

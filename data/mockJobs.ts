@@ -41,7 +41,7 @@ export const mockJobs = [
       advance frictionless voice invocation experience on our innovative devices enabling
       compelling new conversational features. You should be eager to do hands-on work to
       improve and build features to improve overall capabilities. You should enjoy working in a
-      constantly evolving environment with changing priorities, be passionate about using new
+      constantly evolving startup environment with changing priorities, be passionate about using new
       technologies to solve real problems and to improve the state of intelligent assistants.
       Key Qualifications 3-5 years of experience with scalable machine learning technologies
       Machine learning knowledge and experience in areas such as speech recognition is highly
@@ -66,13 +66,13 @@ export const mockJobs = [
       in Computer Science, Electrical Engineering or related field Additional Requirements`,
     link: '#',
     loc: 'Seattle, WA',
-    remote: false,
+    remote: true,
     salary: '',
     skills: ['C/C++', 'Python'],
     title: 'AI/ML Machine Learning Engineer',
   },
   {
-    company: 'Example Company 3',
+    company: 'Apple',
     desc: `
       About Example Company 3 is helping to drive mainstream adoption of digital assets by
       connecting the consumer, enterprise, and government tax and accounting ecosystems. Our
