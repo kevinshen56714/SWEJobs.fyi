@@ -2,6 +2,7 @@
 // yarn add @nivo/core @nivo/bar
 
 import { ResponsiveBar } from '@nivo/bar'
+import { useRouter } from 'next/router'
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -10,14 +11,16 @@ export const BarChart = (props: {
   data: { [date: string]: { [skill: string]: number } }
   smallView: boolean
   allKeys: string[]
+  city: string
 }) => {
-  const { data, smallView, allKeys } = props
+  const { data, smallView, allKeys, city } = props
   const chartData = Object.keys(data).map((date) => ({
     date: date.split(',')[0], // don't show the year
     ...data[date],
   }))
   // don't render legends when small view and only 1 skill is displayed
   const renderLegend = !smallView || allKeys.length !== 1
+  const router = useRouter()
 
   return (
     <ResponsiveBar
@@ -88,6 +91,11 @@ export const BarChart = (props: {
             ]
           : []
       }
+      onClick={(data) => {
+        const time = (7 - data.index) * 24 // today:24, yesterday: 48, 2 days ago: 72
+        const id = (data.id as string).replaceAll('+', '%2B') // for C++
+        router.push(`/jobs/${city}/${time <= 72 ? time : 24}?skills=${id}`)
+      }}
       role="application"
       ariaLabel="skill count vs date bar chart"
       barAriaLabel={function (e) {

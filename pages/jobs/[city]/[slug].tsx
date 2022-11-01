@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
 import { checkTodayData, db } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Badge } from '../../../components/Badge'
 import { Disclosure } from '@headlessui/react'
@@ -61,10 +61,18 @@ const sortJobs = (jobs: Job[], sortBy: string, filter: string[]) => {
 
 export default function JobPosts(props: { jobs: Job[] }) {
   const router = useRouter()
-  const { city, slug } = router.query
+  const { city, slug, skills } = router.query
 
   const [sortBy, setSortBy] = useState<string>('Sort By')
   const [filter, setFilter] = useState<string[]>([])
+
+  useEffect(() => {
+    // setSortBy('Sort By')
+    if (skills) {
+      skills instanceof Array ? setFilter([...skills]) : setFilter([skills])
+    } else setFilter([])
+  }, [city, slug, skills])
+
   const jobs = useMemo(
     () => sortJobs([...props.jobs], sortBy, filter),
     [props.jobs, sortBy, filter]
@@ -73,11 +81,20 @@ export default function JobPosts(props: { jobs: Job[] }) {
   console.log('job post rerendered')
 
   const handleSkillBadgeClick = (skill: string) => {
-    if (!filter.includes(skill)) setFilter([...filter, skill])
+    // if (!filter.includes(skill)) setFilter([...filter, skill])
+    const skillsStr = [...filter, skill].reduce(
+      (acc, cur, i) => acc + `${i === 0 ? '?' : '&'}skills=${cur}`,
+      ''
+    )
+    router.push(`/jobs/${city}/${slug}${skillsStr}`)
   }
 
   const handleCancelFilter = (skill: string) => {
-    if (filter.includes(skill)) setFilter(filter.filter((s) => s !== skill))
+    // if (filter.includes(skill)) setFilter(filter.filter((s) => s !== skill))
+    const skillsStr = filter
+      .filter((s) => s !== skill)
+      .reduce((acc, cur, i) => acc + `${i === 0 ? '?' : '&'}skills=${cur}`, '')
+    router.push(`/jobs/${city}/${slug}${skillsStr}`)
   }
 
   return (

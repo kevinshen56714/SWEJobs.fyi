@@ -47,6 +47,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
             data={trendsData}
             smallView={false}
             allKeys={skillToShow === 'All' ? allKeys : [skillToShow]}
+            city={city as string}
           ></BarChart>
         </div>
         <div className="h-[560px] w-full max-w-full sm:hidden">
@@ -54,6 +55,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
             data={trendsData}
             smallView={true}
             allKeys={skillToShow === 'All' ? allKeys : [skillToShow]}
+            city={city as string}
           ></BarChart>
         </div>
       </div>

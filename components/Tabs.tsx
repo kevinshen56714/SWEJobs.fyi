@@ -4,20 +4,17 @@ import { cities } from '../pages'
 import classNames from 'classnames'
 
 export const CityTabGroup = (props: { currentPath: string }) => {
-  const [_, parentPath, currentCity, currentType] = props.currentPath.split('/')
+  const [_, parentPath, currentCity, currentType] = props.currentPath.split('?')[0].split('/')
 
   const CityTabs = (props: { smallView: boolean }) => {
     return (
       <>
         {cities.map(({ city, name }, i) => {
           const currentTab = city === currentCity
-          const href = currentType
-            ? `/${parentPath}/${city}/${currentType}`
-            : `/${parentPath}/${city}`
           return (
             <li className="place-self-center" key={i}>
               <Link
-                href={href}
+                href={`/${parentPath}/${city}/${currentType}`}
                 className={classNames(
                   {
                     'bg-gray-800 text-white': currentTab,
