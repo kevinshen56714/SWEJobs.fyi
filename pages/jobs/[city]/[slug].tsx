@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Badge } from '../../../components/Badge'
 import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../../components/DropdownMenu'
+import { FilterAndOrSwitch } from '../../../components/FilterAndOrSwitch'
 import { FilterPopover } from '../../../components/FilterPopover'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
@@ -39,7 +40,7 @@ const getSkillCount = (job: Job) => {
     .reduce((acc, cur) => acc + job.skills[cur].length, 0)
 }
 
-const sortJobs = (jobs: Job[], sortBy: string, filter: string[]) => {
+const sortJobs = (jobs: Job[], sortBy: string, filter: string[], andEnabled: boolean) => {
   if (sortBy === 'Company name (A-Z)') {
     jobs = jobs.sort((a, b) => (a.company.toLowerCase() > b.company.toLowerCase() ? 1 : -1))
   } else if (sortBy === 'Company name (Z-A)') {
@@ -53,7 +54,9 @@ const sortJobs = (jobs: Job[], sortBy: string, filter: string[]) => {
   if (filter.length > 0) {
     jobs = jobs.filter((job) => {
       const skills = Object.values(job.skills).flat()
-      return filter.some((skill) => skills.includes(skill))
+      return andEnabled
+        ? filter.every((skill) => skills.includes(skill))
+        : filter.some((skill) => skills.includes(skill))
     })
   }
   return jobs
@@ -65,6 +68,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
 
   const [sortBy, setSortBy] = useState<string>('Sort By')
   const [filter, setFilter] = useState<string[]>([])
+  const [andEnabled, setAndEnabled] = useState(false)
 
   useEffect(() => {
     // setSortBy('Sort By')
@@ -74,8 +78,8 @@ export default function JobPosts(props: { jobs: Job[] }) {
   }, [city, slug, skills])
 
   const jobs = useMemo(
-    () => sortJobs([...props.jobs], sortBy, filter),
-    [props.jobs, sortBy, filter]
+    () => sortJobs([...props.jobs], sortBy, filter, andEnabled),
+    [props.jobs, sortBy, filter, andEnabled]
   )
 
   console.log('job post rerendered')
@@ -126,7 +130,13 @@ export default function JobPosts(props: { jobs: Job[] }) {
           onChangeCallback={setSortBy}
         ></DropdownMenu>
       </div>
-      <div className="flex flex-wrap">
+      <div className="my-3 flex flex-wrap">
+        {filter.length ? (
+          <FilterAndOrSwitch
+            checked={andEnabled}
+            onChangeCallBack={setAndEnabled}
+          ></FilterAndOrSwitch>
+        ) : null}
         {filter.map((skill, i) => (
           <Badge key={i} value={skill} onClickCallBack={handleCancelFilter}>
             <XCircleIcon className="h-5 w-5"></XCircleIcon>
@@ -176,7 +186,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                           'border-b shadow-sm': open,
                         })}
                       >
-                        <td className="max-w-[10rem] py-2 px-3 sm:max-w-xs">
+                        <td className="max-w-xs py-2 px-3">
                           <Disclosure.Button className="flex max-w-full items-center gap-3">
                             <div>
                               <ChevronDownIcon

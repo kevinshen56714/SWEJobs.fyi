@@ -26,7 +26,7 @@ export const Badge = (props: {
           'bg-[#a571ff7b] text-black': !type,
           'cursor-pointer': onClickCallBack,
         },
-        'my-0.5 mr-2 flex items-center gap-1 rounded-lg px-1.5 py-[1px] text-xs font-medium'
+        'my-0.5 mr-2 flex items-center gap-1 rounded-lg px-1.5 py-[1px] text-xs sm:font-medium'
       )}
     >
       {value}
