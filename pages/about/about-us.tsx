@@ -1,4 +1,5 @@
 import React from 'react'
+
 function AboutUs() {
   return (
     <>
@@ -14,10 +15,7 @@ function AboutUs() {
         </article>
       </div>
       <br />
-      <div
-        className="flex items-center justify-center
-"
-      >
+      <div className="flex items-center justify-center">
         <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-xl">
           <div className="px-6 py-4">
             <div className="mb-2 text-xl font-bold">About Us</div>
