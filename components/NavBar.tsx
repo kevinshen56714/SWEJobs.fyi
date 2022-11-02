@@ -143,17 +143,15 @@ export const NavBar = () => {
                           <Menu.Item>
                             {({ active }) => (
                               <>
-                                <Link href="/about-us/about-us">
-                                  <a
-                                    href="#"
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'flex items-center gap-2 px-4 py-2 text-sm text-gray-700'
-                                    )} // FIXME!!!
-                                  >
-                                    <UserGroupIcon className="block h-6 w-6" aria-hidden="true" />
-                                    About Us
-                                  </a>
+                                <Link
+                                  href="/about-us/about-us"
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'flex items-center gap-2 px-4 py-2 text-sm text-gray-700'
+                                  )} // FIXME!!!
+                                >
+                                  <UserGroupIcon className="block h-6 w-6" aria-hidden="true" />
+                                  About Us
                                 </Link>
                               </>
                             )}
