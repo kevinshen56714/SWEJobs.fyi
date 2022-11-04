@@ -9,7 +9,7 @@ import { logAnalyticsEvent } from '../utils/firebase'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   const currentPath = useRouter().asPath
   const currentRoot = currentPath.split('/')[1]
 
@@ -38,5 +38,3 @@ function MyApp({ Component, pageProps }: AppProps) {
     </>
   )
 }
-
-export default MyApp

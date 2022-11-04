@@ -11,6 +11,7 @@ import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { FilterAndOrSwitch } from '../../../components/FilterAndOrSwitch'
 import { FilterPopover } from '../../../components/FilterPopover'
+import Head from 'next/head'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
 import { SkillType } from '../../../types/Skills'
@@ -100,7 +101,20 @@ export default function JobPosts(props: { jobs: Job[] }) {
   }
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>
+          {`Latest Software Engineer Jobs in ${
+            cities.find((c) => c.city === city)?.name
+          } | SWEJobs.fyi`}
+        </title>
+        <meta
+          name="description"
+          content={`Check out the Past ${slug} Hours Software Engineer Jobs in ${
+            cities.find((c) => c.city === city)?.name
+          }`}
+        />
+      </Head>
       <ul className="flex flex-wrap text-sm font-medium sm:gap-2">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
@@ -423,7 +437,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   )
 }
 
