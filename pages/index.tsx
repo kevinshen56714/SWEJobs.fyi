@@ -16,28 +16,6 @@ export default function Home() {
     <div>
       <Head>
         <title>SWEJobs.fyi - Software Engineer Jobs and Trends Tracker</title>
-        <meta
-          name="description"
-          content="We track latest US software engineer jobs and compile trends and stats"
-        />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:description"
-          content="We track latest US software engineer jobs and compile trends and stats"
-        />
-        <meta property="url" content="https://swejobs.fyi/" />
-        <meta property="og:site_name" content="SWEJobs.fyi" />
-        <meta property="og:image" content="https://swejobs.fyi/main-schematic.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:description"
-          content="We track latest US software engineer jobs and compile trends and stats"
-        />
-        <meta name="twitter:image" content="https://swejobs.fyi/main-schematic.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="mt-20 flex flex-col items-center justify-center">
