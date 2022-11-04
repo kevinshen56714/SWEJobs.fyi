@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import Link from 'next/link'
+import Image from 'next/image'
+import mainSchematic from '../public/main-schematic.svg'
 
 export const cities = [
   { city: 'SJ', name: 'San Jose, CA' },
@@ -20,10 +21,13 @@ export default function Home() {
       </Head>
 
       <main className="mt-20 flex flex-col items-center justify-center">
-        <div className="text-2xl font-medium">Welcome to SWEJobs.fyi!</div>
-
-        <p>Landing page is a work-in-progress</p>
-        <p>Please use the nav bar for navigation</p>
+        <div className="flex flex-col items-center gap-3 sm:flex-row">
+          <Image className="max-w-md" src={mainSchematic} alt="SWEJobs.fyi" />
+          <div>
+            <div className="text-center text-2xl font-medium sm:text-left">SWEJobs.fyi</div>
+            <p className="text-xl">Break down software engineer job postings for you</p>
+          </div>
+        </div>
       </main>
     </div>
   )

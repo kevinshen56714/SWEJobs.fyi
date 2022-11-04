@@ -8,11 +8,11 @@ const navigation = [
     items: [
       {
         name: 'About Us',
-        href: '#',
+        href: '/about/about-us',
       },
       {
         name: 'About Data',
-        href: '#',
+        href: '/about/about-data',
       },
     ],
   },

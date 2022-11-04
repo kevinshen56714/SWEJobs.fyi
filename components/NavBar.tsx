@@ -38,12 +38,12 @@ const navigation = [
 const smallViewExtraNavigation = [
   {
     name: 'About Data',
-    href: '#',
+    href: '/about/about-data',
     icon: <InformationCircleIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
   {
     name: 'About Us',
-    href: '#',
+    href: '/about/about-us',
     icon: <UserGroupIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
 ]
@@ -53,7 +53,7 @@ export const NavBar = () => {
   return (
     <Disclosure as="nav" className="bg-gray-700">
       {({ open }) => (
-        <>
+        <div className="shadow-lg">
           <div className="mx-auto max-w-5xl px-4 sm:px-12 lg:px-5">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -125,19 +125,19 @@ export const NavBar = () => {
                         <Menu.Items className="absolute z-10 mt-2 w-40 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <Link
+                                href="/about/about-data"
                                 className={classNames(
                                   active ? 'bg-gray-100' : '',
                                   'flex items-center gap-2 px-4 py-2 text-sm text-gray-700'
-                                )} // FIXME!!!
+                                )}
                               >
                                 <InformationCircleIcon
                                   className="block h-6 w-6"
                                   aria-hidden="true"
                                 />
                                 About Data
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                           <Menu.Item>
@@ -188,7 +188,7 @@ export const NavBar = () => {
               })}
             </div>
           </Disclosure.Panel>
-        </>
+        </div>
       )}
     </Disclosure>
   )

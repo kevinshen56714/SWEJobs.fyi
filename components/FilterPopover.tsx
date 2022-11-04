@@ -52,19 +52,16 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
                       >
                         <h1 className="mb-2 text-sm font-medium text-gray-900">{type}</h1>
                         <div className="flex flex-wrap">
-                          {skillsByType[type].map((skill, i) => {
-                            if (skill instanceof Array) skill = skill[0]
-                            return (
-                              <Badge
-                                key={i}
-                                value={skill}
-                                onClickCallBack={(e) => {
-                                  skillBadgeCallBack(e)
-                                  close()
-                                }}
-                              />
-                            )
-                          })}
+                          {skillsByType[type].map((skill: string | string[], i: React.Key) => (
+                            <Badge
+                              key={i}
+                              value={skill instanceof Array ? skill[0] : skill}
+                              onClickCallBack={(e) => {
+                                skillBadgeCallBack(e)
+                                close()
+                              }}
+                            />
+                          ))}
                         </div>
                       </div>
                     ))}
