@@ -1,6 +1,4 @@
-import React from 'react'
-
-function AboutUs() {
+export default function AboutUs() {
   return (
     <>
       <div className="flex items-center justify-center gap-1">
@@ -37,5 +35,3 @@ function AboutUs() {
     </>
   )
 }
-
-export default AboutUs

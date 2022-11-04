@@ -113,7 +113,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         if (skill instanceof Array) skill = skill[0]
         trendsData[dateStr][skill] = skillCounts[skill] || 0
       })
-      const sortedData = getTopSortedSkills(trendsData[dateStr])
+      const sortedData = getTopSortedSkills(trendsData[dateStr], 15)
       trendsData[dateStr] = sortedData
     })
   )

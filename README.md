@@ -1,3 +1,18 @@
+<p align="center">
+  <a href="https://swejobs.fyi/"><img src="https://github.com/kevinshen56714/SWEJobs.fyi/raw/main/public/main-schematic.png" alt="SWEJobs.fyi" width="450rem"></a>
+</p>
+<p align="center">
+    <em>SWEJobs.fyi, break down software engineer job postings for you</em>
+</p>
+
+---
+
+**Website**: <a href="https://swejobs.fyi" target="_blank">https://swejobs.fyi</a>
+
+**Source Code**: <a href="https://github.com/kevinshen56714/SWEJobs.fyi" target="_blank">https://github.com/kevinshen56714/SWEJobs.fyi</a>
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

@@ -170,7 +170,7 @@ export const skillsByType = {
   [SkillType.GRAPHICS]: computingGraphicsStack,
 }
 
-const bigTechs = [
+export const bigTechs = [
   'Amazon',
   'Apple',
   'Google',
@@ -213,8 +213,7 @@ export const getSkillsInJobDescription = (description: string) => {
     const matchedSkills = []
     skillsByType[type].map((skill: string | string[]) => {
       if (checkIfSkillInDescription(skill, description)) {
-        if (skill instanceof Array) skill = skill[0]
-        matchedSkills.push(skill)
+        matchedSkills.push(skill instanceof Array ? skill[0] : skill)
       }
     })
     allMatchedSkills[type] = matchedSkills

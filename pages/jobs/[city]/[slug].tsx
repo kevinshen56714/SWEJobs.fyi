@@ -191,7 +191,7 @@ export default function JobPosts(props: { jobs: Job[] }) {
                             <div>
                               <ChevronDownIcon
                                 className={classNames(
-                                  { 'rotate-180 transform': open },
+                                  { '-rotate-90 transform': open },
                                   'h-4 w-4 text-gray-700'
                                 )}
                               />
