@@ -44,9 +44,6 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
             cities.find((c) => c.city === city)?.name
           }`}
         />
-        <meta property="og:title" content="Test og:title" />
-        <meta property="og:description" content="Test og:description" />
-        <meta property="og:image" content="https://example.com/images/cool-page.jpg" />
       </Head>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center sm:my-8">
