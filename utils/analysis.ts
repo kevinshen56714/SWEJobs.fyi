@@ -170,7 +170,7 @@ export const skillsByType = {
   [SkillType.GRAPHICS]: computingGraphicsStack,
 }
 
-const bigTechs = [
+export const bigTechs = [
   'Amazon',
   'Apple',
   'Google',

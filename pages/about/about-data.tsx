@@ -1,10 +1,11 @@
+import { bigTechs, skillsByType } from '../../utils/analysis'
+
 import { Badge } from '../../components/Badge'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SkillType } from '../../types/Skills'
 import { cities } from '..'
 import figure from '../../public/magnify-glass.svg'
-import { skillsByType } from '../../utils/analysis'
 
 const Paragraph = (props: { children: React.ReactNode }) => (
   <div className="mt-6">{props.children}</div>
@@ -53,9 +54,14 @@ export default function AboutData() {
         </Paragraph>
         <Paragraph>
           As the core feature of SWEJobs.fyi,{' '}
-          <span className="font-medium">we break down job postings into skill labels</span>. These
-          skill labels are either programming/scripting languages or technologies listed in the job.
-          Currently, we track a fixed list of skills that are either{' '}
+          <span className="font-medium">we break down job postings into skill labels</span> such as{' '}
+          <div className="inline-flex">
+            <Badge value="Python" />
+            <Badge value="React" />
+            <Badge value="MySQL" />
+          </div>
+          . These skill labels are either programming/scripting languages or technologies listed in
+          the job. Currently, we track a fixed list of skills that are either{' '}
           <a
             className="font-medium underline"
             href="https://survey.stackoverflow.co/2022/#technology-most-popular-technologies"
@@ -95,6 +101,27 @@ export default function AboutData() {
             </div>
           ))}
         </div>
+        <Paragraph>
+          We also label jobs with{' '}
+          <div className="inline-flex">
+            <Badge value="Remote" />
+            <Badge value="Big Tech" />
+            <Badge value="Startup" />
+          </div>
+          . We consider a job posting to be a big tech job if it is posted by{' '}
+          <span className="font-medium">{bigTechs.join(', ')}</span>. This list of big techs is
+          obtained from{' '}
+          <a className="font-medium underline" href="https://levels.fyi">
+            levels.fyi
+          </a>
+          , but{' '}
+          <a
+            className="font-medium text-blue-600 underline"
+            href="https://github.com/kevinshen56714/SWEJobs.fyi/issues/new?labels=enhancement&template=skill_label_request.md"
+          >
+            feel free to provide any suggestions!
+          </a>{' '}
+        </Paragraph>
       </div>
     </div>
   )
