@@ -18,6 +18,8 @@ export default function Home() {
         <title>SWEJobs.fyi</title>
         <meta name="description" content="Latest software engineer jobs and trends" />
         <meta property="og:image" content="https://swejobs.fyi/main-schematic.svg" />
+        <meta property="og:image:width" content="1640" />
+        <meta property="og:image:height" content="972" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

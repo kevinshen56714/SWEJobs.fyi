@@ -39,6 +39,12 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
         <title>
           {cities.find((c) => c.city === city)?.name} {skillType} Trends | SWEJobs.fyi
         </title>
+        <meta
+          name="description"
+          content={`Check out the latest Software Engineer Skill Trends in ${
+            cities.find((c) => c.city === city)?.name
+          }`}
+        />
       </Head>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center">
