@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 
 import { BarChart } from '../../../components/BarChart'
 import { DropdownMenu } from '../../../components/DropdownMenu'
+import Head from 'next/head'
 import { SkillType } from '../../../types/Skills'
 import { SkillTypeTabGroup } from '../../../components/Tabs'
 import { cities } from '../..'
@@ -34,6 +35,11 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
 
   return (
     <>
+      <Head>
+        <title>
+          {cities.find((c) => c.city === city)?.name} {skillType} Trends | SWEJobs.fyi
+        </title>
+      </Head>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center">
         <h1 className="text-lg font-medium"> {skillType} </h1>

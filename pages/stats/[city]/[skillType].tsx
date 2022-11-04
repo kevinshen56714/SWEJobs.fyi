@@ -3,6 +3,7 @@ import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite
 import { useEffect, useMemo, useState } from 'react'
 
 import { DropdownMenu } from '../../../components/DropdownMenu'
+import Head from 'next/head'
 import { PieChart } from '../../../components/PieChart'
 import { SkillType } from '../../../types/Skills'
 import { SkillTypeTabGroup } from '../../../components/Tabs'
@@ -16,7 +17,7 @@ import { useRouter } from 'next/router'
 export default function Stats(props: { stats: { [skill: string]: number } }) {
   const { stats } = props
   const router = useRouter()
-  const { skillType } = router.query
+  const { city, skillType } = router.query
 
   const [numSkillsInChart, setNumSkillsInChart] = useState(10)
 
@@ -33,6 +34,11 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
 
   return (
     <>
+      <Head>
+        <title>
+          {cities.find((c) => c.city === city)?.name} {skillType} Stats | SWEJobs.fyi
+        </title>
+      </Head>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center sm:my-8">
         <h1 className="text-lg font-medium"> {skillType} </h1>
