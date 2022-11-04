@@ -36,7 +36,7 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
     <>
       <Head>
         <title>
-          {cities.find((c) => c.city === city)?.name} {skillType} Stats | SWEJobs.fyi
+          {`${cities.find((c) => c.city === city)?.name} ${skillType} Stats | SWEJobs.fyi`}
         </title>
         <meta
           name="description"

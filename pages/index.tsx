@@ -16,6 +16,10 @@ export default function Home() {
     <div>
       <Head>
         <title>SWEJobs.fyi - Software Engineer Jobs and Trends Tracker</title>
+        <meta
+          name="description"
+          content="We track latest US software engineer jobs and compile trends and stats"
+        />
       </Head>
 
       <main className="mt-20 flex flex-col items-center justify-center">

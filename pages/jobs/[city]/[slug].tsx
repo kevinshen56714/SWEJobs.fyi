@@ -104,7 +104,9 @@ export default function JobPosts(props: { jobs: Job[] }) {
     <>
       <Head>
         <title>
-          Latest Software Engineer Jobs in {cities.find((c) => c.city === city)?.name} | SWEJobs.fyi
+          {`Latest Software Engineer Jobs in ${
+            cities.find((c) => c.city === city)?.name
+          } | SWEJobs.fyi`}
         </title>
         <meta
           name="description"

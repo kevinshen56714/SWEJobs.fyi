@@ -37,7 +37,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
     <>
       <Head>
         <title>
-          {cities.find((c) => c.city === city)?.name} {skillType} Trends | SWEJobs.fyi
+          {`${cities.find((c) => c.city === city)?.name} ${skillType} Trends | SWEJobs.fyi`}
         </title>
         <meta
           name="description"
