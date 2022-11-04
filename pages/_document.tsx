@@ -9,10 +9,18 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <meta
+          name="og:title"
+          content="We track latest US software engineer jobs and compile trends and stats"
+        />
         <meta property="og:url" content="https://swejobs.fyi/" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://swejobs.fyi/main-schematic.png" />
 
+        <meta
+          name="twitter:title"
+          content="We track latest US software engineer jobs and compile trends and stats"
+        />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="swejobs.fyi" />
         <meta property="twitter:url" content="https://swejobs.fyi/" />
