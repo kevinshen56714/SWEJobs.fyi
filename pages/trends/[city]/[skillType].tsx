@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore/lite'
 import { useEffect, useState } from 'react'
 
 import { BarChart } from '../../../components/BarChart'
+import { CustomHead } from '../../../components/CustomHead'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import Head from 'next/head'
 import { SkillType } from '../../../types/Skills'
@@ -18,6 +19,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
   const { trendsData } = props
   const router = useRouter()
   const { city, skillType } = router.query
+  const cityName = cities.find((c) => c.city === city)?.name
 
   const [skillToShow, setSkillToShow] = useState('All')
   const [allKeys, setAllKeys] = useState<string[]>([])
@@ -35,17 +37,10 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
 
   return (
     <>
-      <Head>
-        <title>
-          {`${cities.find((c) => c.city === city)?.name} ${skillType} Trends | SWEJobs.fyi`}
-        </title>
-        <meta
-          name="description"
-          content={`Check out the latest Software Engineer Skill Trends in ${
-            cities.find((c) => c.city === city)?.name
-          }`}
-        />
-      </Head>
+      <CustomHead
+        title={`${cityName} ${skillType} Trends | SWEJobs.fyi`}
+        description={`Check out the latest software engineer skill trends in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
+      ></CustomHead>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center">
         <h1 className="text-lg font-medium"> {skillType} </h1>
