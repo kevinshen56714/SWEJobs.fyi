@@ -18,7 +18,7 @@ export default function Home() {
         <title>SWEJobs.fyi - Software Engineer Jobs and Trends Tracker</title>
         <meta
           name="description"
-          content="We track latest US software engineer jobs and compile trends and stats"
+          content="We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly."
         />
       </Head>
 
