@@ -10,21 +10,30 @@ export default function Document() {
     <Html>
       <Head>
         <meta
-          name="og:title"
-          content="We track latest US software engineer jobs and compile trends and stats"
+          property="og:title"
+          content="SWEJobs.fyi - Software Engineer Jobs and Trends Tracker"
         />
+        <meta
+          property="og:description"
+          content="We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly."
+        />
+        <meta property="og:site_name" content="SWEJobs.fyi" />
         <meta property="og:url" content="https://swejobs.fyi/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://swejobs.fyi/main-schematic.png" />
+        <meta name="image" property="og:image" content="https://swejobs.fyi/main-schematic.jpg" />
 
         <meta
           name="twitter:title"
-          content="We track latest US software engineer jobs and compile trends and stats"
+          content="SWEJobs.fyi - Software Engineer Jobs and Trends Tracker"
+        />
+        <meta
+          name="twitter:description"
+          content="We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly."
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="swejobs.fyi" />
         <meta property="twitter:url" content="https://swejobs.fyi/" />
-        <meta name="twitter:image" content="https://swejobs.fyi/main-schematic.png" />
+        <meta name="twitter:image" content="https://swejobs.fyi/main-schematic.jpg" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body>
