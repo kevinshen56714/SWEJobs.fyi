@@ -16,7 +16,6 @@ export default function Home() {
   return (
     <div>
       <CustomHead title="SWEJobs.fyi - Software Engineer Jobs and Trends Tracker"></CustomHead>
-
       <main className="mt-20 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Image className="max-w-md" src={mainSchematic} alt="SWEJobs.fyi" />

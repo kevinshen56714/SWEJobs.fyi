@@ -18,7 +18,7 @@ export default function Document() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="swejobs.fyi" />
         <meta property="twitter:url" content="https://swejobs.fyi/" />
-        <meta name="twitter:image" content="https://swejobs.fyi/main-schematic.png" />
+        <meta name="twitter:image" content="https://swejobs.fyi/main-schematic.jpg" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body>
