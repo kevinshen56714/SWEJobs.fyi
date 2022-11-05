@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
 import { useEffect, useMemo, useState } from 'react'
 
+import { CustomHead } from '../../../components/CustomHead'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import Head from 'next/head'
 import { PieChart } from '../../../components/PieChart'
@@ -18,6 +19,7 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   const { stats } = props
   const router = useRouter()
   const { city, skillType } = router.query
+  const cityName = cities.find((c) => c.city === city)?.name
 
   const [numSkillsInChart, setNumSkillsInChart] = useState(10)
 
@@ -34,17 +36,10 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
 
   return (
     <>
-      <Head>
-        <title>
-          {`${cities.find((c) => c.city === city)?.name} ${skillType} Stats | SWEJobs.fyi`}
-        </title>
-        <meta
-          name="description"
-          content={`Check out the latest Software Engineer Skill Stats in ${
-            cities.find((c) => c.city === city)?.name
-          }`}
-        />
-      </Head>
+      <CustomHead
+        title={`${cityName} ${skillType} Stats | SWEJobs.fyi`}
+        description={`Check out the latest software engineer skill stats in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
+      ></CustomHead>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center sm:my-8">
         <h1 className="text-lg font-medium"> {skillType} </h1>

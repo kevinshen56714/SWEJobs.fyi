@@ -1,3 +1,4 @@
+import { CustomHead } from '../components/CustomHead'
 import Head from 'next/head'
 import Image from 'next/image'
 import mainSchematic from '../public/main-schematic.svg'
@@ -14,13 +15,7 @@ export const cities = [
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>SWEJobs.fyi - Software Engineer Jobs and Trends Tracker</title>
-        <meta
-          name="description"
-          content="We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly."
-        />
-      </Head>
+      <CustomHead title="SWEJobs.fyi - Software Engineer Jobs and Trends Tracker"></CustomHead>
 
       <main className="mt-20 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center gap-3 sm:flex-row">

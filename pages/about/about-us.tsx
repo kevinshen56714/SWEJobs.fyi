@@ -4,7 +4,7 @@ export default function AboutUs() {
   return (
     <>
       <Head>
-        <title>About Data | SWEJobs.fyi</title>
+        <title>About Us | SWEJobs.fyi</title>
       </Head>
       <div className="flex items-center justify-center gap-1">
         <article className="prose lg:prose-xl">

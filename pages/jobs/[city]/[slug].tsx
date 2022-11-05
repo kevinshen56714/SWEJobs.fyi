@@ -7,6 +7,7 @@ import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
 
 import { Badge } from '../../../components/Badge'
+import { CustomHead } from '../../../components/CustomHead'
 import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { FilterAndOrSwitch } from '../../../components/FilterAndOrSwitch'
@@ -66,6 +67,7 @@ const sortJobs = (jobs: Job[], sortBy: string, filter: string[], andEnabled: boo
 export default function JobPosts(props: { jobs: Job[] }) {
   const router = useRouter()
   const { city, slug, skills } = router.query
+  const cityName = cities.find((c) => c.city === city)?.name
 
   const [sortBy, setSortBy] = useState<string>('Sort By')
   const [filter, setFilter] = useState<string[]>([])
@@ -102,19 +104,10 @@ export default function JobPosts(props: { jobs: Job[] }) {
 
   return (
     <>
-      <Head>
-        <title>
-          {`Latest Software Engineer Jobs in ${
-            cities.find((c) => c.city === city)?.name
-          } | SWEJobs.fyi`}
-        </title>
-        <meta
-          name="description"
-          content={`Check out the Past ${slug} Hours Software Engineer Jobs in ${
-            cities.find((c) => c.city === city)?.name
-          }`}
-        />
-      </Head>
+      <CustomHead
+        title={`Latest Software Engineer Jobs in ${cityName} | SWEJobs.fyi`}
+        description={`Check out the past ${slug} hours software engineer jobs in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
+      ></CustomHead>
       <ul className="flex flex-wrap text-sm font-medium sm:gap-2">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
