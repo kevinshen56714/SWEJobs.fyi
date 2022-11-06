@@ -12,10 +12,10 @@ import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../../components/DropdownMenu'
 import { FilterAndOrSwitch } from '../../../components/FilterAndOrSwitch'
 import { FilterPopover } from '../../../components/FilterPopover'
-import Head from 'next/head'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
 import { SkillType } from '../../../types/Skills'
+import Tooltip from '../../../components/Tooltip'
 import { cities } from '../..'
 import classNames from 'classnames'
 import { mockJobs } from '../../../data/mockJobs'
@@ -155,16 +155,21 @@ export default function JobPosts(props: { jobs: Job[] }) {
       }`}</div>
       <div className="relative hidden overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm sm:block">
         <table className="w-full text-left text-sm text-gray-500">
-          <thead className="border-b bg-gray-50 text-xs uppercase text-gray-700">
+          <thead className="border-b bg-gray-50 text-gray-700">
             <tr>
-              <th scope="col" className="py-3 px-10">
-                Company & Role
+              {/* We apply font-semibold in every <th> to overwrite its automatically applied font-bold */}
+              <th className="py-2 px-10 font-semibold">Company & Role</th>
+              <th className="py-2 px-6 font-semibold">
+                <div className="flex items-center gap-1">
+                  Languages
+                  <Tooltip>Click on any badges to apply filtering</Tooltip>
+                </div>
               </th>
-              <th scope="col" className="py-3 px-6">
-                Languages
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Skills
+              <th className="py-2 px-6 font-semibold">
+                <div className="flex items-center gap-1">
+                  Skills
+                  <Tooltip>Click on any badges to apply filtering</Tooltip>
+                </div>
               </th>
             </tr>
           </thead>
@@ -308,10 +313,13 @@ export default function JobPosts(props: { jobs: Job[] }) {
       {/* for small view */}
       <div className="relative overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm sm:hidden">
         <table className="w-full text-left text-sm text-gray-500">
-          <thead className="border-b bg-gray-50 text-xs uppercase text-gray-700">
+          <thead className="border-b bg-gray-50 text-gray-700">
             <tr>
-              <th scope="col" className="py-3 px-10">
-                Jobs
+              <th scope="col" className="py-3 px-10 font-semibold">
+                <div className="flex items-center gap-1">
+                  Jobs
+                  <Tooltip>Click on any badges to apply filtering</Tooltip>
+                </div>
               </th>
             </tr>
           </thead>

@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { CustomHead } from '../../../components/CustomHead'
 import { DropdownMenu } from '../../../components/DropdownMenu'
-import Head from 'next/head'
 import { PieChart } from '../../../components/PieChart'
 import { SkillType } from '../../../types/Skills'
 import { SkillTypeTabGroup } from '../../../components/Tabs'
