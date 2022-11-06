@@ -13,7 +13,9 @@ export default function Document() {
         <meta property="og:site_name" content="SWEJobs.fyi" />
         <meta property="og:url" content="https://swejobs.fyi/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://swejobs.fyi/og-img.png" />
+        <meta property="og:image" content="http://www.swejobs.fyi/og-img.png" />
+        <meta property="og:image" content="https://www.swejobs.fyi/og-img.png" />
+        <meta property="og:image:secure_url" content="https://www.swejobs.fyi/og-img.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 
