@@ -9,13 +9,16 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <meta name="robots" content="index,follow" />
+        <meta name="theme-color" content="#00acc1" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="SWEJobs.fyi" />
         <meta property="og:url" content="https://swejobs.fyi/" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="http://www.swejobs.fyi/og-img.png" />
         <meta property="og:image" content="https://www.swejobs.fyi/og-img.png" />
         <meta property="og:image:secure_url" content="https://www.swejobs.fyi/og-img.png" />
+        <meta property="og:image:alt" content="SWEJobs.fyi" />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
 

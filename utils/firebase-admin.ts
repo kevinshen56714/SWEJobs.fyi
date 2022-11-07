@@ -12,7 +12,7 @@ const app =
       })
     : getApp()
 
-export const db = getFirestore(app)
+const db = getFirestore(app)
 
 export const checkTodayData = async (city: string | string[], todayStr: string) => {
   const snapshot = await db
