@@ -17,7 +17,6 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   const { stats } = props
   const router = useRouter()
   const { city, skillType } = router.query
-  const decodedSkillType = decodeURIComponent(skillType as string)
   const cityName = cities.find((c) => c.city === city)?.name
   const numSkills = Object.keys(stats).length
 
@@ -38,12 +37,12 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   return (
     <>
       <CustomHead
-        title={`${cityName} ${decodedSkillType} Stats | SWEJobs.fyi`}
+        title={`${cityName} ${skillType} Stats | SWEJobs.fyi`}
         description={`Check out the latest software engineer skill stats in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
       ></CustomHead>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center sm:my-8">
-        <h1 className="text-lg font-medium">{decodedSkillType}</h1>
+        <h1 className="text-lg font-medium">{skillType}</h1>
         <div className="flex items-center gap-2">
           <p>Show top</p>
           <DropdownMenu
@@ -133,13 +132,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
   const { city, skillType } = context.params
-  console.log('skillType', skillType)
-  const decodedSkillType = decodeURIComponent(skillType as string)
-  console.log('decodedSkillType', decodedSkillType)
 
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
-    return { props: { stats: mockStats[decodedSkillType] } }
+    return { props: { stats: mockStats[skillType as string] } }
   }
 
   const last30Days = await getLast30DayStr(city as string)
@@ -153,7 +149,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const [stats, count] = cur
     totalJobs += count
     Object.keys(stats).forEach((skill) => {
-      if (skillsByType[decodedSkillType].flat().includes(skill)) {
+      if (skillsByType[skillType as string].flat().includes(skill)) {
         acc[skill] ? (acc[skill] += stats[skill]) : (acc[skill] = stats[skill])
       }
     })

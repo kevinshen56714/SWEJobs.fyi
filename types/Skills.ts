@@ -4,7 +4,7 @@ export enum SkillType {
   BACKEND = 'Web Backend',
   DATABASE = 'Database',
   CLOUD_INFRA = 'Cloud/Infrastructure',
-  NATIVE_OR_CROSS = 'Native/Cross Platform',
+  NATIVE_OR_CROSS = 'Native & Cross Platform',
   AI_ML = 'AI/ML',
   COMPUTE_GRAPHICS = 'Graphics/Computing',
 }
