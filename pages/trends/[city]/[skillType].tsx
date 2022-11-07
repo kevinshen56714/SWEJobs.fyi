@@ -17,6 +17,7 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
   const { trendsData } = props
   const router = useRouter()
   const { city, skillType } = router.query
+  const decodedSkillType = decodeURIComponent(skillType as string)
   const cityName = cities.find((c) => c.city === city)?.name
 
   const [skillToShow, setSkillToShow] = useState('All')
@@ -36,12 +37,12 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
   return (
     <>
       <CustomHead
-        title={`${cityName} ${skillType} Trends | SWEJobs.fyi`}
+        title={`${cityName} ${decodedSkillType} Trends | SWEJobs.fyi`}
         description={`Check out the latest software engineer skill trends in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
       ></CustomHead>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center">
-        <h1 className="text-lg font-medium"> {skillType} </h1>
+        <h1 className="text-lg font-medium"> {decodedSkillType} </h1>
         <DropdownMenu
           options={['All', ...allKeys]}
           selected={skillToShow}
@@ -85,12 +86,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // This also gets called at build time
 export const getStaticProps: GetStaticProps = async (context) => {
   const { city, skillType } = context.params
+  const decodedSkillType = decodeURIComponent(skillType as string)
   let todayStr = convertDateToString(new Date())
 
   // load mock randomized data for development
   if (process.env.NODE_ENV === 'development') {
     const trendsData = getLast7Days(todayStr)
-    const mockData = mockStats[skillType as string]
+    const mockData = mockStats[decodedSkillType]
     Object.keys(trendsData).map((date) => {
       const randomizedData = {}
       Object.keys(mockData).forEach((skill) => {
@@ -103,7 +105,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { trendsData } }
   }
 
-  console.log(`fetching trends for ${city}, ${skillType}`)
+  console.log(`fetching trends for ${city}, ${decodedSkillType}`)
 
   // if jobs haven't been updated today, shift back by 1 day
   const todayDataAvailable = await checkTodayData(city, todayStr)
@@ -114,7 +116,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   await Promise.all(
     Object.keys(trendsData).map(async (dateStr) => {
       const [skillCounts] = await getDailyStatsAndCount(city, dateStr)
-      skillsByType[skillType as string].forEach((skill) => {
+      skillsByType[decodedSkillType].forEach((skill) => {
         if (skill instanceof Array) skill = skill[0]
         trendsData[dateStr][skill] = skillCounts[skill] || 0
       })
