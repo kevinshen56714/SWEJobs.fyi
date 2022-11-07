@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { checkTodayData, db } from '../../../utils/firebase'
+import { checkTodayData, getDailyStatsAndCount } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../../utils/util'
-import { doc, getDoc } from 'firebase/firestore/lite'
 import { useEffect, useState } from 'react'
 
 import { BarChart } from '../../../components/BarChart'
@@ -114,7 +113,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // get last 7 days of data
   await Promise.all(
     Object.keys(trendsData).map(async (dateStr) => {
-      const skillCounts = await getDailySkillCounts(city, dateStr)
+      const [skillCounts] = await getDailyStatsAndCount(city, dateStr)
       skillsByType[skillType as string].forEach((skill) => {
         if (skill instanceof Array) skill = skill[0]
         trendsData[dateStr][skill] = skillCounts[skill] || 0
@@ -131,16 +130,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const getLast7Days = (todayStr: string) => {
   const last7Days = {}
   for (let i = 6; i >= 0; i--) {
-    const date = new Date(todayStr)
-    date.setDate(date.getDate() - i)
-    const dateStr = convertDateToString(new Date(date))
+    const dateStr = getPreviousDateString(todayStr, i)
     last7Days[dateStr] = {}
   }
   return last7Days
-}
-
-const getDailySkillCounts = async (city: string | string[], dateStr: string) => {
-  const docRef = doc(db, dateStr, city as string)
-  const docSnap = await getDoc(docRef)
-  return docSnap.data()['stats']
 }

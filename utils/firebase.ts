@@ -1,13 +1,17 @@
-import { collection, getCount, getFirestore, limit, query, where } from 'firebase/firestore/lite'
+import {
+  collection,
+  doc,
+  getCount,
+  getDoc,
+  getFirestore,
+  limit,
+  query,
+  where,
+} from 'firebase/firestore/lite'
 import { getAnalytics, logEvent } from 'firebase/analytics'
 
 import { initializeApp } from 'firebase/app'
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -31,4 +35,10 @@ export const checkTodayData = async (city: string | string[], todayStr: string) 
   const q = query(coll, where('city', '==', city), limit(1))
   const snapshot = await getCount(q)
   return snapshot.data().count > 0
+}
+
+export const getDailyStatsAndCount = async (city: string | string[], dateStr: string) => {
+  const docRef = doc(db, dateStr, city as string)
+  const docSnap = await getDoc(docRef)
+  return docSnap.exists() ? [docSnap.data()['stats'], docSnap.data()['count']] : [{}, 0]
 }

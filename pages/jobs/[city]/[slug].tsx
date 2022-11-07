@@ -1,7 +1,6 @@
 import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
-import { categorizeSkills, checkIfBigTech } from '../../../utils/analysis'
 import { checkTodayData, db } from '../../../utils/firebase'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
@@ -16,6 +15,7 @@ import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
 import { SkillType } from '../../../types/Skills'
 import Tooltip from '../../../components/Tooltip'
+import { categorizeSkills } from '../../../utils/analysis'
 import { cities } from '../..'
 import classNames from 'classnames'
 import { mockJobs } from '../../../data/mockJobs'
@@ -464,17 +464,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
     const curatedMockData = mockJobs.map((mockJob) => {
-      let { company, desc, link, loc, remote, salary, skills, title } = mockJob
+      let { bigTech, company, link, loc, remote, salary, skills, startup, title } = mockJob
       return {
-        bigTech: checkIfBigTech(company),
+        bigTech,
         company,
         createdAt: new Date().getTime(),
-        startup: desc.includes('startup'),
         link,
         loc,
         remote,
         salary,
         skills: categorizeSkills(skills),
+        startup,
         title,
       }
     })
@@ -500,9 +500,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 const assembleJobObject = (snapshot: QuerySnapshot) => {
   return snapshot.docs.map((doc) => {
-    const { company, createdAt, desc, link, loc, remote, salary, skills, title } = doc.data()
+    const { bigTech, company, createdAt, link, loc, remote, salary, skills, startup, title } =
+      doc.data()
     return {
-      bigTech: checkIfBigTech(company),
+      bigTech,
       company,
       createdAt: createdAt.toDate().getTime(),
       link,
@@ -510,7 +511,7 @@ const assembleJobObject = (snapshot: QuerySnapshot) => {
       remote,
       salary,
       skills: categorizeSkills(skills),
-      startup: desc.includes('startup'),
+      startup,
       title,
     }
   })

@@ -76,6 +76,7 @@ const backendStack = [
   'Apollo',
   ['BackboneJS', 'Backbone.js'],
   'Blazor',
+  ['Deno', 'Deno.js', 'DenoJS'],
   'Django',
   ['ExpressJS', 'Express.js', 'Express'],
   'FastAPI',
@@ -88,6 +89,7 @@ const backendStack = [
   'Nginx',
   ['NodeJS', 'Node.js', 'Node'],
   'PHP',
+  'Prisma',
   'Ruby on Rails',
   'Spring Boot',
   'Symfony',
@@ -132,17 +134,26 @@ const cloudInfraStack = [
   'RabbitMQ',
   'S3', // put it under AWS?
   'TerraForm',
+  'TeamCity',
 ]
 
 const dataMLStack = [
+  'Caffe',
   ['D3.js', 'D3js', 'D3'],
   'Dask',
   'Databricks',
+  ['Fast.ai', 'Fastai'],
   'Hadoop',
+  'JAX',
   'Keras',
+  'MxNet',
+  'ONNX',
+  'OpenCV',
   'Numpy',
   'Pandas',
+  ['Point Cloud Library', 'PCL'],
   'Presto',
+  'PySpark',
   'PyTorch',
   ['Scikit-learn', 'Scikit learn'],
   'Spark',
@@ -151,12 +162,22 @@ const dataMLStack = [
 
 const computingGraphicsStack = [
   'CUDA',
+  'DirectX',
+  'GCC',
+  'GLSL',
+  'HLSL',
+  'LLVM',
+  'MLIR',
+  'OpenCL',
   ['OpenMP/MPI', 'OpenMP', 'MPI'],
   ['OpenGL', 'Open GL'],
   ['three.js', 'threeJS'],
+  'TVM',
   'Unity',
   ['Unreal Engine', 'Unreal'],
+  'Vulkan',
   ['WebGL', 'Web GL'],
+  'XLA',
 ]
 
 export const skillsByType = {
@@ -167,7 +188,7 @@ export const skillsByType = {
   [SkillType.DATABASE]: databaseStack,
   [SkillType.CLOUD_INFRA]: cloudInfraStack,
   [SkillType.AI_ML]: dataMLStack,
-  [SkillType.GRAPHICS]: computingGraphicsStack,
+  [SkillType.COMPUTE_GRAPHICS]: computingGraphicsStack,
 }
 
 export const bigTechs = [
@@ -187,39 +208,6 @@ export const bigTechs = [
   'Twitter',
   'Uber',
 ]
-
-export const checkIfBigTech = (company: string) => {
-  return bigTechs.some((bigTech) => company.toLowerCase().includes(bigTech.toLowerCase()))
-}
-
-const checkIfSkillInDescription = (skill: string | string[], description: string): boolean => {
-  // recursively check all the aliases if skill is an array of alias names
-  if (skill instanceof Array) {
-    const aliasExistArr = skill.map((skillAlias) =>
-      checkIfSkillInDescription(skillAlias, description)
-    )
-    // return true if any of the aliases is in the description
-    return aliasExistArr.some((aliasExist) => aliasExist === true)
-  }
-  // escape + character for regex on C++
-  const skillRaw = skill.replaceAll('+', String.raw`\+`)
-  const re = new RegExp(`([ /(]${skillRaw}[ /,.):])`, 'gim')
-  return re.test(description)
-}
-
-export const getSkillsInJobDescription = (description: string) => {
-  const allMatchedSkills = {}
-  Object.keys(skillsByType).map((type) => {
-    const matchedSkills = []
-    skillsByType[type].map((skill: string | string[]) => {
-      if (checkIfSkillInDescription(skill, description)) {
-        matchedSkills.push(skill instanceof Array ? skill[0] : skill)
-      }
-    })
-    allMatchedSkills[type] = matchedSkills
-  })
-  return allMatchedSkills
-}
 
 export const categorizeSkills = (skills: string[]) => {
   const allMatchedSkills = {}

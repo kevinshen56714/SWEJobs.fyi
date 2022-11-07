@@ -22,7 +22,8 @@ export const Badge = (props: {
           'bg-[#2ec4b5a3] text-black': type === SkillType.BACKEND,
           'bg-[#ffbf69] text-black': type === SkillType.DATABASE,
           'bg-[#ff9f1c] text-black': type === SkillType.CLOUD_INFRA,
-          'bg-[#bde6ff] text-black': type === SkillType.AI_ML || type === SkillType.GRAPHICS,
+          'bg-[#bde6ff] text-black':
+            type === SkillType.AI_ML || type === SkillType.COMPUTE_GRAPHICS,
           'bg-[#a571ff7b] text-black': !type,
           'cursor-pointer': onClickCallBack,
         },

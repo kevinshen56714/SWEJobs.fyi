@@ -59,11 +59,12 @@ export const SkillTypeTabGroup = (props: { currentPath: string }) => {
   return (
     <ul className="-mb-px flex flex-wrap justify-center text-xs font-medium text-gray-500 sm:text-sm">
       {Object.values(SkillType).map((type, i) => {
-        const currentTab = type === currentType.replaceAll('%20', ' ')
+        const encodedType = encodeURIComponent(type)
+        const currentTab = encodedType === currentType
         return (
           <li className="mr-2" key={i}>
             <Link
-              href={`/${parentPath}/${currentCity}/${type}`}
+              href={`/${parentPath}/${currentCity}/${encodedType}`}
               className={classNames(
                 {
                   'active border-cyan-600 text-cyan-600': currentTab,
