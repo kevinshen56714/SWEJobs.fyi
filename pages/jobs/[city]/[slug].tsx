@@ -1,7 +1,6 @@
 import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { QuerySnapshot, collection, getDocs } from 'firebase/firestore/lite'
-import { checkTodayData, db } from '../../../utils/firebase'
+import { checkTodayData, getDailyJobs } from '../../../utils/firebase-admin'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -491,28 +490,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   dateStr = getPreviousDateString(dateStr, shiftDateBy)
 
-  const querySnapshot = await getDocs(collection(db, `${dateStr}/${city}/jobs`))
-  const jobs = assembleJobObject(querySnapshot)
+  const jobs = await getDailyJobs(city, dateStr)
   console.log(`There are ${jobs.length} jobs in ${city} ${slugs[slug as string]}`)
   // Pass collection data to the page via props
   return { props: { jobs } }
-}
-
-const assembleJobObject = (snapshot: QuerySnapshot) => {
-  return snapshot.docs.map((doc) => {
-    const { bigTech, company, createdAt, link, loc, remote, salary, skills, startup, title } =
-      doc.data()
-    return {
-      bigTech,
-      company,
-      createdAt: createdAt.toDate().getTime(),
-      link,
-      loc: loc.split('+')[0],
-      remote,
-      salary,
-      skills: categorizeSkills(skills),
-      startup,
-      title,
-    }
-  })
 }

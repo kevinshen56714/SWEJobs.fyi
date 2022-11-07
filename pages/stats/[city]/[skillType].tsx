@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { checkTodayData, getDailyStatsAndCount } from '../../../utils/firebase'
+import { checkTodayData, getDailyStatsAndCount } from '../../../utils/firebase-admin'
 import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
 
