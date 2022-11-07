@@ -1,5 +1,6 @@
 export const mockJobs = [
   {
+    bigTech: false,
     company: 'Example Company',
     desc: `
       We're building the future of pet care, combining insights, products, and services to help
@@ -27,9 +28,11 @@ export const mockJobs = [
     remote: true,
     salary: '$150,000 - $180,000 a year',
     skills: ['React', 'Redux'],
+    startup: false,
     title: 'Software Engineer',
   },
   {
+    bigTech: false,
     company: 'Example Company 2 - some very long company name',
     desc: `
       Role Number: 200405446 Play a part in the next revolution in human-computer interaction.
@@ -69,9 +72,11 @@ export const mockJobs = [
     remote: true,
     salary: '',
     skills: ['C/C++', 'Python'],
+    startup: true,
     title: 'AI/ML Machine Learning Engineer',
   },
   {
+    bigTech: true,
     company: 'Apple',
     desc: `
       About Example Company 3 is helping to drive mainstream adoption of digital assets by
@@ -144,6 +149,7 @@ export const mockJobs = [
       'Kubernetes',
       'Jenkins',
     ],
+    startup: false,
     title: 'Principal DevOps Engineer - Some very long job title',
   },
 ]

@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { collectionGroup, getCount, query, where } from 'firebase/firestore/lite'
+import { checkTodayData, getDailyStatsAndCount } from '../../../utils/firebase'
+import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
 
 import { CustomHead } from '../../../components/CustomHead'
@@ -8,8 +9,6 @@ import { PieChart } from '../../../components/PieChart'
 import { SkillType } from '../../../types/Skills'
 import { SkillTypeTabGroup } from '../../../components/Tabs'
 import { cities } from '../..'
-import { db } from '../../../utils/firebase'
-import { getTopSortedSkills } from '../../../utils/util'
 import { mockStats } from '../../../data/mockStats'
 import { skillsByType } from '../../../utils/analysis'
 import { useRouter } from 'next/router'
@@ -19,13 +18,15 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
   const router = useRouter()
   const { city, skillType } = router.query
   const cityName = cities.find((c) => c.city === city)?.name
+  const numSkills = Object.keys(stats).length
 
   const [numSkillsInChart, setNumSkillsInChart] = useState(10)
+  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
-    const numSkills = Object.keys(stats).length
     setNumSkillsInChart(numSkills > 10 ? 10 : numSkills)
-  }, [stats])
+    setShowAll(false)
+  }, [numSkills])
 
   const topSkills = useMemo(
     () => getTopSortedSkills(stats, numSkillsInChart),
@@ -41,7 +42,7 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
       ></CustomHead>
       <SkillTypeTabGroup currentPath={router.asPath} />
       <div className="mt-8 flex flex-col items-center sm:my-8">
-        <h1 className="text-lg font-medium"> {skillType} </h1>
+        <h1 className="text-lg font-medium">{skillType}</h1>
         <div className="flex items-center gap-2">
           <p>Show top</p>
           <DropdownMenu
@@ -53,6 +54,10 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
           ></DropdownMenu>
           <p> skills in the chart</p>
         </div>
+        <div className="text-gray-500">
+          ({getPreviousDateString(convertDateToString(new Date()), 30)} -{' '}
+          {convertDateToString(new Date())})
+        </div>
         <div className="flex w-full flex-wrap items-start justify-center gap-1">
           <div className="h-[340px] w-[480px] max-w-full sm:hidden">
             <PieChart data={topSkills} smallView={true}></PieChart>
@@ -62,28 +67,45 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-left text-sm text-gray-500">
-              <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+              <thead className="bg-gray-50 text-gray-700">
                 <tr>
-                  <th scope="col" className="py-3 px-6">
+                  <th scope="col" className="py-3 px-6 font-semibold">
                     Skill
                   </th>
-                  <th scope="col" className="py-3 px-6">
-                    Count
+                  <th scope="col" className="max-w-[8rem] py-3 px-6 font-semibold">
+                    Occurrence per 100 jobs
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(stats).map((skill, i) => (
-                  <tr className="border-b bg-white hover:bg-gray-50" key={i}>
+                {Object.keys(stats).map((skill, i) => {
+                  const isHidden = numSkills > numSkillsInChart && i >= numSkillsInChart && !showAll
+                  return isHidden ? null : (
+                    <tr className="border-b bg-white text-gray-800 hover:bg-gray-50" key={i}>
+                      <td
+                        scope="row"
+                        className="truncate whitespace-nowrap py-2 px-6 font-medium hover:cursor-pointer"
+                      >
+                        {skill}
+                      </td>
+                      <td className="py-2 px-6 text-center">{stats[skill]}</td>
+                    </tr>
+                  )
+                })}
+                {numSkills > numSkillsInChart && (
+                  <tr
+                    className="border-b bg-white hover:bg-gray-50"
+                    onClick={() => setShowAll(!showAll)}
+                  >
                     <td
                       scope="row"
-                      className="active max-w-[16.5rem] truncate whitespace-nowrap py-2 px-6 font-medium text-cyan-600 hover:cursor-pointer hover:underline"
+                      colSpan={2}
+                      className="truncate whitespace-nowrap py-2 px-6 text-center font-medium text-cyan-600 hover:cursor-pointer hover:underline"
                     >
-                      {skill}
+                      {showAll ? 'Show Less' : `Show All (${numSkills})`}
                     </td>
-                    <td className="max-w-[25rem] py-2 px-6">{stats[skill]}</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -116,26 +138,46 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { stats: mockStats[skillType as string] } }
   }
 
-  let stats = {}
-  const allSkills = skillsByType[skillType as string]
-  for (let i = 0; i < allSkills.length; i++) {
-    let skill = allSkills[i]
-    if (skill instanceof Array) skill = skill[0]
-    stats[skill] = await getSkillCount(city, skill)
-  }
-  stats = getTopSortedSkills(stats)
+  const last30Days = await getLast30DayStr(city as string)
+  const dailyStats = await Promise.all(
+    last30Days.map((date) => getDailyStatsAndCount(city as string, date))
+  )
+
+  // sum up daily stats to get monthly stats
+  let totalJobs = 0
+  const unsortedStats = dailyStats.reduce((acc, cur) => {
+    const [stats, count] = cur
+    totalJobs += count
+    Object.keys(stats).forEach((skill) => {
+      if (skillsByType[skillType as string].flat().includes(skill)) {
+        acc[skill] ? (acc[skill] += stats[skill]) : (acc[skill] = stats[skill])
+      }
+    })
+    return acc
+  }, {} as { [skill: string]: number })
+
+  // convert counts to percentages
+  Object.keys(unsortedStats).forEach((skill) => {
+    unsortedStats[skill] = Math.round((unsortedStats[skill] / totalJobs) * 10000) / 100
+  })
+
+  const stats = getTopSortedSkills(unsortedStats)
 
   // Pass collection data to the page via props
   return { props: { stats } }
 }
 
-const getSkillCount = async (city: string | string[], skill: string) => {
-  const collGroup = collectionGroup(db, 'jobs')
-  const skillQuery = query(
-    collGroup,
-    where('skills', 'array-contains', skill),
-    where('city', '==', city)
-  )
-  const snapshot = await getCount(skillQuery)
-  return snapshot.data().count
+// create an array with each date of last 30 days
+const getLast30DayStr = async (city: string) => {
+  let todayStr = convertDateToString(new Date())
+  // if jobs haven't been updated today, shift back by 1 day
+  const todayDataAvailable = await checkTodayData(city, todayStr)
+  if (!todayDataAvailable) todayStr = getPreviousDateString(todayStr, 1)
+
+  let last30Days = [] as string[]
+  for (let i = 29; i >= 0; i--) {
+    const dateStr = getPreviousDateString(todayStr, i)
+    last30Days = [...last30Days, dateStr]
+  }
+  return last30Days
 }
