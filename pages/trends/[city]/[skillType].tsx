@@ -48,7 +48,9 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
           <DropdownMenu
             options={Object.values(SkillType)}
             selected={skillType as string}
-            onChangeCallback={(type) => router.push(`/trends/${city}/${type}`)}
+            onChangeCallback={(type) =>
+              router.push(`/trends/${city}/${encodeURIComponent(type as string)}`)
+            }
           ></DropdownMenu>
         </div>
         <h1 className="hidden text-lg font-medium lg:block">{skillType}</h1>
