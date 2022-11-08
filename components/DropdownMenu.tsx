@@ -1,9 +1,10 @@
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
 import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 
+import { ChevronDownIcon } from '@heroicons/react/24/solid'
+
 export const DropdownMenu = (props: {
-  options: string[] | number[]
+  options: Array<string | number>
   selected: string | number
   onChangeCallback: Dispatch<SetStateAction<string | number>>
 }) => {

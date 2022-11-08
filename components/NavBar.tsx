@@ -14,7 +14,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { SkillType } from '../types/Skills'
 import classNames from 'classnames'
-import logo from '../public/global-job.svg'
+import logo from '../public/logo.png'
 import { useRouter } from 'next/router'
 
 const navigation = [
@@ -69,8 +69,8 @@ export const NavBar = () => {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image className="block h-8 w-8" src={logo} alt="SWEJobs.fyi" />
-                  <Link href="/" className="rounded-md px-3 text-lg font-semibold text-white">
+                  <Image className="block h-10 w-10" src={logo} alt="SWEJobs.fyi" />
+                  <Link href="/" className="rounded-md px-2 text-lg font-semibold text-white">
                     SWEJobs.fyi
                   </Link>
                 </div>
