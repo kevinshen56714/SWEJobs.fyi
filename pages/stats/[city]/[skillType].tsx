@@ -49,7 +49,7 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
           <DropdownMenu
             options={Object.values(SkillType)}
             selected={skillType as string}
-            onChangeCallback={(skill) => router.push(`/stats/${city}/${skill}`)}
+            onChangeCallback={(type) => router.push(`/stats/${city}/${type}`)}
           ></DropdownMenu>
         </div>
         <h1 className="hidden text-lg font-medium lg:block">{skillType}</h1>
