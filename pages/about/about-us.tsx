@@ -1,15 +1,13 @@
 import { Highlight, Paragraph } from './about-data'
 
-import Head from 'next/head'
+import { CustomHead } from '../../components/CustomHead'
 import Image from 'next/image'
 import figure from '../../public/logo-thin.png'
 
 export default function AboutUs() {
   return (
     <>
-      <Head>
-        <title>About Us | SWEJobs.fyi</title>
-      </Head>
+      <CustomHead title="About Us | SWEJobs.fyi"></CustomHead>
       <div className="flex flex-col items-center text-gray-900">
         <Image className="w-[90%] max-w-xs px-5" src={figure} alt="SWEJobs.fyi" />
         <div className="w-full">

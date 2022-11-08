@@ -2,8 +2,8 @@ import { bigTechs, skillsByType } from '../../utils/analysis'
 
 import { Badge } from '../../components/Badge'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
+import { CustomHead } from '../../components/CustomHead'
 import { Disclosure } from '@headlessui/react'
-import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { SkillType } from '../../types/Skills'
@@ -21,9 +21,7 @@ export const Highlight = (props: { children: React.ReactNode }) => (
 export default function AboutData() {
   return (
     <>
-      <Head>
-        <title>About Data | SWEJobs.fyi</title>
-      </Head>
+      <CustomHead title="About Data | SWEJobs.fyi"></CustomHead>
       <div className="flex flex-col items-center text-gray-900">
         <Image className="w-[90%] max-w-md px-5" src={figure} alt="SWEJobs.fyi" />
         <div className="w-full">

@@ -34,11 +34,11 @@ const navigation = [
     items: [
       {
         name: 'Privacy Policy',
-        href: '',
+        href: '/about/privacy-policy',
       },
       {
         name: 'Terms & Conditions',
-        href: '',
+        href: '/about/terms-and-conditions',
       },
     ],
   },
