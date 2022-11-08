@@ -3,6 +3,8 @@ export const Title = (props: { currentPath: string }) => {
   const title = {
     'about-data': 'About Data',
     'about-us': 'About Us',
+    'privacy-policy': 'Privacy Policy',
+    'terms-and-conditions': 'Terms & Conditions',
   }
 
   return (
