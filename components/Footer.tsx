@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import logo from '../public/global-job.svg'
+import logo from '../public/logo.png'
 
 const navigation = [
   {
@@ -51,7 +51,7 @@ export const Footer = () => {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link href="/" className="flex items-center gap-2">
-              <Image className="block h-8 w-8" src={logo} alt="SWEJobs.fyi" />
+              <Image className="block h-10 w-10" src={logo} alt="SWEJobs.fyi" />
               <span className="self-center whitespace-nowrap text-xl font-semibold">
                 SWEJobs.fyi
               </span>
