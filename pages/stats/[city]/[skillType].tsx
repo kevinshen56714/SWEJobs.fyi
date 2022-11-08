@@ -40,9 +40,21 @@ export default function Stats(props: { stats: { [skill: string]: number } }) {
         title={`${cityName} ${skillType} Stats | SWEJobs.fyi`}
         description={`Check out the latest software engineer skill stats in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
       ></CustomHead>
-      <SkillTypeTabGroup currentPath={router.asPath} />
-      <div className="mt-8 flex flex-col items-center sm:my-8">
-        <h1 className="text-lg font-medium">{skillType}</h1>
+      <div className="hidden lg:block">
+        <SkillTypeTabGroup currentPath={router.asPath} />
+      </div>
+      <div className="flex flex-col items-center lg:mt-8">
+        <div className="flex items-center gap-3 lg:hidden">
+          <h1 className="text-lg font-medium">Category:</h1>
+          <DropdownMenu
+            options={Object.values(SkillType)}
+            selected={skillType as string}
+            onChangeCallback={(type) =>
+              router.push(`/stats/${city}/${encodeURIComponent(type as string)}`)
+            }
+          ></DropdownMenu>
+        </div>
+        <h1 className="hidden text-lg font-medium lg:block">{skillType}</h1>
         <div className="flex items-center gap-2">
           <p>Show top</p>
           <DropdownMenu

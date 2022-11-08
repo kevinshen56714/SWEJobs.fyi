@@ -16,10 +16,10 @@ export default function Home() {
     <div>
       <CustomHead title="SWEJobs.fyi - Software Engineer Jobs and Trends Tracker"></CustomHead>
       <main className="mt-20 flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <Image className="max-w-md" src={mainSchematic} alt="SWEJobs.fyi" />
-          <div>
-            <div className="text-center text-2xl font-medium sm:text-left">SWEJobs.fyi</div>
+        <div className="flex flex-col items-center gap-3 md:flex-row">
+          <Image className="w-[30rem] max-w-full" src={mainSchematic} alt="SWEJobs.fyi" />
+          <div className="text-center md:text-left">
+            <h1 className="text-2xl font-medium">SWEJobs.fyi</h1>
             <p className="text-xl">Break down software engineer job postings for you</p>
           </div>
         </div>
