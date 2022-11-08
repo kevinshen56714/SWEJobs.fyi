@@ -1,4 +1,8 @@
+import { Highlight, Paragraph } from './about-data'
+
 import Head from 'next/head'
+import Image from 'next/image'
+import figure from '../../public/logo-thin.png'
 
 export default function AboutUs() {
   return (
@@ -6,35 +10,53 @@ export default function AboutUs() {
       <Head>
         <title>About Us | SWEJobs.fyi</title>
       </Head>
-      <div className="flex items-center justify-center gap-1">
-        <article className="prose lg:prose-xl">
-          <h3 className="self-center text-center text-xl">For engineers, by engineers</h3>
-          <p className="mb-2 text-center text-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae justo quis nunc
-            aliquam efficitur ut ut tellus. Fusce mattis eu mi sit amet egestas. Mauris eu tristique
-            ex, a interdum leo. Vestibulum suscipit viverra convallis. Aliquam urna purus, dignissim
-            sit amet maximus et, mattis in sem.
-          </p>
-        </article>
-      </div>
-      <br />
-      <div className="flex items-center justify-center">
-        <div className="overflow-hidden rounded-lg shadow-lg hover:shadow-xl">
-          <div className="px-6 py-4">
-            <div className="mb-2 text-xl font-bold">About Us</div>
-            <p className="text-base text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla!
-              Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-            <p className="text-base text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla!
-              Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-            <p className="text-base text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla!
-              Maiores et perferendis eaque, exercitationem praesentium nihil.
-            </p>
-          </div>
+      <div className="flex flex-col items-center text-gray-900">
+        <Image className="w-[90%] max-w-xs px-5" src={figure} alt="SWEJobs.fyi" />
+        <div className="w-full">
+          <Paragraph>
+            SWEJobs.fyi is created by a{' '}
+            <a
+              className="font-medium text-blue-600 underline"
+              href="https://github.com/kevinshen56714/SWEJobs.fyi/graphs/contributors"
+            >
+              small, dedicated team
+            </a>{' '}
+            that aims to{' '}
+            <Highlight>
+              help software engineers find timely job opportunities that best fit their skills and
+              interests
+            </Highlight>
+            .
+          </Paragraph>
+          <Paragraph>
+            We believe the best way to achieve that is to organize job postings in a clear way and
+            build an intuitive and efficient filtering tool that are specifically for software
+            engineers. Our mission is not to replace job boards like LinkedIn or Indeed, but to{' '}
+            <Highlight>
+              provide highly quality list of job opportunities curated by us and empower you to find
+              the ones that best fit you in seconds
+            </Highlight>
+            .
+          </Paragraph>
+          <Paragraph>
+            We also think that{' '}
+            <Highlight>
+              understanding the job market is a key to making informed career decisions
+            </Highlight>
+            . Therefore, we provide a variety of trends and statistics to help software engineers
+            make the most out of their job search.
+          </Paragraph>
+          <Paragraph>
+            We hope you find SWEJobs.fyi useful! If you have any questions or suggestions, please
+            feel free to{' '}
+            <a
+              className="font-medium text-blue-600 underline"
+              href="https://github.com/kevinshen56714/SWEJobs.fyi/discussions"
+            >
+              reach out to us
+            </a>
+            .
+          </Paragraph>
         </div>
       </div>
     </>

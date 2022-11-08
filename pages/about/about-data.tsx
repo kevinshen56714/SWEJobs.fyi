@@ -10,11 +10,11 @@ import { SkillType } from '../../types/Skills'
 import { cities } from '..'
 import figure from '../../public/magnify-glass.svg'
 
-const Paragraph = (props: { children: React.ReactNode }) => (
+export const Paragraph = (props: { children: React.ReactNode }) => (
   <div className="mt-6">{props.children}</div>
 )
 
-const Highlight = (props: { children: React.ReactNode }) => (
+export const Highlight = (props: { children: React.ReactNode }) => (
   <span className="font-medium">{props.children}</span>
 )
 
