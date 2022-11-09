@@ -54,7 +54,9 @@ export default function Home() {
                 key={i}
                 value={skill instanceof Array ? skill[0] : skill}
                 onClickCallBack={(skill) =>
-                  router.push(`/jobs/${cities[0].city}/24?skills=${skill}`)
+                  router.push(
+                    `/jobs/${cities[0].city}/24?skills=${encodeURIComponent(skill as string)}`
+                  )
                 }
               />
             ))}
