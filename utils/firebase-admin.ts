@@ -26,7 +26,10 @@ export const checkTodayData = async (city: string | string[], todayStr: string) 
   return snapshot.data().count > 0
 }
 
-export const getDailyStatsAndCount = async (city: string | string[], dateStr: string) => {
+export const getDailyStatsAndCount = async (
+  city: string | string[],
+  dateStr: string
+): Promise<[{ [skill: string]: number }, number]> => {
   const docRef = db.collection(dateStr).doc(city as string)
   const docSnap = await docRef.get()
   return docSnap.exists ? [docSnap.data()['stats'], docSnap.data()['count']] : [{}, 0]
