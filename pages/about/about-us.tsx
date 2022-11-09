@@ -28,10 +28,11 @@ export default function AboutUs() {
           </Paragraph>
           <Paragraph>
             We believe the best way to achieve that is to organize job postings in a clear way and
-            build an intuitive and efficient filtering tool that are specifically for software
-            engineers. Our mission is not to replace job boards like LinkedIn or Indeed, but to{' '}
+            build an intuitive and efficient filtering tool that are designed specifically for
+            software engineers. Our mission is not to replace job boards like LinkedIn or Indeed,
+            but to{' '}
             <Highlight>
-              provide highly quality list of job opportunities curated by us and empower you to find
+              provide high quality lists of job opportunities curated by us and empower you to find
               the ones that best fit you in seconds
             </Highlight>
             .
