@@ -1,6 +1,6 @@
 import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { checkTodayData, getDailyJobs } from '../../../utils/firebase-admin'
+import { checkTodayData, getDailyJobs, getDailyStatsAndCount } from '../../../utils/firebase-admin'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -18,6 +18,7 @@ import { categorizeSkills } from '../../../utils/analysis'
 import { cities } from '../..'
 import classNames from 'classnames'
 import { mockJobs } from '../../../data/mockJobs'
+import { mockStats } from '../../../data/mockStats'
 import { useRouter } from 'next/router'
 
 export const slugs = { 24: 'Within 24 hours', 48: '24-48 hours', 72: '48-72 hours' }
@@ -63,7 +64,7 @@ const sortJobs = (jobs: Job[], sortBy: string, filter: string[], andEnabled: boo
   return jobs
 }
 
-export default function JobPosts(props: { jobs: Job[] }) {
+export default function JobPosts(props: { jobs: Job[]; stats: { [skill: string]: number } }) {
   const router = useRouter()
   const { city, slug, skills } = router.query
   const cityName = cities.find((c) => c.city === city)?.name
@@ -131,7 +132,10 @@ export default function JobPosts(props: { jobs: Job[] }) {
         })}
       </ul>
       <div className="my-2 flex w-full items-end justify-between">
-        <FilterPopover skillBadgeCallBack={handleSkillBadgeClick}></FilterPopover>
+        <FilterPopover
+          skillBadgeCallBack={handleSkillBadgeClick}
+          skillStats={props.stats}
+        ></FilterPopover>
         <DropdownMenu
           options={sortByDropdownOptions}
           selected={sortBy}
@@ -482,7 +486,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
     // make curatedMockData x times longer based on shiftDateBy to test pagination
     const mockData = Array.from({ length: shiftDateBy + 1 }, () => curatedMockData).flat()
 
-    return { props: { jobs: mockData } }
+    return {
+      props: {
+        jobs: mockData,
+        stats: Object.keys(mockStats).reduce((acc, cur) => {
+          return { ...acc, ...mockStats[cur] }
+        }, {} as { [skill: string]: number }),
+      },
+    }
   }
 
   // if jobs haven't been updated today, shift back by 1 day
@@ -493,7 +504,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   dateStr = getPreviousDateString(dateStr, shiftDateBy)
 
   const jobs = await getDailyJobs(city, dateStr)
+  const [stats, count] = await getDailyStatsAndCount(city, dateStr)
   console.log(`There are ${jobs.length} jobs in ${city} ${slugs[slug as string]}`)
   // Pass collection data to the page via props
-  return { props: { jobs } }
+  return { props: { jobs, stats } }
 }
