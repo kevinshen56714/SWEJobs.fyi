@@ -11,14 +11,16 @@ export const CityTabGroup = (props: { currentPath: string }) => {
       <>
         {cities.map(({ city, name }, i) => {
           const currentTab = city === currentCity
+          let href = `/${parentPath}/${city}/${currentType}`
+          if (parentPath === 'jobs') {
+            href = `/${parentPath}/${city}/24` // always go to the page with latest jobs
+          } else if (parentPath === 'trends') {
+            href = `/${parentPath}/${city}/${currentType}/daily-trends`
+          }
           return (
             <li className="place-self-center" key={i}>
               <Link
-                href={
-                  parentPath === 'jobs'
-                    ? `/${parentPath}/${city}/24` // always go to the page with latest jobs
-                    : `/${parentPath}/${city}/${currentType}`
-                }
+                href={href}
                 className={classNames(
                   {
                     'bg-gray-800 text-white': currentTab,
@@ -64,7 +66,11 @@ export const SkillTypeTabGroup = (props: { currentPath: string }) => {
         return (
           <li className="mr-2" key={i}>
             <Link
-              href={`/${parentPath}/${currentCity}/${encodedType}/daily-trends`}
+              href={
+                parentPath === 'trends'
+                  ? `/${parentPath}/${currentCity}/${encodedType}/daily-trends`
+                  : `/${parentPath}/${currentCity}/${encodedType}`
+              }
               className={classNames(
                 {
                   'active border-cyan-600 text-cyan-600': currentTab,
