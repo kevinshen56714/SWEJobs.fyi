@@ -3,11 +3,15 @@ import { Popover, Transition } from '@headlessui/react'
 
 import { Badge } from './Badge'
 import { FunnelIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
 import { SkillType } from '../types/Skills'
 import { skillsByType } from '../utils/analysis'
 
-export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateAction<string>> }) => {
-  const { skillBadgeCallBack } = props
+export const FilterPopover = (props: {
+  skillBadgeCallBack: Dispatch<SetStateAction<string>>
+  skillStats: { [skill: string]: number }
+}) => {
+  const { skillBadgeCallBack, skillStats } = props
   return (
     <div>
       <Popover className="relative">
@@ -39,7 +43,14 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
                     </span>
                     <span className="block text-sm text-gray-500">
                       {`Can't find what you're looking for? `}
-                      <a href="#" className="underline">{`Let us know what you'd like to see!`}</a>
+                      <Link href="/about/about-data" className="underline">
+                        Check out all the skills we track
+                      </Link>{' '}
+                      or{' '}
+                      <Link
+                        href="https://github.com/kevinshen56714/SWEJobs.fyi/issues/new?assignees=&labels=&template=skill_label_request.md"
+                        className="underline"
+                      >{`Let us know what you'd like to see!`}</Link>
                     </span>
                   </div>
                   <div className="relative grid gap-4 bg-white py-4 px-7 lg:grid-cols-3">
@@ -52,16 +63,22 @@ export const FilterPopover = (props: { skillBadgeCallBack: Dispatch<SetStateActi
                       >
                         <h1 className="mb-2 text-sm font-medium text-gray-900">{type}</h1>
                         <div className="flex flex-wrap">
-                          {skillsByType[type].map((skill: string | string[], i: React.Key) => (
-                            <Badge
-                              key={i}
-                              value={skill instanceof Array ? skill[0] : skill}
-                              onClickCallBack={(e) => {
-                                skillBadgeCallBack(e)
-                                close()
-                              }}
-                            />
-                          ))}
+                          {skillsByType[type].map((skill: string | string[], i: React.Key) => {
+                            const skillName = skill instanceof Array ? skill[0] : skill
+                            return Object.keys(skillStats).includes(skillName) ? (
+                              <Badge
+                                value={skillName}
+                                onClickCallBack={(e) => {
+                                  skillBadgeCallBack(e)
+                                  close()
+                                }}
+                              >
+                                <div className="my-[1px] flex h-4 w-4 items-center justify-center rounded-md bg-white/40">
+                                  {skillStats[skillName]}
+                                </div>
+                              </Badge>
+                            ) : null
+                          })}
                         </div>
                       </div>
                     ))}
