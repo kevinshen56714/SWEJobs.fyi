@@ -23,16 +23,16 @@
 
 ## Key features
 
-- [SWE job boards for 6 major US cities that are constantly updated](#swe-job-boards)
-- [Intuitive skill-based filtering tool designed specifically for SWEs](#intuitive-filtering-tool)
+- [Constantly updated SWE job boards](#swe-job-boards)
+- [Intuitive skill-based filtering tool](#intuitive-filtering-tool)
 - [Detailed weekly trends and monthly stats](#detailed-trends-and-stats)
-- [Interactive data visualization of the SWE job market analysis](#interactive-data-visualization)
+- [Interactive data visualization](#interactive-data-visualization)
 
 ### SWE job boards
-![image](https://user-images.githubusercontent.com/11501902/201183095-ce9887c9-e9c3-4e07-964e-813e14ef38f5.png)
+![image](https://user-images.githubusercontent.com/11501902/201210657-28604b3c-1951-45d6-97be-7503cb42c469.png)
 
 ### Intuitive filtering tool
-![image](https://user-images.githubusercontent.com/11501902/201182899-2737b256-3499-4f06-b732-a39069a590fa.png)
+![image](https://user-images.githubusercontent.com/11501902/201210826-75ec61dd-92d6-4e80-86b8-cdf89e910aff.png)
 
 ### Detailed trends and stats
 ![image](https://user-images.githubusercontent.com/11501902/201181658-f6d2f00c-fc9a-4f98-b295-b58943ced19c.png)
