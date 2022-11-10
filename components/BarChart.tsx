@@ -27,7 +27,7 @@ export const BarChart = (props: {
       data={chartData}
       keys={allKeys}
       indexBy="date"
-      margin={{ top: 50, right: renderLegend ? 130 : 60, bottom: 70, left: 60 }}
+      margin={{ top: 50, right: renderLegend ? 130 : 60, bottom: smallView ? 100 : 70, left: 60 }}
       padding={0.3}
       valueScale={{ type: 'linear' }}
       indexScale={{ type: 'band', round: true }}
@@ -44,7 +44,7 @@ export const BarChart = (props: {
         tickRotation: smallView ? -45 : 0,
         legend: 'Date',
         legendPosition: 'middle',
-        legendOffset: 55,
+        legendOffset: smallView ? 85 : 55,
       }}
       axisLeft={{
         tickSize: 5,
