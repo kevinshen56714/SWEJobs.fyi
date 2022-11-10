@@ -101,7 +101,7 @@ export default function Trends(props: { trends: { date: { [skill: string]: numbe
           <p> in the chart</p>
         </div>
         <WeeklyVsDailyTabGroup currentPath={router.asPath}></WeeklyVsDailyTabGroup>
-        <div className="-mt-5 hidden h-[560px] w-full max-w-full sm:block">
+        <div className="hidden h-[560px] w-full max-w-full sm:-mt-5 sm:block">
           <BarChart
             data={trends}
             smallView={false}
@@ -109,7 +109,7 @@ export default function Trends(props: { trends: { date: { [skill: string]: numbe
             city={city as string}
           ></BarChart>
         </div>
-        <div className="-mt-5 h-[560px] w-full max-w-full sm:hidden">
+        <div className="h-[560px] w-full max-w-full sm:-mt-5 sm:hidden">
           <BarChart
             data={trends}
             smallView={true}
@@ -158,7 +158,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { trends } }
   }
 
-  console.log(`fetching trends for ${city}, ${skillType}`)
+  console.log(`fetching daily trends for ${city}, ${skillType}`)
 
   // if jobs haven't been updated today, shift back by 1 day
   const todayDataAvailable = await checkTodayData(city, todayStr)

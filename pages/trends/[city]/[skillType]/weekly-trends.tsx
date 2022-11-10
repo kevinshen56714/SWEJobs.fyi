@@ -69,7 +69,7 @@ export default function Trends(props: { trends: { week: { [skill: string]: numbe
           <p> in the chart</p>
         </div>
         <WeeklyVsDailyTabGroup currentPath={router.asPath}></WeeklyVsDailyTabGroup>
-        <div className="-mt-5 hidden h-[560px] w-full max-w-full sm:block">
+        <div className="hidden h-[560px] w-full max-w-full sm:-mt-5 sm:block">
           <BarChart
             data={trends}
             smallView={false}
@@ -77,7 +77,7 @@ export default function Trends(props: { trends: { week: { [skill: string]: numbe
             city={city as string}
           ></BarChart>
         </div>
-        <div className="-mt-5 h-[560px] w-full max-w-full sm:hidden">
+        <div className="h-[560px] w-full max-w-full sm:-mt-5 sm:hidden">
           <BarChart
             data={trends}
             smallView={true}
@@ -138,7 +138,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { trends } }
   }
 
-  console.log(`fetching trends for ${city}, ${skillType}`)
+  console.log(`fetching weekly trends for ${city}, ${skillType}`)
 
   const trends: { [week: string]: { [skill: string]: number } } = {}
   // get weekly trends for the last 4 weeks
@@ -163,7 +163,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       })
       return acc
     }, {} as { [skill: string]: number })
-    const sortedStats = getTopSortedSkills(unsortedStats)
+    const sortedStats = getTopSortedSkills(unsortedStats, 20)
     trends[`${weekDates[6].split(',')[0]}-${weekDates[0].split(',')[0]}`] = sortedStats
   }
 
