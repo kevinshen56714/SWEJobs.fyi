@@ -42,7 +42,10 @@ export default function AboutData() {
           </Paragraph>
           <Paragraph>
             However, we do make use of all the prior job postings that we collected and provide{' '}
-            <Link className="font-medium text-blue-600 underline" href="/trends/SJ/Language">
+            <Link
+              className="font-medium text-blue-600 underline"
+              href="/trends/SJ/Language/daily-trends"
+            >
               Trends
             </Link>{' '}
             and{' '}

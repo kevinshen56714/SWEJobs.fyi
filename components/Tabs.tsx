@@ -64,7 +64,7 @@ export const SkillTypeTabGroup = (props: { currentPath: string }) => {
         return (
           <li className="mr-2" key={i}>
             <Link
-              href={`/${parentPath}/${currentCity}/${encodedType}`}
+              href={`/${parentPath}/${currentCity}/${encodedType}/daily-trends`}
               className={classNames(
                 {
                   'active border-cyan-600 text-cyan-600': currentTab,

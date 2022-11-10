@@ -100,7 +100,9 @@ export default function Home(props: {
             <div
               className="group h-36 overflow-hidden rounded-xl border bg-[url('/trends-page-snapshot.png')] bg-cover shadow-sm hover:cursor-pointer"
               onClick={() =>
-                router.push(`/trends/${cities[0].city}/${Object.keys(skillsByType)[0]}`)
+                router.push(
+                  `/trends/${cities[0].city}/${Object.keys(skillsByType)[0]}/daily-trends`
+                )
               }
             >
               <div className="flex h-full items-center justify-center bg-gray-400/30 font-medium backdrop-blur-[2px]">

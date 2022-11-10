@@ -26,7 +26,7 @@ export const DropdownMenu = (props: {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute left-full z-10 mt-1 max-h-60 -translate-x-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Listbox.Options className="absolute left-full z-20 mt-1 max-h-60 -translate-x-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               {options.map((option, i) => (
                 <Listbox.Option
                   key={i}

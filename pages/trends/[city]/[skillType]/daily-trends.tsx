@@ -1,20 +1,57 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { checkTodayData, getDailyStatsAndCount } from '../../../utils/firebase-admin'
-import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../../utils/util'
+import { checkTodayData, getDailyStatsAndCount } from '../../../../utils/firebase-admin'
+import {
+  convertDateToString,
+  getPreviousDateString,
+  getTopSortedSkills,
+} from '../../../../utils/util'
 import { useEffect, useState } from 'react'
 
-import { BarChart } from '../../../components/BarChart'
-import { CustomHead } from '../../../components/CustomHead'
-import { DropdownMenu } from '../../../components/DropdownMenu'
-import { SkillType } from '../../../types/Skills'
-import { SkillTypeTabGroup } from '../../../components/Tabs'
-import { cities } from '../..'
-import { mockStats } from '../../../data/mockStats'
-import { skillsByType } from '../../../utils/analysis'
+import { BarChart } from '../../../../components/BarChart'
+import { CustomHead } from '../../../../components/CustomHead'
+import { DropdownMenu } from '../../../../components/DropdownMenu'
+import Link from 'next/link'
+import { SkillType } from '../../../../types/Skills'
+import { SkillTypeTabGroup } from '../../../../components/Tabs'
+import { cities } from '../../..'
+import classNames from 'classnames'
+import { mockStats } from '../../../../data/mockStats'
+import { skillsByType } from '../../../../utils/analysis'
 import { useRouter } from 'next/router'
 
-export default function Trends(props: { trendsData: { date: { [skill: string]: number } } }) {
-  const { trendsData } = props
+export const WeeklyVsDailyTabGroup = (props: { currentPath: string }) => {
+  const [_, parentPath, currentCity, currentType, currentTrend] = props.currentPath.split('/')
+  const options = [
+    { title: 'Daily (past week)', URIComponent: 'daily-trends' },
+    { title: 'Weekly (past month)', URIComponent: 'weekly-trends' },
+  ]
+  return (
+    <ul className="z-10 mt-4 flex flex-wrap items-center justify-center gap-1 overflow-hidden rounded-lg bg-gray-100 px-1 py-0.5 text-sm font-medium text-gray-900 shadow-sm">
+      {options.map(({ title, URIComponent }, i) => {
+        const currentTab = URIComponent === currentTrend
+        return (
+          <li key={i}>
+            <Link
+              href={`/${parentPath}/${currentCity}/${currentType}/${URIComponent}`}
+              className={classNames(
+                {
+                  'active bg-cyan-700 text-white': currentTab,
+                  'border-transparent hover:bg-gray-50': !currentTab,
+                },
+                'inline-block cursor-pointer rounded-lg p-2'
+              )}
+            >
+              {title}
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+export default function Trends(props: { trends: { date: { [skill: string]: number } } }) {
+  const { trends } = props
   const router = useRouter()
   const { city, skillType } = router.query
   const cityName = cities.find((c) => c.city === city)?.name
@@ -24,14 +61,14 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
 
   useEffect(() => {
     const allKeysSet = new Set<string>()
-    Object.keys(trendsData).forEach((date) => {
-      Object.keys(trendsData[date]).forEach((skill) => {
-        if (trendsData[date][skill] !== 0) allKeysSet.add(skill)
+    Object.keys(trends).forEach((date) => {
+      Object.keys(trends[date]).forEach((skill) => {
+        if (trends[date][skill] !== 0) allKeysSet.add(skill)
       })
     })
     setAllKeys(Array.from(allKeysSet))
     return () => setSkillToShow('All') // reset skillToShow when data changes
-  }, [trendsData])
+  }, [trends])
 
   return (
     <>
@@ -42,14 +79,14 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
       <div className="hidden lg:block">
         <SkillTypeTabGroup currentPath={router.asPath} />
       </div>
-      <div className="flex flex-col items-center lg:mt-8">
+      <div className="flex flex-col items-center lg:mt-4">
         <div className="flex items-center gap-3 lg:hidden">
           <h1 className="text-lg font-medium">Category:</h1>
           <DropdownMenu
             options={Object.values(SkillType)}
             selected={skillType as string}
             onChangeCallback={(type) =>
-              router.push(`/trends/${city}/${encodeURIComponent(type as string)}`)
+              router.push(`/trends/${city}/${encodeURIComponent(type as string)}/daily-trends`)
             }
           ></DropdownMenu>
         </div>
@@ -63,17 +100,18 @@ export default function Trends(props: { trendsData: { date: { [skill: string]: n
           ></DropdownMenu>
           <p> in the chart</p>
         </div>
-        <div className="hidden h-[560px] w-full max-w-full sm:block">
+        <WeeklyVsDailyTabGroup currentPath={router.asPath}></WeeklyVsDailyTabGroup>
+        <div className="-mt-5 hidden h-[560px] w-full max-w-full sm:block">
           <BarChart
-            data={trendsData}
+            data={trends}
             smallView={false}
             allKeys={skillToShow === 'All' ? allKeys : [skillToShow]}
             city={city as string}
           ></BarChart>
         </div>
-        <div className="h-[560px] w-full max-w-full sm:hidden">
+        <div className="-mt-5 h-[560px] w-full max-w-full sm:hidden">
           <BarChart
-            data={trendsData}
+            data={trends}
             smallView={true}
             allKeys={skillToShow === 'All' ? allKeys : [skillToShow]}
             city={city as string}
@@ -105,18 +143,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   // load mock randomized data for development
   if (process.env.NODE_ENV === 'development') {
-    const trendsData = getLast7Days(todayStr)
+    const trends = getLast7Days(todayStr)
     const mockData = mockStats[skillType as string]
-    Object.keys(trendsData).map((date) => {
+    Object.keys(trends).map((date) => {
       const randomizedData = {}
       Object.keys(mockData).forEach((skill) => {
         randomizedData[skill] = Math.abs(
           Math.floor(mockData[skill] / 10 + (Math.random() - 0.5) * 200)
         )
       })
-      trendsData[date] = randomizedData
+      trends[date] = randomizedData
     })
-    return { props: { trendsData } }
+
+    return { props: { trends } }
   }
 
   console.log(`fetching trends for ${city}, ${skillType}`)
@@ -124,22 +163,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // if jobs haven't been updated today, shift back by 1 day
   const todayDataAvailable = await checkTodayData(city, todayStr)
   if (!todayDataAvailable) todayStr = getPreviousDateString(todayStr, 1)
-  const trendsData = getLast7Days(todayStr)
+  const trends = getLast7Days(todayStr)
 
-  // get last 7 days of data
+  // get daily trends for this week
   await Promise.all(
-    Object.keys(trendsData).map(async (dateStr) => {
+    Object.keys(trends).map(async (dateStr) => {
       const [skillCounts] = await getDailyStatsAndCount(city, dateStr)
       skillsByType[skillType as string].forEach((skill) => {
         if (skill instanceof Array) skill = skill[0]
-        trendsData[dateStr][skill] = skillCounts[skill] || 0
+        trends[dateStr][skill] = skillCounts[skill] || 0
       })
-      const sortedData = getTopSortedSkills(trendsData[dateStr], 15)
-      trendsData[dateStr] = sortedData
+      const sortedData = getTopSortedSkills(trends[dateStr], 15)
+      trends[dateStr] = sortedData
     })
   )
+
   // Pass collection data to the page via props
-  return { props: { trendsData } }
+  return { props: { trends } }
 }
 
 // create an empty object for each date of last 7 days
