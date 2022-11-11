@@ -26,6 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ...Object.keys(SkillType).map(
         async (skillType) => await res.revalidate(`/trends/${city}/${skillType}/weekly-trends`)
       ),
+      // Home page
+      await res.revalidate('/'),
     ])
     return res.json({ revalidated: true })
   } catch (err) {
