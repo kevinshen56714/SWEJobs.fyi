@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { SkillType } from '../../types/Skills'
 import { slugs } from '../jobs/[city]/[slug]'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,9 +11,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await Promise.all(
-      Object.keys(slugs).map(async (slug) => await res.revalidate(`/jobs/${city}/${slug}`))
-    )
+    await Promise.all([
+      // Jobs page
+      ...Object.keys(slugs).map(async (slug) => await res.revalidate(`/jobs/${city}/${slug}`)),
+      // Stats page
+      ...Object.keys(SkillType).map(
+        async (skillType) => await res.revalidate(`/stats/${city}/${skillType}`)
+      ),
+      // Trends daily page
+      ...Object.keys(SkillType).map(
+        async (skillType) => await res.revalidate(`/trends/${city}/${skillType}/daily-trends`)
+      ),
+      // Trends weekly page
+      ...Object.keys(SkillType).map(
+        async (skillType) => await res.revalidate(`/trends/${city}/${skillType}/weekly-trends`)
+      ),
+    ])
     return res.json({ revalidated: true })
   } catch (err) {
     // If there was an error, Next.js will continue
