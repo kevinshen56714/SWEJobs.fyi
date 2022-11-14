@@ -101,7 +101,7 @@ export default function Trends(props: { trends: { date: { [skill: string]: numbe
           <p> in the chart</p>
         </div>
         <WeeklyVsDailyTabGroup currentPath={router.asPath}></WeeklyVsDailyTabGroup>
-        <div className="hidden h-[560px] w-full max-w-full sm:-mt-5 sm:block">
+        <div className="hidden h-[560px] w-[960px] max-w-full sm:-mt-5 sm:block">
           <BarChart
             data={trends}
             smallView={false}
@@ -109,7 +109,7 @@ export default function Trends(props: { trends: { date: { [skill: string]: numbe
             city={city as string}
           ></BarChart>
         </div>
-        <div className="h-[560px] w-full max-w-full sm:-mt-5 sm:hidden">
+        <div className="h-[560px] w-full sm:-mt-5 sm:hidden">
           <BarChart
             data={trends}
             smallView={true}

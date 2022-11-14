@@ -1,5 +1,6 @@
 import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { categorizeSkills, skillsByType } from '../../../utils/analysis'
 import { checkTodayData, getDailyJobs, getDailyStatsAndCount } from '../../../utils/firebase-admin'
 import { convertDateToString, getPreviousDateString } from '../../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
@@ -12,9 +13,9 @@ import { FilterAndOrSwitch } from '../../../components/FilterAndOrSwitch'
 import { FilterPopover } from '../../../components/FilterPopover'
 import { Job } from '../../../types/Jobs'
 import Link from 'next/link'
+import { SideFilterSection } from '../../../components/SideFilterSection'
 import { SkillType } from '../../../types/Skills'
 import Tooltip from '../../../components/Tooltip'
-import { categorizeSkills } from '../../../utils/analysis'
 import { cities } from '../..'
 import classNames from 'classnames'
 import { mockJobs } from '../../../data/mockJobs'
@@ -108,9 +109,14 @@ export default function JobPosts(props: { jobs: Job[]; stats: { [skill: string]:
     <>
       <CustomHead
         title={`Latest Software Engineer Jobs in ${cityName} | SWEJobs.fyi`}
-        description={`Check out the past ${slug} hours software engineer jobs in ${cityName}. We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.`}
+        description={
+          `Check out the past ${slug} hours software engineer jobs in ${cityName}. ` +
+          'We track latest US software engineer jobs and compile weekly trends and monthly stats ' +
+          '- our data is updated constantly.'
+        }
       ></CustomHead>
-      <ul className="flex flex-wrap text-sm font-medium sm:gap-2">
+      <h1 className="my-2 text-2xl font-bold text-gray-900">Latest Software Engineer Jobs</h1>
+      <ul className="my-2 flex flex-wrap border-b text-sm font-medium sm:gap-2">
         {Object.keys(slugs).map((slugOption, i) => {
           const currentTab = slugOption === slug
           return (
@@ -131,188 +137,301 @@ export default function JobPosts(props: { jobs: Job[]; stats: { [skill: string]:
           )
         })}
       </ul>
-      <div className="my-2 flex w-full items-end justify-between">
-        <FilterPopover
-          skillBadgeCallBack={handleSkillBadgeClick}
-          skillStats={props.stats}
-        ></FilterPopover>
-        <DropdownMenu
-          options={sortByDropdownOptions}
-          selected={sortBy}
-          onChangeCallback={setSortBy}
-        ></DropdownMenu>
-      </div>
-      <div className="my-3 flex flex-wrap">
-        {filter.length ? (
-          <FilterAndOrSwitch
-            checked={andEnabled}
-            onChangeCallBack={setAndEnabled}
-          ></FilterAndOrSwitch>
-        ) : null}
-        {filter.map((skill, i) => (
-          <Badge key={i} value={skill} onClickCallBack={handleCancelFilter}>
-            <XCircleIcon className="h-5 w-5"></XCircleIcon>
-          </Badge>
-        ))}
-      </div>
-      <div className="mt-3 mb-1 text-sm text-gray-500">{`Showing ${jobs.length} jobs${
-        jobs.length ? ` (updated: ${getTimeElapsed(jobs[0].createdAt)})` : ''
-      }`}</div>
-      <div className="relative hidden overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm sm:block">
-        <table className="w-full text-left text-sm text-gray-500">
-          <thead className="border-b bg-gray-50 text-gray-700">
-            <tr>
-              {/* We apply font-semibold in every <th> to overwrite its automatically applied font-bold */}
-              <th className="py-2 px-10 font-semibold">Company & Role</th>
-              <th className="py-2 px-6 font-semibold">
-                <div className="flex items-center gap-1">
-                  Languages
-                  <Tooltip>Click on any badges to apply filtering</Tooltip>
-                </div>
-              </th>
-              <th className="py-2 px-6 font-semibold">
-                <div className="flex items-center gap-1">
-                  Skills
-                  <Tooltip>Click on any badges to apply filtering</Tooltip>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {!jobs.length && (
-              <tr>
-                <td colSpan={3} className="bg-white py-5 text-center">
-                  No matching jobs found
-                </td>
-              </tr>
-            )}
-            {jobs.map((job, i) => {
-              const { bigTech, company, link, loc, remote, salary, skills, startup, title } = job
-              const evenRow = i % 2 === 0
-              const nonLangSkills = Object.keys(skills)
-                .filter((type) => type !== SkillType.LANGUAGE)
-                .reduce((acc, type) => [...acc, ...skills[type]], [])
-              return (
-                <Disclosure key={i}>
-                  {({ open }) => (
-                    <>
-                      <tr
-                        className={classNames({
-                          'bg-white': evenRow,
-                          'bg-gray-50': !evenRow,
-                          'border-b shadow-sm': open,
-                        })}
-                      >
-                        <td className="max-w-xs py-2 px-3">
-                          <Disclosure.Button className="flex max-w-full items-center gap-3">
-                            <div>
-                              <ChevronDownIcon
-                                className={classNames(
-                                  { '-rotate-90 transform': open },
-                                  'h-4 w-4 text-gray-700'
-                                )}
-                              />
-                            </div>
-                            <div className="truncate whitespace-nowrap text-left font-medium text-cyan-600 hover:underline">
-                              {company}
-                              <div className="flex items-center">
-                                {bigTech && <Badge value="Big Tech" />}
-                                {!bigTech && startup && <Badge value="Startup" />}
-                                {remote && <Badge value="Remote" />}
-                                <p className="truncate whitespace-nowrap font-normal text-gray-900">
-                                  {title}
-                                </p>
-                              </div>
-                            </div>
-                          </Disclosure.Button>
-                        </td>
-                        <td className="max-w-[18rem] py-2 px-6">
-                          <div className="flex flex-wrap">
-                            {skills[SkillType.LANGUAGE].map((skill, i) => (
-                              <Badge
-                                key={i}
-                                value={skill}
-                                onClickCallBack={handleSkillBadgeClick}
-                              />
-                            ))}
-                          </div>
-                        </td>
-                        <td className="max-w-[25rem] py-2 px-6">
-                          <div className="flex flex-wrap">
-                            {nonLangSkills.map((skill, i) => (
-                              <Badge
-                                key={i}
-                                value={skill}
-                                onClickCallBack={handleSkillBadgeClick}
-                              />
-                            ))}
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colSpan={3}>
-                          <Disclosure.Panel
-                            className={classNames(
-                              {
-                                'bg-white': evenRow,
-                                'bg-gray-50': !evenRow,
-                              },
-                              'grid grid-cols-[19rem_minmax(0,_1fr)] border-b px-10 py-4 text-sm text-gray-500 shadow-sm'
-                            )}
+      <div className="grid grid-cols-4 gap-x-6">
+        <h2 className="col-span-1 my-2 text-lg font-medium text-gray-900 ">Filter by</h2>
+        <div className="col-span-3 mb-2 flex items-end justify-between">
+          <div className="text-sm text-gray-500">{`Showing ${jobs.length} jobs${
+            jobs.length ? ` (updated: ${getTimeElapsed(jobs[0].createdAt)})` : ''
+          }`}</div>
+          <DropdownMenu
+            options={sortByDropdownOptions}
+            selected={sortBy}
+            onChangeCallback={setSortBy}
+          ></DropdownMenu>
+        </div>
+        <div className="col-span-1 rounded-t-lg border border-gray-300 bg-gray-50 text-sm font-bold text-gray-900 shadow-sm">
+          {filter.length ? (
+            <div className="p-4 pb-2">
+              <div>Chosen filters:</div>
+              <div className="mt-3 flex flex-wrap">
+                {filter.map((skill, i) => (
+                  <Badge key={i} value={skill} onClickCallBack={handleCancelFilter}>
+                    <XCircleIcon className="h-5 w-5"></XCircleIcon>
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          <SideFilterSection title="Location">
+            <ul>
+              {cities.map(({ city, name }, i) => (
+                <li className="my-0.5 flex items-center" key={i}>
+                  <input
+                    id={`${city}-checkbox`}
+                    type="checkbox"
+                    value=""
+                    className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-gray-100 accent-cyan-600"
+                  />
+                  <label
+                    htmlFor={`${city}-checkbox`}
+                    className="ml-2 cursor-pointer font-normal text-gray-600"
+                  >
+                    {name}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </SideFilterSection>
+          <SideFilterSection title="Company">
+            <ul>
+              {['Big-tech', 'Startup'].map((option, i) => (
+                <li className="my-0.5 flex items-center" key={i}>
+                  <input
+                    id={`${option}-checkbox`}
+                    type="checkbox"
+                    value=""
+                    className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-gray-100 accent-cyan-600"
+                  />
+                  <label
+                    htmlFor={`${option}-checkbox`}
+                    className="ml-2 cursor-pointer font-normal text-gray-600"
+                  >
+                    {option}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </SideFilterSection>
+          <SideFilterSection title="On-site/Remote">
+            <ul>
+              {['On-site', 'Remote', 'Hybrid'].map((option, i) => (
+                <li className="my-0.5 flex items-center" key={i}>
+                  <input
+                    id={`${option}-checkbox`}
+                    type="checkbox"
+                    value=""
+                    className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-gray-100 accent-cyan-600"
+                  />
+                  <label
+                    htmlFor={`${option}-checkbox`}
+                    className="ml-2 cursor-pointer font-normal text-gray-600"
+                  >
+                    {option}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </SideFilterSection>
+
+          {Object.keys(skillsByType).map((type, i) => (
+            <SideFilterSection title={type} key={i} defaultOpen={type === SkillType.LANGUAGE}>
+              <div className="flex flex-wrap">
+                {skillsByType[type].map((skill: string | string[]) => {
+                  const skillName = skill instanceof Array ? skill[0] : skill
+                  return Object.keys(props.stats).includes(skillName) ? (
+                    <Badge
+                      value={skillName}
+                      onClickCallBack={(e) => {
+                        handleSkillBadgeClick(e as string)
+                        close()
+                      }}
+                    >
+                      <div className="my-[1px] flex h-4 w-4 items-center justify-center rounded-md bg-white/40">
+                        {props.stats[skillName]}
+                      </div>
+                    </Badge>
+                  ) : null
+                })}
+              </div>
+            </SideFilterSection>
+          ))}
+        </div>
+        <div className="col-span-3">
+          {/* <div className="my-2 flex w-full items-end justify-between">
+            <FilterPopover
+              skillBadgeCallBack={handleSkillBadgeClick}
+              skillStats={props.stats}
+            ></FilterPopover>
+            <DropdownMenu
+              options={sortByDropdownOptions}
+              selected={sortBy}
+              onChangeCallback={setSortBy}
+            ></DropdownMenu>
+          </div>
+          <div className="my-3 flex flex-wrap">
+            {filter.length ? (
+              <FilterAndOrSwitch
+                checked={andEnabled}
+                onChangeCallBack={setAndEnabled}
+              ></FilterAndOrSwitch>
+            ) : null}
+            {filter.map((skill, i) => (
+              <Badge key={i} value={skill} onClickCallBack={handleCancelFilter}>
+                <XCircleIcon className="h-5 w-5"></XCircleIcon>
+              </Badge>
+            ))}
+          </div> */}
+
+          <div className="relative hidden overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm sm:block">
+            <table className="w-full text-left text-sm text-gray-500">
+              <thead className="border-b bg-gray-50 text-gray-700">
+                <tr>
+                  {/* We apply font-semibold in every <th> to overwrite its automatically applied font-bold */}
+                  <th className="py-2 px-10 font-semibold">Company & Role</th>
+                  <th className="py-2 px-6 font-semibold">
+                    <div className="flex items-center gap-1">
+                      Languages
+                      <Tooltip>Click on any badges to apply filtering</Tooltip>
+                    </div>
+                  </th>
+                  <th className="py-2 px-6 font-semibold">
+                    <div className="flex items-center gap-1">
+                      Skills
+                      <Tooltip>Click on any badges to apply filtering</Tooltip>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {!jobs.length && (
+                  <tr>
+                    <td colSpan={3} className="bg-white py-5 text-center">
+                      No matching jobs found
+                    </td>
+                  </tr>
+                )}
+                {jobs.map((job, i) => {
+                  const { bigTech, company, link, loc, remote, salary, skills, startup, title } =
+                    job
+                  const evenRow = i % 2 === 0
+                  const nonLangSkills = Object.keys(skills)
+                    .filter((type) => type !== SkillType.LANGUAGE)
+                    .reduce((acc, type) => [...acc, ...skills[type]], [])
+                  return (
+                    <Disclosure key={i}>
+                      {({ open }) => (
+                        <>
+                          <tr
+                            className={classNames({
+                              'bg-white': evenRow,
+                              'bg-gray-50': !evenRow,
+                              'border-b shadow-sm': open,
+                            })}
                           >
-                            <div className="flex flex-col gap-1 text-base font-medium text-cyan-600">
-                              {company}
-                              <p className="text-gray-900">{title}</p>
-                              <p className="text-sm font-normal text-gray-700">{loc}</p>
-                              <p className="text-sm font-normal text-gray-700">
-                                {salary || 'No salary estimation'}
-                              </p>
-                              <button
-                                type="button"
-                                className={classNames(
-                                  {
-                                    'bg-gray-50 hover:bg-gray-100': evenRow,
-                                    'bg-gray-100 hover:bg-gray-200': !evenRow,
-                                  },
-                                  'w-24 rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700'
-                                )}
-                              >
-                                <a href={link} target="_blank" rel="noreferrer">
-                                  Job Post
-                                </a>
-                              </button>
-                            </div>
-                            <div className="flex flex-col gap-1 text-base font-medium text-gray-900">
-                              Skill Requirements
-                              <div
-                                className={classNames(
-                                  {
-                                    'bg-gray-50': evenRow,
-                                    'bg-gray-100': !evenRow,
-                                  },
-                                  'flex h-full flex-col gap-2 rounded-md px-4 py-2 text-sm'
-                                )}
-                              >
-                                {Object.keys(skills).map((type, i) =>
-                                  skills[type].length ? (
-                                    <p key={i}>
-                                      {`${type}: `}
-                                      <span className="font-normal">{skills[type].join(', ')}</span>
+                            <td className="max-w-xs py-2 px-3">
+                              <Disclosure.Button className="flex max-w-full items-center gap-3">
+                                <div>
+                                  <ChevronDownIcon
+                                    className={classNames(
+                                      { '-rotate-90 transform': open },
+                                      'h-4 w-4 text-gray-700'
+                                    )}
+                                  />
+                                </div>
+                                <div className="truncate whitespace-nowrap text-left font-medium text-cyan-600 hover:underline">
+                                  {company}
+                                  <div className="flex items-center">
+                                    {bigTech && <Badge value="Big Tech" />}
+                                    {!bigTech && startup && <Badge value="Startup" />}
+                                    {remote && <Badge value="Remote" />}
+                                    <p className="truncate whitespace-nowrap font-normal text-gray-900">
+                                      {title}
                                     </p>
-                                  ) : null
-                                )}
+                                  </div>
+                                </div>
+                              </Disclosure.Button>
+                            </td>
+                            <td className="max-w-[18rem] py-2 px-6">
+                              <div className="flex flex-wrap">
+                                {skills[SkillType.LANGUAGE].map((skill, i) => (
+                                  <Badge
+                                    key={i}
+                                    value={skill}
+                                    onClickCallBack={handleSkillBadgeClick}
+                                  />
+                                ))}
                               </div>
-                            </div>
-                          </Disclosure.Panel>
-                        </td>
-                      </tr>
-                    </>
-                  )}
-                </Disclosure>
-              )
-            })}
-          </tbody>
-        </table>
+                            </td>
+                            <td className="max-w-[25rem] py-2 px-6">
+                              <div className="flex flex-wrap">
+                                {nonLangSkills.map((skill, i) => (
+                                  <Badge
+                                    key={i}
+                                    value={skill}
+                                    onClickCallBack={handleSkillBadgeClick}
+                                  />
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colSpan={3}>
+                              <Disclosure.Panel
+                                className={classNames(
+                                  {
+                                    'bg-white': evenRow,
+                                    'bg-gray-50': !evenRow,
+                                  },
+                                  'grid grid-cols-[19rem_minmax(0,_1fr)] border-b px-10 py-4 text-sm text-gray-500 shadow-sm'
+                                )}
+                              >
+                                <div className="flex flex-col gap-1 text-base font-medium text-cyan-600">
+                                  {company}
+                                  <p className="text-gray-900">{title}</p>
+                                  <p className="text-sm font-normal text-gray-700">{loc}</p>
+                                  <p className="text-sm font-normal text-gray-700">
+                                    {salary || 'No salary estimation'}
+                                  </p>
+                                  <button
+                                    type="button"
+                                    className={classNames(
+                                      {
+                                        'bg-gray-50 hover:bg-gray-100': evenRow,
+                                        'bg-gray-100 hover:bg-gray-200': !evenRow,
+                                      },
+                                      'w-24 rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700'
+                                    )}
+                                  >
+                                    <a href={link} target="_blank" rel="noreferrer">
+                                      Job Post
+                                    </a>
+                                  </button>
+                                </div>
+                                <div className="flex flex-col gap-1 text-base font-medium text-gray-900">
+                                  Skill Requirements
+                                  <div
+                                    className={classNames(
+                                      {
+                                        'bg-gray-50': evenRow,
+                                        'bg-gray-100': !evenRow,
+                                      },
+                                      'flex h-full flex-col gap-2 rounded-md px-4 py-2 text-sm'
+                                    )}
+                                  >
+                                    {Object.keys(skills).map((type, i) =>
+                                      skills[type].length ? (
+                                        <p key={i}>
+                                          {`${type}: `}
+                                          <span className="font-normal">
+                                            {skills[type].join(', ')}
+                                          </span>
+                                        </p>
+                                      ) : null
+                                    )}
+                                  </div>
+                                </div>
+                              </Disclosure.Panel>
+                            </td>
+                          </tr>
+                        </>
+                      )}
+                    </Disclosure>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       {/* for small view */}

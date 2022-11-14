@@ -14,7 +14,7 @@ export const DropdownMenu = (props: {
     <div>
       <Listbox value={selected} onChange={onChangeCallback}>
         <div className="relative mt-1 text-sm sm:text-base">
-          <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-cyan-700 focus:outline-none focus:ring-1 focus:ring-cyan-700">
+          <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-1 pl-3 pr-10 text-left shadow-sm focus:border-cyan-700 focus:outline-none focus:ring-1 focus:ring-cyan-700">
             <span className="block truncate">{selected}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
