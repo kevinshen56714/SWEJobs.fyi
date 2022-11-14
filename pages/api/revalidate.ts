@@ -37,15 +37,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       break
     case pages.Stats:
       promises.push(
-        ...Object.keys(SkillType).map((skillType) => res.revalidate(`/stats/${city}/${skillType}`))
+        ...Object.values(SkillType).map((skillType) =>
+          res.revalidate(`/stats/${city}/${skillType}`)
+        )
       )
       break
     case pages.Trends:
       promises.push(
-        ...Object.keys(SkillType).map((skillType) =>
+        ...Object.values(SkillType).map((skillType) =>
           res.revalidate(`/trends/${city}/${skillType}/daily-trends`)
         ),
-        ...Object.keys(SkillType).map((skillType) =>
+        ...Object.values(SkillType).map((skillType) =>
           res.revalidate(`/trends/${city}/${skillType}/weekly-trends`)
         )
       )
