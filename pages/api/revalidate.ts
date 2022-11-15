@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Check for city to confirm this is a valid request
-  if (!cities.map((city) => city.city).includes(city as string)) {
+  if (city && !cities.map((city) => city.city).includes(city as string)) {
     return res.status(401).json({ message: 'Invalid city' })
   }
 
