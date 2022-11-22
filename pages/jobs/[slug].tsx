@@ -107,7 +107,8 @@ export default function JobList(props: {
   useEffect(() => {
     // setSortBy('Sort By')
     if (filter) {
-      setFilterData(JSON.parse(filter as string))
+      const filterObj = JSON.parse(filter as string)
+      setFilterData((prev) => ({ ...prev, ...filterObj }))
     } else {
       setFilterData({ skills: [], cities: [], companyTypes: [], remoteTypes: [] })
     }
@@ -131,7 +132,16 @@ export default function JobList(props: {
     if (Object.values(newFilterData).flat().length === 0) {
       router.push(`/jobs/${slug}`)
     } else {
-      router.push({ pathname: `/jobs/${slug}`, query: { filter: JSON.stringify(newFilterData) } })
+      // remove the newFilterData keys that are with an empty array value
+      const stringifiedFilter = JSON.stringify(
+        Object.keys(newFilterData).reduce((acc, cur) => {
+          if (newFilterData[cur].length > 0) {
+            acc[cur] = newFilterData[cur]
+          }
+          return acc
+        }, {} as FilterData)
+      )
+      router.push({ pathname: `/jobs/${slug}`, query: { filter: stringifiedFilter } })
     }
   }
 
@@ -351,7 +361,8 @@ export default function JobList(props: {
             </table>
           </div>
         </div>
-        <div className="col-span-1 rounded-t-lg border border-gray-300 bg-gray-50 text-sm font-bold text-gray-900 shadow-sm">
+
+        <div className="col-span-1 h-fit rounded-t-lg border border-gray-300 bg-gray-50 text-sm font-bold text-gray-900 shadow-sm">
           {Object.values(filterData).flat().length ? (
             <div className="p-4 pb-2">
               <div>Chosen filters:</div>
@@ -448,7 +459,6 @@ export default function JobList(props: {
               ))}
             </ul>
           </SideFilterSection>
-
           {Object.keys(skillsByType).map((type, i) => (
             <SideFilterSection title={type} key={i} defaultOpen={type === SkillType.LANGUAGE}>
               <div className="flex flex-wrap">
