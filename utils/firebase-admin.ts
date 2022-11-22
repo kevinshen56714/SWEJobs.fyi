@@ -1,19 +1,23 @@
+import { App, ServiceAccount, cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
 import { QuerySnapshot, getFirestore } from 'firebase-admin/firestore'
-import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
 
 import { Job } from '../types/Jobs'
 import { categorizeSkills } from './analysis'
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
+let serviceAccount: string | ServiceAccount
+let app: App
+let db: FirebaseFirestore.Firestore
 
-const app =
-  getApps().length === 0
-    ? initializeApp({
-        credential: cert(serviceAccount),
-      })
-    : getApp()
-
-const db = getFirestore(app)
+if (process.env.NODE_ENV === 'production') {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
+  app =
+    getApps().length === 0
+      ? initializeApp({
+          credential: cert(serviceAccount),
+        })
+      : getApp()
+  db = getFirestore(app)
+}
 
 export const checkTodayData = async (city: string | string[], todayStr: string) => {
   const snapshot = await db

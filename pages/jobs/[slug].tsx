@@ -463,10 +463,11 @@ export default function JobList(props: {
           {Object.keys(skillsByType).map((type, i) => (
             <SideFilterSection title={type} key={i} defaultOpen={type === SkillType.LANGUAGE}>
               <div className="flex flex-wrap">
-                {skillsByType[type].map((skill: string | string[]) => {
+                {skillsByType[type].map((skill: string | string[], i: number) => {
                   const skillName = skill instanceof Array ? skill[0] : skill
                   return Object.keys(props.stats).includes(skillName) ? (
                     <Badge
+                      key={i}
                       value={skillName}
                       onClickCallBack={(v) => {
                         handleFilterChange('skills')(v as string)
