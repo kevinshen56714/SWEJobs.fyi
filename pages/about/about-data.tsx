@@ -31,8 +31,8 @@ export default function AboutData() {
             <Highlight>{cities.map((city) => city.name).join(', ')}</Highlight>.
           </Paragraph>
           <Paragraph>
-            Currently, we update our data <Highlight>every 24 hours</Highlight>. Under the{' '}
-            <Link className="font-medium text-blue-600 underline" href="/jobs/SJ/24">
+            Currently, we update our data <Highlight>multiple times a day</Highlight>. Under the{' '}
+            <Link className="font-medium text-blue-600 underline" href="/jobs/24">
               Jobs
             </Link>{' '}
             tab, job postings are organized not only by city but also by the number of days since

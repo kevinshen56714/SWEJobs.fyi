@@ -1,6 +1,7 @@
 import { QuerySnapshot, getFirestore } from 'firebase-admin/firestore'
 import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
 
+import { Job } from '../types/Jobs'
 import { categorizeSkills } from './analysis'
 
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
@@ -35,6 +36,11 @@ export const getDailyStatsAndCount = async (
   return docSnap.exists ? [docSnap.data()['stats'], docSnap.data()['count']] : [{}, 0]
 }
 
+export const getLatestJobs = async () => {
+  const snapshot = await db.collection('Latest').orderBy('city', 'desc').get()
+  return assembleJobObject(snapshot)
+}
+
 export const getDailyJobs = async (city: string | string[], dateStr: string) => {
   const snapshot = await db
     .collection(dateStr)
@@ -45,12 +51,13 @@ export const getDailyJobs = async (city: string | string[], dateStr: string) => 
   return assembleJobObject(snapshot)
 }
 
-const assembleJobObject = (snapshot: QuerySnapshot) => {
+const assembleJobObject = (snapshot: QuerySnapshot): Job[] => {
   return snapshot.docs.map((doc) => {
-    const { bigTech, company, createdAt, link, loc, remote, salary, skills, startup, title } =
+    const { bigTech, city, company, createdAt, link, loc, remote, salary, skills, startup, title } =
       doc.data()
     return {
       bigTech,
+      city,
       company,
       createdAt: createdAt.toDate().getTime(),
       link,

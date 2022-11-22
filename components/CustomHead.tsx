@@ -3,7 +3,7 @@ import Head from 'next/head'
 export const CustomHead = (props: { title: string; description?: string }) => {
   const { title, description } = props
   const defaultDescription =
-    'We track latest US software engineer jobs and compile weekly trends and monthly stats - our data is updated constantly.'
+    'We track latest US software engineer jobs and compile market trends and monthly stats - our data is updated constantly.'
   return (
     <Head>
       <title>{title}</title>

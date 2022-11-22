@@ -66,9 +66,10 @@ export default function Home(props: {
                   <Badge
                     value={skill}
                     onClickCallBack={(skill) =>
-                      router.push(
-                        `/jobs/${selectedCity}/24?skills=${encodeURIComponent(skill as string)}`
-                      )
+                      router.push({
+                        pathname: '/jobs/24',
+                        query: { city: selectedCity, skills: skill as string },
+                      })
                     }
                   >
                     <div className="my-0.5 flex h-4 w-4 items-center justify-center rounded-md bg-white/40">
@@ -81,7 +82,7 @@ export default function Home(props: {
           </div>
           <p className="mt-5 text-gray-500">
             Just{' '}
-            <Link className="underline" href={`/jobs/${selectedCity}/24`}>
+            <Link className="underline" href={`/jobs/24`}>
               check all jobs
             </Link>{' '}
             or{' '}

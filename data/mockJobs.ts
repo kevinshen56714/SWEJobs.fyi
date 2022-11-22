@@ -1,6 +1,7 @@
 export const mockJobs = [
   {
     bigTech: false,
+    city: 'SF',
     company: 'Example Company',
     desc: `
       We're building the future of pet care, combining insights, products, and services to help
@@ -33,6 +34,7 @@ export const mockJobs = [
   },
   {
     bigTech: false,
+    city: 'SEA',
     company: 'Example Company 2 - some very long company name',
     desc: `
       Role Number: 200405446 Play a part in the next revolution in human-computer interaction.
@@ -77,6 +79,7 @@ export const mockJobs = [
   },
   {
     bigTech: true,
+    city: 'LA',
     company: 'Apple',
     desc: `
       About Example Company 3 is helping to drive mainstream adoption of digital assets by

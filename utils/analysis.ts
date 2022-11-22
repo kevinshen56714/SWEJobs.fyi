@@ -1,3 +1,4 @@
+import { JobSkills } from '../types/Jobs'
 import { SkillType } from '../types/Skills'
 
 const languages = [
@@ -210,7 +211,7 @@ export const bigTechs = [
 ]
 
 export const categorizeSkills = (skills: string[]) => {
-  const allMatchedSkills = {}
+  const allMatchedSkills = {} as JobSkills
   Object.keys(skillsByType).map((type) => {
     const matchedSkills = []
     skillsByType[type].map((skill: string | string[]) => {
