@@ -106,11 +106,12 @@ export default function JobList(props: {
 
   useEffect(() => {
     // setSortBy('Sort By')
+    const defaultFilterData = { skills: [], cities: [], companyTypes: [], remoteTypes: [] }
     if (filter) {
       const filterObj = JSON.parse(filter as string)
-      setFilterData((prev) => ({ ...prev, ...filterObj }))
+      setFilterData({ ...defaultFilterData, ...filterObj })
     } else {
-      setFilterData({ skills: [], cities: [], companyTypes: [], remoteTypes: [] })
+      setFilterData(defaultFilterData)
     }
   }, [filter])
 
