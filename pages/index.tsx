@@ -68,7 +68,9 @@ export default function Home(props: {
                     onClickCallBack={(skill) =>
                       router.push({
                         pathname: '/jobs/24',
-                        query: { city: selectedCity, skills: skill as string },
+                        query: {
+                          filter: JSON.stringify({ cities: [selectedCity], skills: [skill] }),
+                        },
                       })
                     }
                   >

@@ -53,13 +53,17 @@ export const getDailyJobs = async (city: string | string[], dateStr: string) => 
 
 const assembleJobObject = (snapshot: QuerySnapshot): Job[] => {
   return snapshot.docs.map((doc) => {
-    const { bigTech, city, company, createdAt, link, loc, remote, salary, skills, startup, title } =
+    const { bigTech, city, company, createdAt, link, loc, salary, skills, startup, title } =
       doc.data()
+    const hybrid = loc.toLowerCase().includes('hybrid') && title.toLowerCase().includes('hybrid')
+    const remote =
+      !hybrid && loc.toLowerCase().includes('remote') && title.toLowerCase().includes('remote')
     return {
       bigTech,
       city,
       company,
       createdAt: createdAt.toDate().getTime(),
+      hybrid,
       link,
       loc: loc.split('+')[0],
       remote,

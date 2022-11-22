@@ -9,6 +9,7 @@ import { Badge } from '../../components/Badge'
 import { CustomHead } from '../../components/CustomHead'
 import { Disclosure } from '@headlessui/react'
 import { DropdownMenu } from '../../components/DropdownMenu'
+import { FilterData } from '../../types/Filter'
 import { Job } from '../../types/Jobs'
 import Link from 'next/link'
 import { SideFilterSection } from '../../components/SideFilterSection'
@@ -28,6 +29,9 @@ const sortByDropdownOptions = [
   '# of skills (Low to High)',
 ]
 
+const companyOptions = ['Big Tech', 'Startup']
+const remoteOptions = ['On-site', 'Remote', 'Hybrid']
+
 const getTimeElapsed = (lastUpdated: number) => {
   const now = new Date()
   const elapsed = Math.floor((now.getTime() - lastUpdated) / (1000 * 60 * 60))
@@ -40,7 +44,8 @@ const getSkillCount = (job: Job) => {
     .reduce((acc, cur) => acc + job.skills[cur].length, 0)
 }
 
-const sortJobs = (jobs: Job[], sortBy: string, filter: string[]) => {
+const sortAndFilterJobs = (jobs: Job[], sortBy: string, filterData: FilterData) => {
+  const { cities, companyTypes, remoteTypes, skills } = filterData
   if (sortBy === 'Company name (A-Z)') {
     jobs = jobs.sort((a, b) => (a.company.toLowerCase() > b.company.toLowerCase() ? 1 : -1))
   } else if (sortBy === 'Company name (Z-A)') {
@@ -50,11 +55,34 @@ const sortJobs = (jobs: Job[], sortBy: string, filter: string[]) => {
   } else if (sortBy === '# of skills (Low to High)') {
     jobs = jobs.sort((a, b) => (getSkillCount(a) < getSkillCount(b) ? -1 : 1))
   }
-  // filter jobs by skills contained in filter
-  if (filter.length > 0) {
+  if (cities.length > 0) {
     jobs = jobs.filter((job) => {
-      const skills = Object.values(job.skills).flat()
-      return filter.some((skill) => skills.includes(skill))
+      return cities.some((city) => city === job.city)
+    })
+  }
+  if (companyTypes.length === 1) {
+    jobs = jobs.filter((job) => (companyTypes.includes('Big Tech') ? job.bigTech : job.startup))
+  } else if (companyTypes.length === 2) {
+    jobs = jobs.filter((job) => job.bigTech || job.startup)
+  }
+
+  if (remoteTypes.length > 0 && remoteTypes.length < 3) {
+    let filtered = []
+    if (remoteTypes.includes('On-site')) {
+      filtered = [...jobs.filter((job) => !job.remote && !job.hybrid)]
+    }
+    if (remoteTypes.includes('Remote')) {
+      filtered = [...filtered, ...jobs.filter((job) => job.remote)]
+    }
+    if (remoteTypes.includes('Hybrid')) {
+      filtered = [...filtered, ...jobs.filter((job) => job.hybrid)]
+    }
+    jobs = filtered
+  }
+  if (skills.length > 0) {
+    jobs = jobs.filter((job) => {
+      const jobSkills = Object.values(job.skills).flat()
+      return skills.some((skill) => jobSkills.includes(skill))
     })
   }
   return jobs
@@ -66,36 +94,45 @@ export default function JobList(props: {
   lastUpdated: number
 }) {
   const router = useRouter()
-  const { slug, skills } = router.query
+  const { slug, filter } = router.query
 
   const [sortBy, setSortBy] = useState<string>('Sort By')
-  const [filter, setFilter] = useState<string[]>([])
+  const [filterData, setFilterData] = useState<FilterData>({
+    skills: [],
+    cities: [],
+    companyTypes: [],
+    remoteTypes: [],
+  })
 
   useEffect(() => {
     // setSortBy('Sort By')
-    if (skills) {
-      skills instanceof Array ? setFilter([...skills]) : setFilter([skills])
-    } else setFilter([])
-  }, [slug, skills])
+    if (filter) {
+      setFilterData(JSON.parse(filter as string))
+    } else {
+      setFilterData({ skills: [], cities: [], companyTypes: [], remoteTypes: [] })
+    }
+  }, [filter])
 
   const jobs = useMemo(
-    () => sortJobs([...props.jobs], sortBy, filter),
-    [props.jobs, sortBy, filter]
+    () => sortAndFilterJobs([...props.jobs], sortBy, filterData),
+    [props.jobs, sortBy, filterData]
   )
 
   console.log('job post rerendered')
 
-  const handleSkillBadgeClick = (skill: string) => {
-    if (!filter.includes(skill)) {
-      router.push({ pathname: `/jobs/${slug}`, query: { skills: [...filter, skill] } })
+  const handleFilterChange = (prop: keyof FilterData) => (value: string) => {
+    let newFilterData: FilterData
+    if (filterData[prop].includes(value)) {
+      newFilterData = { ...filterData, [prop]: filterData[prop].filter((v) => v !== value) }
+    } else {
+      newFilterData = { ...filterData, [prop]: [...filterData[prop], value] }
     }
-  }
-
-  const handleCancelFilter = (skill: string) => {
-    router.push({
-      pathname: `/jobs/${slug}`,
-      query: { skills: filter.filter((s) => s !== skill) },
-    })
+    // if the filter is empty, remove the filter
+    if (Object.values(newFilterData).flat().length === 0) {
+      router.push(`/jobs/${slug}`)
+    } else {
+      router.push({ pathname: `/jobs/${slug}`, query: { filter: JSON.stringify(newFilterData) } })
+    }
   }
 
   return (
@@ -130,7 +167,7 @@ export default function JobList(props: {
           )
         })}
       </ul>
-      <div className="grid grid-cols-4 gap-x-6">
+      <div className="hidden lg:grid lg:grid-cols-4 lg:gap-x-6">
         <div className="col-span-3 mb-2 flex items-end justify-between">
           <div className="text-sm text-gray-500">{`Showing ${jobs.length} jobs${
             jobs.length ? ` (updated: ${getTimeElapsed(props.lastUpdated)})` : ''
@@ -141,10 +178,9 @@ export default function JobList(props: {
             onChangeCallback={setSortBy}
           ></DropdownMenu>
         </div>
-        <h2 className="col-span-1 my-2 text-lg font-medium text-gray-900 ">Filter by</h2>
-
+        <h2 className="col-span-1 my-2 text-lg font-medium text-gray-900">Filter by</h2>
         <div className="col-span-3">
-          <div className="relative hidden overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm sm:block">
+          <div className="relative overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm">
             <table className="w-full text-left text-sm text-gray-500">
               <thead className="border-b bg-gray-50 text-gray-700">
                 <tr>
@@ -173,8 +209,18 @@ export default function JobList(props: {
                   </tr>
                 )}
                 {jobs.map((job, i) => {
-                  const { bigTech, company, link, loc, remote, salary, skills, startup, title } =
-                    job
+                  const {
+                    bigTech,
+                    company,
+                    link,
+                    hybrid,
+                    loc,
+                    remote,
+                    salary,
+                    skills,
+                    startup,
+                    title,
+                  } = job
                   const evenRow = i % 2 === 0
                   const nonLangSkills = Object.keys(skills)
                     .filter((type) => type !== SkillType.LANGUAGE)
@@ -206,6 +252,7 @@ export default function JobList(props: {
                                     {bigTech && <Badge value="Big Tech" />}
                                     {!bigTech && startup && <Badge value="Startup" />}
                                     {remote && <Badge value="Remote" />}
+                                    {hybrid && <Badge value="Hybrid" />}
                                     <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                       {title}
                                     </p>
@@ -219,7 +266,7 @@ export default function JobList(props: {
                                   <Badge
                                     key={i}
                                     value={skill}
-                                    onClickCallBack={handleSkillBadgeClick}
+                                    onClickCallBack={handleFilterChange('skills')}
                                   />
                                 ))}
                               </div>
@@ -230,7 +277,7 @@ export default function JobList(props: {
                                   <Badge
                                     key={i}
                                     value={skill}
-                                    onClickCallBack={handleSkillBadgeClick}
+                                    onClickCallBack={handleFilterChange('skills')}
                                   />
                                 ))}
                               </div>
@@ -305,12 +352,33 @@ export default function JobList(props: {
           </div>
         </div>
         <div className="col-span-1 rounded-t-lg border border-gray-300 bg-gray-50 text-sm font-bold text-gray-900 shadow-sm">
-          {filter.length ? (
+          {Object.values(filterData).flat().length ? (
             <div className="p-4 pb-2">
               <div>Chosen filters:</div>
               <div className="mt-3 flex flex-wrap">
-                {filter.map((skill, i) => (
-                  <Badge key={i} value={skill} onClickCallBack={handleCancelFilter}>
+                {filterData.cities.map((city, i) => (
+                  <Badge
+                    key={i}
+                    value={cities.find((c) => c.city === city).name}
+                    onClickCallBack={(v) =>
+                      handleFilterChange('cities')(cities.find((c) => c.name === v).city)
+                    }
+                  >
+                    <XCircleIcon className="h-5 w-5"></XCircleIcon>
+                  </Badge>
+                ))}
+                {filterData.companyTypes.map((type, i) => (
+                  <Badge key={i} value={type} onClickCallBack={handleFilterChange('companyTypes')}>
+                    <XCircleIcon className="h-5 w-5"></XCircleIcon>
+                  </Badge>
+                ))}
+                {filterData.remoteTypes.map((type, i) => (
+                  <Badge key={i} value={type} onClickCallBack={handleFilterChange('remoteTypes')}>
+                    <XCircleIcon className="h-5 w-5"></XCircleIcon>
+                  </Badge>
+                ))}
+                {filterData.skills.map((skill, i) => (
+                  <Badge key={i} value={skill} onClickCallBack={handleFilterChange('skills')}>
                     <XCircleIcon className="h-5 w-5"></XCircleIcon>
                   </Badge>
                 ))}
@@ -324,8 +392,9 @@ export default function JobList(props: {
                   <input
                     id={`${city}-checkbox`}
                     type="checkbox"
-                    value=""
+                    checked={filterData.cities.includes(city)}
                     className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-gray-100 accent-cyan-600"
+                    onChange={() => handleFilterChange('cities')(city)}
                   />
                   <label
                     htmlFor={`${city}-checkbox`}
@@ -339,13 +408,14 @@ export default function JobList(props: {
           </SideFilterSection>
           <SideFilterSection title="Company">
             <ul>
-              {['Big-tech', 'Startup'].map((option, i) => (
+              {companyOptions.map((option, i) => (
                 <li className="my-0.5 flex items-center" key={i}>
                   <input
                     id={`${option}-checkbox`}
                     type="checkbox"
-                    value=""
                     className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-gray-100 accent-cyan-600"
+                    checked={filterData.companyTypes.includes(option)}
+                    onChange={() => handleFilterChange('companyTypes')(option)}
                   />
                   <label
                     htmlFor={`${option}-checkbox`}
@@ -359,13 +429,14 @@ export default function JobList(props: {
           </SideFilterSection>
           <SideFilterSection title="On-site/Remote">
             <ul>
-              {['On-site', 'Remote', 'Hybrid'].map((option, i) => (
+              {remoteOptions.map((option, i) => (
                 <li className="my-0.5 flex items-center" key={i}>
                   <input
                     id={`${option}-checkbox`}
                     type="checkbox"
-                    value=""
                     className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-gray-100 accent-cyan-600"
+                    checked={filterData.remoteTypes.includes(option)}
+                    onChange={() => handleFilterChange('remoteTypes')(option)}
                   />
                   <label
                     htmlFor={`${option}-checkbox`}
@@ -386,8 +457,8 @@ export default function JobList(props: {
                   return Object.keys(props.stats).includes(skillName) ? (
                     <Badge
                       value={skillName}
-                      onClickCallBack={(e) => {
-                        handleSkillBadgeClick(e as string)
+                      onClickCallBack={(v) => {
+                        handleFilterChange('skills')(v as string)
                         close()
                       }}
                     >
@@ -404,7 +475,7 @@ export default function JobList(props: {
       </div>
 
       {/* for small view */}
-      <div className="relative overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm sm:hidden">
+      <div className="relative overflow-x-auto rounded-lg border border-gray-300 bg-gray-50 shadow-sm lg:hidden">
         <table className="w-full text-left text-sm text-gray-500">
           <thead className="border-b bg-gray-50 text-gray-700">
             <tr>
@@ -423,7 +494,18 @@ export default function JobList(props: {
               </tr>
             )}
             {jobs.map((job, i) => {
-              const { bigTech, company, link, loc, remote, salary, skills, startup, title } = job
+              const {
+                bigTech,
+                company,
+                hybrid,
+                link,
+                loc,
+                remote,
+                salary,
+                skills,
+                startup,
+                title,
+              } = job
               const evenRow = i % 2 === 0
               const nonLangSkills = Object.keys(skills)
                 .filter((type) => type !== SkillType.LANGUAGE)
@@ -455,6 +537,7 @@ export default function JobList(props: {
                                 {bigTech && <Badge value="Big Tech" />}
                                 {!bigTech && startup && <Badge value="Startup" />}
                                 {remote && <Badge value="Remote" />}
+                                {hybrid && <Badge value="Hybrid" />}
                                 <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                   {title}
                                 </p>
@@ -468,7 +551,7 @@ export default function JobList(props: {
                                 <Badge
                                   key={i}
                                   value={skill}
-                                  onClickCallBack={handleSkillBadgeClick}
+                                  onClickCallBack={handleFilterChange('skills')}
                                 />
                               ))}
                             </div>
@@ -480,7 +563,7 @@ export default function JobList(props: {
                                 <Badge
                                   key={i}
                                   value={skill}
-                                  onClickCallBack={handleSkillBadgeClick}
+                                  onClickCallBack={handleFilterChange('skills')}
                                 />
                               ))}
                             </div>
@@ -556,12 +639,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
     const curatedMockData = mockJobs.map((mockJob) => {
-      let { bigTech, city, company, link, loc, remote, salary, skills, startup, title } = mockJob
+      let { bigTech, city, company, hybrid, link, loc, remote, salary, skills, startup, title } =
+        mockJob
       return {
         bigTech,
         city,
         company,
         createdAt: new Date().getTime(),
+        hybrid,
         link,
         loc,
         remote,

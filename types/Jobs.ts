@@ -8,6 +8,7 @@ export type Job = {
   link: string
   loc: string
   remote: boolean
+  hybrid: boolean
   salary: string
   skills: JobSkills
   startup: boolean

@@ -95,7 +95,7 @@ export const BarChart = (props: {
         const time = (7 - data.index) * 24 // today:24, yesterday: 48, 2 days ago: 72
         router.push({
           pathname: `/jobs/${time <= 72 ? time : 24}`,
-          query: { city, skills: data.id },
+          query: { filter: JSON.stringify({ cities: [city], skills: [data.id] }) },
         })
       }}
       role="application"

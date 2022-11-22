@@ -24,6 +24,7 @@ export const mockJobs = [
       libraries for future use Translating designs and wireframes into high quality code
       Optimizing components for maximum performance across a vast array of web-capable devices
       and browsers Integrate with RESTful APIs.`,
+    hybrid: false,
     link: '#',
     loc: 'Hybrid remote in San Francisco, CA 94118',
     remote: true,
@@ -69,6 +70,7 @@ export const mockJobs = [
       algorithms. You should thrive in a fast paced environment with rapidly changing
       priorities, and collaborate well with other engineering teams. Education & Experience MS
       in Computer Science, Electrical Engineering or related field Additional Requirements`,
+    hybrid: false,
     link: '#',
     loc: 'Seattle, WA',
     remote: true,
@@ -129,6 +131,7 @@ export const mockJobs = [
       moreUnlimited PTO - take time away to rest, refuel, and rechargePaid parental leave to
       bond with your new childFriday team lunchesAutonomous work and flexibility in how work is
       performed`,
+    hybrid: true,
     link: '#',
     loc: 'Los Angeles, CA',
     remote: false,
