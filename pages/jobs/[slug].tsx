@@ -2,7 +2,7 @@ import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { categorizeSkills, skillsByType } from '../../utils/analysis'
 import { checkTodayData, getDailyJobs, getLatestJobs } from '../../utils/firebase-admin'
-import { convertDateToString, getPreviousDateString } from '../../utils/util'
+import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
 
 import { Badge } from '../../components/Badge'
@@ -88,11 +88,24 @@ const sortAndFilterJobs = (jobs: Job[], sortBy: string, filterData: FilterData) 
   return jobs
 }
 
-export default function JobList(props: {
-  jobs: Job[]
-  stats: { [skill: string]: number }
-  lastUpdated: number
-}) {
+const assembleStats = (jobs: Job[]) => {
+  const stats = {} as { [skillType in SkillType]: { [skill: string]: number } }
+  jobs.forEach((job) => {
+    Object.keys(job.skills).forEach((skillType) => {
+      if (!stats[skillType]) stats[skillType] = {}
+      job.skills[skillType as SkillType].forEach((skill) => {
+        if (stats[skillType][skill]) stats[skillType][skill] += 1
+        else stats[skillType][skill] = 1
+      })
+    })
+  })
+  Object.keys(stats).forEach((skillType) => {
+    stats[skillType] = getTopSortedSkills(stats[skillType])
+  })
+  return stats
+}
+
+export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
   const router = useRouter()
   const { slug, filter } = router.query
 
@@ -119,6 +132,8 @@ export default function JobList(props: {
     () => sortAndFilterJobs([...props.jobs], sortBy, filterData),
     [props.jobs, sortBy, filterData]
   )
+
+  const stats = useMemo(() => assembleStats(jobs), [jobs])
 
   console.log('job post rerendered')
 
@@ -462,18 +477,17 @@ export default function JobList(props: {
           </SideFilterSection>
           {Object.keys(skillsByType).map((type, i) => (
             <SideFilterSection title={type} key={i} defaultOpen={type === SkillType.LANGUAGE}>
-              <div className="flex flex-wrap">
-                {skillsByType[type].map((skill: string | string[], i: number) => {
-                  const skillName = skill instanceof Array ? skill[0] : skill
-                  return Object.keys(props.stats).includes(skillName) ? (
-                    <Badge key={i} value={skillName} onClickCallBack={handleFilterChange('skills')}>
+              {stats[type] ? (
+                <div className="flex flex-wrap">
+                  {Object.keys(stats[type]).map((skill, i) => (
+                    <Badge key={i} value={skill} onClickCallBack={handleFilterChange('skills')}>
                       <div className="my-[1px] flex h-4 w-4 items-center justify-center rounded-md bg-white/40">
-                        {props.stats[skillName]}
+                        {stats[type][skill]}
                       </div>
                     </Badge>
-                  ) : null
-                })}
-              </div>
+                  ))}
+                </div>
+              ) : null}
             </SideFilterSection>
           ))}
         </div>
@@ -667,7 +681,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return {
       props: {
         jobs: mockData,
-        stats: assembleStats(mockData),
         lastUpdated,
       },
     }
@@ -690,18 +703,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   console.log(`There are ${jobs.length} jobs for ${slugs[slug as string]}`)
   // Pass collection data to the page via props
-  return { props: { jobs, stats: assembleStats(jobs), lastUpdated } }
-}
-
-const assembleStats = (jobs: Job[]) => {
-  const stats: { [skill: string]: number } = {}
-  jobs.forEach((job) => {
-    Object.keys(job.skills).forEach((skillType) => {
-      job.skills[skillType as SkillType].forEach((skill) => {
-        if (stats[skill]) stats[skill] += 1
-        else stats[skill] = 1
-      })
-    })
-  })
-  return stats
+  return { props: { jobs, lastUpdated } }
 }
