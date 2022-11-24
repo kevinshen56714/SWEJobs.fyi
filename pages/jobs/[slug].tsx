@@ -466,14 +466,7 @@ export default function JobList(props: {
                 {skillsByType[type].map((skill: string | string[], i: number) => {
                   const skillName = skill instanceof Array ? skill[0] : skill
                   return Object.keys(props.stats).includes(skillName) ? (
-                    <Badge
-                      key={i}
-                      value={skillName}
-                      onClickCallBack={(v) => {
-                        handleFilterChange('skills')(v as string)
-                        close()
-                      }}
-                    >
+                    <Badge key={i} value={skillName} onClickCallBack={handleFilterChange('skills')}>
                       <div className="my-[1px] flex h-4 w-4 items-center justify-center rounded-md bg-white/40">
                         {props.stats[skillName]}
                       </div>
