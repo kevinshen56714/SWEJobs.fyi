@@ -42,7 +42,7 @@ export const CityTabGroup = (props: { currentPath: string }) => {
 
   return (
     <div className="border-t-[1px] border-gray-400 bg-gray-600 font-medium text-gray-300 shadow-lg">
-      <div className="mx-auto max-w-5xl px-2 sm:px-12 lg:px-5">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <ul className="hidden flex-wrap gap-2 text-sm sm:flex">
           <CityTabs smallView={false} />
         </ul>

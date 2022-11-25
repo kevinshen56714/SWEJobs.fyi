@@ -54,7 +54,7 @@ export default function Trends(props: { trends: { week: { [skill: string]: numbe
             options={Object.values(SkillType)}
             selected={skillType as string}
             onChangeCallback={(type) =>
-              router.push(`/trends/${city}/${encodeURIComponent(type as string)}/weekly-trends`)
+              router.push({ pathname: `/trends/${city}/${type}/weekly-trends` })
             }
           ></DropdownMenu>
         </div>

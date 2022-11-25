@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { SkillType } from '../../types/Skills'
 import { cities } from '..'
-import { slugs } from '../jobs/[city]/[slug]'
+import { slugs } from '../jobs/[slug]'
 
 const pages = {
   Jobs: 'jobs',
@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   switch (page) {
     case pages.Jobs:
-      promises.push(...Object.keys(slugs).map((slug) => res.revalidate(`/jobs/${city}/${slug}`)))
+      promises.push(...Object.keys(slugs).map((slug) => res.revalidate(`/jobs/${slug}`)))
       break
     case pages.Stats:
       promises.push(

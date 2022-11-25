@@ -24,13 +24,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       {/* Navbar, tabs, or titles */}
       <NavBar />
-      {['trends', 'stats', 'jobs'].includes(currentRoot) && (
-        <CityTabGroup currentPath={currentPath} />
-      )}
+      {['trends', 'stats'].includes(currentRoot) && <CityTabGroup currentPath={currentPath} />}
       {['about'].includes(currentRoot) && <Title currentPath={currentPath} />}
 
       {/* Main content */}
-      <div className="mx-auto min-h-[calc(100vh-300px)] max-w-5xl px-4 py-4 sm:min-h-[calc(100vh-400px)] sm:px-12 lg:px-5">
+      <div className="mx-auto min-h-[calc(100vh-300px)] max-w-7xl py-4 px-2 sm:min-h-[calc(100vh-400px)] sm:px-6 lg:px-8">
         <Component {...pageProps} />
       </div>
 

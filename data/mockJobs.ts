@@ -1,6 +1,7 @@
 export const mockJobs = [
   {
     bigTech: false,
+    city: 'SF',
     company: 'Example Company',
     desc: `
       We're building the future of pet care, combining insights, products, and services to help
@@ -23,6 +24,7 @@ export const mockJobs = [
       libraries for future use Translating designs and wireframes into high quality code
       Optimizing components for maximum performance across a vast array of web-capable devices
       and browsers Integrate with RESTful APIs.`,
+    hybrid: false,
     link: '#',
     loc: 'Hybrid remote in San Francisco, CA 94118',
     remote: true,
@@ -33,6 +35,7 @@ export const mockJobs = [
   },
   {
     bigTech: false,
+    city: 'SEA',
     company: 'Example Company 2 - some very long company name',
     desc: `
       Role Number: 200405446 Play a part in the next revolution in human-computer interaction.
@@ -67,6 +70,7 @@ export const mockJobs = [
       algorithms. You should thrive in a fast paced environment with rapidly changing
       priorities, and collaborate well with other engineering teams. Education & Experience MS
       in Computer Science, Electrical Engineering or related field Additional Requirements`,
+    hybrid: false,
     link: '#',
     loc: 'Seattle, WA',
     remote: true,
@@ -77,6 +81,7 @@ export const mockJobs = [
   },
   {
     bigTech: true,
+    city: 'LA',
     company: 'Apple',
     desc: `
       About Example Company 3 is helping to drive mainstream adoption of digital assets by
@@ -126,6 +131,7 @@ export const mockJobs = [
       moreUnlimited PTO - take time away to rest, refuel, and rechargePaid parental leave to
       bond with your new childFriday team lunchesAutonomous work and flexibility in how work is
       performed`,
+    hybrid: true,
     link: '#',
     loc: 'Los Angeles, CA',
     remote: false,

@@ -20,7 +20,7 @@ import { useRouter } from 'next/router'
 const navigation = [
   {
     name: 'Jobs',
-    href: '/jobs/SJ/24',
+    href: '/jobs/24',
     icon: <BriefcaseIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
   {
@@ -72,7 +72,7 @@ export const NavBar = () => {
     <Disclosure as="nav" className="bg-gray-700">
       {({ open }) => (
         <div className="shadow-lg">
-          <div className="mx-auto max-w-5xl px-4 sm:px-12 lg:px-5">
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
