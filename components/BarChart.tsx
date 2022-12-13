@@ -1,6 +1,3 @@
-// install (please make sure versions match peerDependencies)
-// yarn add @nivo/core @nivo/bar
-
 import { ResponsiveBar } from '@nivo/bar'
 import { useRouter } from 'next/router'
 
@@ -11,9 +8,8 @@ export const BarChart = (props: {
   data: { [date: string]: { [skill: string]: number } }
   smallView: boolean
   allKeys: string[]
-  city: string
 }) => {
-  const { data, smallView, allKeys, city } = props
+  const { data, smallView, allKeys } = props
   const chartData = Object.keys(data).map((date) => ({
     date: date.split(',')[0], // don't show the year
     ...data[date],
@@ -91,13 +87,6 @@ export const BarChart = (props: {
             ]
           : []
       }
-      onClick={(data) => {
-        const time = (7 - data.index) * 24 // today:24, yesterday: 48, 2 days ago: 72
-        router.push({
-          pathname: `/jobs/${time <= 72 ? time : 24}`,
-          query: { filter: JSON.stringify({ cities: [city], skills: [data.id] }) },
-        })
-      }}
       role="application"
       ariaLabel="skill count vs date bar chart"
       barAriaLabel={function (e) {

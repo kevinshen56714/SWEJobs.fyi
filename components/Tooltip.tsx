@@ -3,7 +3,7 @@ import { Popover, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
-export default function Tooltip(props: { children: React.ReactNode }) {
+export const Tooltip = (props: { children: React.ReactNode }) => {
   return (
     <Popover className="relative flex">
       {({ open }) => (

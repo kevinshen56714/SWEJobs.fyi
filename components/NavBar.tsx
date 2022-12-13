@@ -25,7 +25,7 @@ const navigation = [
   },
   {
     name: 'Trends',
-    href: `/trends/SJ/${SkillType.LANGUAGE}/daily-trends`,
+    href: `/trends/${SkillType.LANGUAGE}`,
     icon: <ChartBarIcon className="block h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />,
   },
   {

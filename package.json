@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.0.12",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
+    "@nivo/line": "^0.80.0",
     "@nivo/pie": "^0.80.0",
     "classnames": "^2.3.2",
     "firebase": "^9.12.0",

@@ -14,7 +14,7 @@ import { Job } from '../../types/Jobs'
 import Link from 'next/link'
 import { SideFilterSection } from '../../components/SideFilterSection'
 import { SkillType } from '../../types/Skills'
-import Tooltip from '../../components/Tooltip'
+import { Tooltip } from '../../components/Tooltip'
 import { cities } from '..'
 import classNames from 'classnames'
 import { mockJobs } from '../../data/mockJobs'
@@ -67,7 +67,7 @@ const sortAndFilterJobs = (jobs: Job[], sortBy: string, filterData: FilterData) 
   }
 
   if (remoteTypes.length > 0 && remoteTypes.length < 3) {
-    let filtered = []
+    let filtered = [] as Job[]
     if (remoteTypes.includes('On-site')) {
       filtered = [...jobs.filter((job) => !job.remote && !job.hybrid)]
     }
@@ -215,13 +215,13 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                   <th className="py-2 px-6 font-semibold">
                     <div className="flex items-center gap-1">
                       Languages
-                      <Tooltip>Click on any badges to apply filtering</Tooltip>
+                      <Tooltip>Click on any badge to apply filtering</Tooltip>
                     </div>
                   </th>
                   <th className="py-2 px-6 font-semibold">
                     <div className="flex items-center gap-1">
                       Skills
-                      <Tooltip>Click on any badges to apply filtering</Tooltip>
+                      <Tooltip>Click on any badge to apply filtering</Tooltip>
                     </div>
                   </th>
                 </tr>
