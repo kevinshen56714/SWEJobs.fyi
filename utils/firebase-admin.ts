@@ -1,8 +1,8 @@
 import { App, ServiceAccount, cert, getApp, getApps, initializeApp } from 'firebase-admin/app'
 import { QuerySnapshot, getFirestore } from 'firebase-admin/firestore'
+import { categorizeSkills, getYearsOfExperience } from './analysis'
 
 import { Job } from '../types/Jobs'
-import { categorizeSkills } from './analysis'
 
 let serviceAccount: string | ServiceAccount
 let app: App
@@ -57,7 +57,7 @@ export const getDailyJobs = async (city: string | string[], dateStr: string) => 
 
 const assembleJobObject = (snapshot: QuerySnapshot): Job[] => {
   return snapshot.docs.map((doc) => {
-    const { bigTech, city, company, createdAt, link, loc, salary, skills, startup, title } =
+    const { bigTech, city, company, createdAt, desc, link, loc, salary, skills, startup, title } =
       doc.data()
     const hybrid = loc.toLowerCase().includes('hybrid') && title.toLowerCase().includes('hybrid')
     const remote =
@@ -67,6 +67,7 @@ const assembleJobObject = (snapshot: QuerySnapshot): Job[] => {
       city,
       company,
       createdAt: createdAt.toDate().getTime(),
+      experience: getYearsOfExperience(desc),
       hybrid,
       link,
       loc: loc.split('+')[0],

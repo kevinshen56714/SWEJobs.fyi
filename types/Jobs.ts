@@ -5,6 +5,7 @@ export type Job = {
   city: string
   company: string
   createdAt: number
+  experience: number | number[] | null
   link: string
   loc: string
   remote: boolean

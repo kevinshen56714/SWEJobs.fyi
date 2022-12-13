@@ -1,6 +1,16 @@
-import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
+import {
+  BriefcaseIcon,
+  ChevronRightIcon,
+  MapPinIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { categorizeSkills, curateJobList, skillsByType } from '../../utils/analysis'
+import {
+  categorizeSkills,
+  curateJobList,
+  getYearsOfExperience,
+  skillsByType,
+} from '../../utils/analysis'
 import { checkTodayData, getDailyJobs, getLatestJobs } from '../../utils/firebase-admin'
 import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
@@ -237,6 +247,8 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                   const {
                     bigTech,
                     company,
+                    city,
+                    experience,
                     link,
                     hybrid,
                     loc,
@@ -264,9 +276,9 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                             <td className="max-w-xs py-2 px-3">
                               <Disclosure.Button className="flex max-w-full items-center gap-3">
                                 <div>
-                                  <ChevronDownIcon
+                                  <ChevronRightIcon
                                     className={classNames(
-                                      { '-rotate-90 transform': open },
+                                      { 'rotate-90 transform': open },
                                       'h-4 w-4 text-gray-700'
                                     )}
                                   />
@@ -281,6 +293,24 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                                     <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                       {title}
                                     </p>
+                                  </div>
+                                  <div className="flex items-center">
+                                    <MapPinIcon className="mr-1 h-4 w-4 text-gray-700" />
+                                    <p className="truncate whitespace-nowrap font-normal text-gray-900">
+                                      {cities.find((c) => c.city === city)?.name}
+                                    </p>
+                                    {experience && (
+                                      <div className="flex items-center">
+                                        <BriefcaseIcon className="ml-3 mr-1 h-4 w-4 text-gray-700" />
+                                        <p className="truncate whitespace-nowrap font-normal text-gray-900">
+                                          {`${
+                                            Array.isArray(experience)
+                                              ? experience.join('-')
+                                              : experience
+                                          } years`}
+                                        </p>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               </Disclosure.Button>
@@ -326,20 +356,20 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                                   <p className="text-sm font-normal text-gray-700">
                                     {salary || 'No salary estimation'}
                                   </p>
-                                  <button
-                                    type="button"
-                                    className={classNames(
-                                      {
-                                        'bg-gray-50 hover:bg-gray-100': evenRow,
-                                        'bg-gray-100 hover:bg-gray-200': !evenRow,
-                                      },
-                                      'w-24 rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700'
-                                    )}
-                                  >
-                                    <a href={link} target="_blank" rel="noreferrer">
+                                  <a href={link} target="_blank" rel="noreferrer">
+                                    <button
+                                      type="button"
+                                      className={classNames(
+                                        {
+                                          'bg-gray-50 hover:bg-gray-100': evenRow,
+                                          'bg-gray-100 hover:bg-gray-200': !evenRow,
+                                        },
+                                        'w-24 rounded-md border border-gray-300  px-4 py-2 text-sm font-medium text-gray-700'
+                                      )}
+                                    >
                                       Job Post
-                                    </a>
-                                  </button>
+                                    </button>
+                                  </a>
                                 </div>
                                 <div className="flex flex-col gap-1 text-base font-medium text-gray-900">
                                   Skill Requirements
@@ -542,9 +572,9 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                         <td className="py-2 px-3">
                           <Disclosure.Button className="flex max-w-full items-center gap-3">
                             <div>
-                              <ChevronDownIcon
+                              <ChevronRightIcon
                                 className={classNames(
-                                  { 'rotate-180 transform': open },
+                                  { 'rotate-90 transform': open },
                                   'h-4 w-4 text-gray-700'
                                 )}
                               />
@@ -657,13 +687,26 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // load mock data for development
   if (process.env.NODE_ENV === 'development') {
     const curatedMockData = mockJobs.map((mockJob) => {
-      let { bigTech, city, company, hybrid, link, loc, remote, salary, skills, startup, title } =
-        mockJob
+      let {
+        bigTech,
+        city,
+        company,
+        desc,
+        hybrid,
+        link,
+        loc,
+        remote,
+        salary,
+        skills,
+        startup,
+        title,
+      } = mockJob
       return {
         bigTech,
         city,
         company,
         createdAt: new Date().getTime(),
+        experience: getYearsOfExperience(desc),
         hybrid,
         link,
         loc,

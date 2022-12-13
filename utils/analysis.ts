@@ -249,3 +249,34 @@ const skillsEqual = (skills1: JobSkills, skills2: JobSkills) => {
     return skills1[type].sort().join(',') === skills2[type].sort().join(',')
   })
 }
+
+export const getYearsOfExperience = (jobDescription: string) => {
+  // capture "X years", "X+ years", "X-Y years", "X years'", and "X-year"
+  // (where X and Y are any numbers) in a paragraph
+  const regex = /(\d+)(?:\s*\+)?\s*(years|year)'?s?/gi
+  const regex2 = /(\d+)\s*-\s*(\d+)\s*(years|year)'?s?/gi
+  const numbers: number[] = []
+
+  let match: RegExpExecArray | null
+  while ((match = regex.exec(jobDescription))) {
+    const x = parseInt(match[1], 10)
+
+    // numbers larger than 20 are likely not years of experience
+    if (x <= 20) numbers.push(x)
+  }
+
+  while ((match = regex2.exec(jobDescription))) {
+    const x = parseInt(match[1], 10)
+    const y = match[2] ? parseInt(match[2], 10) : null // Y value if exists
+
+    // numbers larger than 20 are likely not years of experience
+    if (x <= 20) numbers.push(x)
+    if (y && y <= 20) numbers.push(y)
+  }
+
+  if (numbers.length === 0) return null
+
+  const min = Math.min(...numbers)
+  const max = Math.max(...numbers)
+  return min === max ? min : [min, max]
+}
