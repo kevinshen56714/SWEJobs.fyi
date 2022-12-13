@@ -8,7 +8,7 @@ let serviceAccount: string | ServiceAccount
 let app: App
 let db: FirebaseFirestore.Firestore
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
   serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string)
   app =
     getApps().length === 0

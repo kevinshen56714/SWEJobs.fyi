@@ -1,4 +1,5 @@
-import { JobSkills } from '../types/Jobs'
+import { Job, JobSkills } from '../types/Jobs'
+
 import { SkillType } from '../types/Skills'
 
 const languages = [
@@ -221,4 +222,30 @@ export const categorizeSkills = (skills: string[]) => {
     allMatchedSkills[type] = matchedSkills
   })
   return allMatchedSkills
+}
+
+export const curateJobList = (jobs: Job[]) => {
+  // we don't want job postings from other talent networks: Actalent, Braintrust or CyberCoders
+  jobs = jobs.filter((job) => {
+    return !['Actalent', 'Braintrust', 'CyberCoders'].includes(job.company)
+  })
+
+  // remove duplicate jobs
+  jobs = jobs.filter(
+    (job, index, self) =>
+      self.findIndex(
+        (t) =>
+          t.title === job.title &&
+          t.company === job.company &&
+          t.loc === job.loc &&
+          skillsEqual(t.skills, job.skills)
+      ) === index
+  )
+  return jobs
+}
+
+const skillsEqual = (skills1: JobSkills, skills2: JobSkills) => {
+  return Object.keys(skills1).every((type) => {
+    return skills1[type].sort().join(',') === skills2[type].sort().join(',')
+  })
 }

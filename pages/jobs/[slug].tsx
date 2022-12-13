@@ -1,6 +1,6 @@
 import { ChevronDownIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { categorizeSkills, skillsByType } from '../../utils/analysis'
+import { categorizeSkills, curateJobList, skillsByType } from '../../utils/analysis'
 import { checkTodayData, getDailyJobs, getLatestJobs } from '../../utils/firebase-admin'
 import { convertDateToString, getPreviousDateString, getTopSortedSkills } from '../../utils/util'
 import { useEffect, useMemo, useState } from 'react'
@@ -109,7 +109,7 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
   const router = useRouter()
   const { slug, filter } = router.query
 
-  const [sortBy, setSortBy] = useState<string>('Sort By')
+  const [sortBy, setSortBy] = useState<string>('Company name (A-Z)')
   const [filterData, setFilterData] = useState<FilterData>({
     skills: [],
     cities: [],
@@ -118,7 +118,6 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
   })
 
   useEffect(() => {
-    // setSortBy('Sort By')
     const defaultFilterData = { skills: [], cities: [], companyTypes: [], remoteTypes: [] }
     if (filter) {
       const filterObj = JSON.parse(filter as string)
@@ -689,6 +688,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let jobs: Job[]
   if (slug === '24') {
     jobs = await getLatestJobs()
+    jobs = curateJobList(jobs)
   } else {
     // if jobs haven't been updated today, shift back by 1 day
     let dateStr = convertDateToString(new Date())
@@ -698,7 +698,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     dateStr = getPreviousDateString(dateStr, shiftDateBy)
 
     const jobsByCity = await Promise.all(cities.map(({ city }) => getDailyJobs(city, dateStr)))
-    jobs = jobsByCity.flat()
+    jobs = curateJobList(jobsByCity.flat())
   }
 
   console.log(`There are ${jobs.length} jobs for ${slugs[slug as string]}`)
