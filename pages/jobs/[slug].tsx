@@ -544,7 +544,9 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
             {jobs.map((job, i) => {
               const {
                 bigTech,
+                city,
                 company,
+                experience,
                 hybrid,
                 link,
                 loc,
@@ -589,6 +591,24 @@ export default function JobList(props: { jobs: Job[]; lastUpdated: number }) {
                                 <p className="truncate whitespace-nowrap font-normal text-gray-900">
                                   {title}
                                 </p>
+                              </div>
+                              <div className="mt-1 flex items-center">
+                                <MapPinIcon className="mr-1 h-4 w-4 text-gray-700" />
+                                <p className="truncate whitespace-nowrap font-normal text-gray-900">
+                                  {cities.find((c) => c.city === city)?.name}
+                                </p>
+                                {experience && (
+                                  <div className="flex items-center">
+                                    <BriefcaseIcon className="ml-3 mr-1 h-4 w-4 text-gray-700" />
+                                    <p className="truncate whitespace-nowrap font-normal text-gray-900">
+                                      {`${
+                                        Array.isArray(experience)
+                                          ? experience.join('-')
+                                          : experience
+                                      } years`}
+                                    </p>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </Disclosure.Button>
