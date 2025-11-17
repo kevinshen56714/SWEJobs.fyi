@@ -7,7 +7,7 @@
 
 ---
 
-**Website**: <a href="https://swejobs.fyi" target="_blank">https://swejobs.fyi</a>
+**Website**: <a href="https://swejobs-fyi.vercel.app" target="_blank">https://swejobs-fyi.vercel.app</a>
 
 **Get Latest Updates**: <a href="https://twitter.com/SWEJobsfyi" target="_blank">https://twitter.com/SWEJobsfyi</a>
 
